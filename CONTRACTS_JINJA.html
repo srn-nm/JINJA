@@ -1,0 +1,213 @@
+<html lang="fa">
+    <head>
+        <title>گزارش پروژه ها</title>
+        <style>
+            table, td, th{
+                border: 1px solid;
+                border-collapse: collapse;
+            }
+            td, th {
+                padding: 10px;
+                text-align: center;
+              font-size: 12px;
+            }
+        </style>
+    </head>
+    <body>
+
+        {% set NO_DATA = "<span style='font-style:italic;font-size:12;color:red;'>اطلاعات ناموجود </span>" %}
+
+        {% set enum_get_credit= [
+            {
+            "value": 1,
+            "label": "بودجه عمرانی دولت",
+            "sort": 1
+            },
+            {
+            "value": 2,
+            "label": "بودجه غیر عمرانی",
+            "sort": 2
+            },
+            {
+            "value": 3,
+            "label": "تهاتر",
+            "sort": 3
+            },
+            {
+            "value": 4,
+            "label": "سرمایه گذاری",
+            "sort": 4
+            },
+            {
+            "value": 5,
+            "label": "وام Eco",
+            "sort": 5
+            },
+            {
+            "value": 6,
+            "label": "وام بانک توسعه اسلامی",
+            "sort": 6
+            },
+            {
+            "value": 7,
+            "label": "وام بانک جهانی",
+            "sort": 7
+            },
+            {
+            "value": 8,
+            "label": "کارفرما جهانی",
+            "sort": 8
+            },
+            {
+            "value": 9,
+            "label": "کارفرما خصوصی",
+            "sort": 9
+            }
+        ]%}
+
+        {% set ENUM_LOC_EXECUT = [
+            {
+              "value": 1,
+              "label": "داخلی",
+              "sort": 0
+            },
+            {
+              "value": 2,
+              "label": "خارجی",
+              "sort": 1
+            }
+        ]%}
+
+        {% set enum_domain_execut =  [
+            {
+              "value": 1,
+              "label": "آسیای میانه",
+              "sort": 1
+            },
+            {
+              "value": 2,
+              "label": "آمریکای لاتین",
+              "sort": 2
+            },
+            {
+              "value": 3,
+              "label": "اروپا و آفریقا",
+              "sort": 3
+            },
+            {
+              "value": 4,
+              "label": "ایران",
+              "sort": 4
+            },
+            {
+              "value": 5,
+              "label": "عراق",
+              "sort": 5
+            }
+        ]%}
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th colspan="13">پروژه ها</th>
+                </tr>
+
+                <tr>
+                    <th>نام</th> 
+                    <th>قرارداد</th> 
+                    <th>تعداد قراردادها</th>
+                    <th>ایمیل پروژه</th> 
+                    <th>شناسه قدیمی</th> 
+                    <th>پسوورد پروژه</th>
+                    <th>تامین اعتبار</th>
+                    <th>موقعیت عمومی پروژه</th>
+                    <th>مسئول</th> 
+                    <th>کد سه حرفی</th> 
+                    <th>حوزه اجرا</th> 
+                    <th>مختصات جغرافیایی</th> 
+                    <th>چارت سازمانی</th> 
+
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>{{NAME}}</td>
+                    
+                    {%if CONTR%}
+                        <td>{{CONTR | map(attribute = 'SUBJECT')|join(', ')}}</td>
+                    {%else%}
+                        <td>قراردادی موجود نیست</td>
+                    {%endif%}
+
+                    <td>{{CONTR | length}}</td>
+
+                    {%if EMAIL%}
+                        <td>{{EMAIL}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+
+                    {%if OLD_ID%}
+                        <td>{{OLD_ID}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+
+                    {%if EMAIL_PASS%}
+                        <td>{{EMAIL_PASS}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+
+                    {%if GET_CREDIT%}
+                        <td>{{enum_get_credit[GET_CREDIT[0]].label}}
+                    {%else %}
+                        <td>{{NO_DATA}}
+                    {%endif%}
+
+                    {%if LOC_EXECUT%}
+                        <td>{{ENUM_LOC_EXECUT[LOC_EXECUT[0]].label}}
+                    {%else %}
+                        <td>{{NO_DATA}}
+                    {%endif%}
+
+                    {% if RESPONSIBLE %}
+                            <td>{{RESPONSIBLE | join(", ")}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>    
+                    {% endif %}
+
+                    {%if ABBREVIATION%}
+                        <td>{{ABBREVIATION}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+
+                    {%if DOMAIN_EXECUT%}
+                        <td>{{enum_domain_execut[DOMAIN_EXECUT[0]].label}}
+                    {%else %}
+                        <td>{{NO_DATA}}
+                    {%endif%}
+
+                    {% if GEO_COORDINAT %}
+                            <td>{{GEO_COORDINAT | join(", ")}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>    
+                    {% endif %}
+
+                    {%if ORGANIZ_CHART%}
+                        <td>{{ORGANIZ_CHART}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+
+                </tr>
+            </tbody>
+
+        </table>
+    </body>
+</html>
+
+               
