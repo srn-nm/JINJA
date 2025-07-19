@@ -1,0 +1,491 @@
+<html lang="fa">
+    <head>
+        <title>گزارش صورت وضعیت ها</title>
+        <style>
+            table, td, th{
+                border: 1px solid;
+                border-collapse: collapse;
+            }
+            td, th {
+                padding: 10px;
+                text-align: center;
+              font-size: 12px;
+            }
+        </style>
+    </head>
+    <body>
+
+        {% set NO_DATA = "<span style='font-size:12;color:gray;'>اطلاعات ناموجود</span>" %}
+
+        {% set ENUM_TYPE =[
+            {
+              "value": 0,
+              "label": "کارکرد",
+              "sort": 1
+            },
+            {
+              "value": 1,
+              "label": "تعدیل",
+              "sort": 2
+            },
+            {
+              "value": 2,
+              "label": "مابه التفاوت نرخ ارز",
+              "sort": 3
+            },
+            {
+              "value": 3,
+              "label": "فرزندآوری",
+              "sort": 4
+            },
+            {
+              "value": 4,
+              "label": "پاداش",
+              "sort": 5
+            },
+            {
+              "value": 5,
+              "label": "پیش پرداخت",
+              "sort": 6
+            }
+        ]%}
+
+        {% set ENUM_STATUS = [
+            {
+            "value": 0,
+            "label": "خاتمه داده شده",
+            "sort": 1
+            },
+            {
+            "value": 1,
+            "label": "فسخ شده",
+            "sort": 2
+            },
+            {
+            "value": 2,
+            "label": "تکمیل شده",
+            "sort": 3
+            }
+        ]%}
+
+        {%macro amount_handler(value)%}
+            <amount_handler value="{{ value }}">
+
+            {%if value and value[0]%}
+                {%if value[0]["IRR "]%}
+                    <td>{{value[0]["IRR "]}} ریال</td>
+                {%elif value[0]["USD"]%}
+                    <td>{{value[0]["USD"]}} دلار</td>
+                {%elif value[0]["PS"]%}
+                    <td>{{value[0]["PS"]}} پوند</td>
+                {%elif value[0]["currency"] == "IRR "%}
+                    <td>{{value[0]["amount"]}} ریال</td> 
+                {%elif value[0]["currency"] == "USD"%}
+                    <td>{{value[0]["amount"]}} دلار</td>     
+                {%elif value[0]["currency"] == "PS"%}
+                    <td>{{value[0]["amount"]}} پوند</td>    
+                {%else%}
+                    <td>{{value[0]["IRR "]}} ریال</td>
+                {%endif%}
+            {%else%}
+                <td>{{NO_DATA}}</td>
+            {%endif%}
+        {%endmacro%}
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th colspan="3">صورت وضعیت</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+                <tr>
+                    <th rowspan="14">مشخصات</th>  
+                </tr>
+
+                <tr> 
+                    <th>شناسه قدیمی</th> 
+                    {%if OLD_ID%}
+                        <td>{{OLD_ID}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+                </tr>
+
+                <tr>
+                    <th>نوع صورت وضعیت</th>
+                    {%if TYPE%}
+                        <td>{{ENUM_TYPE[TYPE[0]].label}}
+                    {%else %}
+                        <td>{{NO_DATA}}
+                    {%endif%}
+                </tr>
+
+                <tr>
+                    <th>شماره</th>
+                    {%if NUM%}
+                        <td>{{NUM}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+                </tr>
+
+                <tr> 
+                    <th>قطعی</th> 
+                    {%if FINAL%} 
+                        <td>قطعی</td>
+                    {%else%}
+                        <td>غیرقطعی</td>
+                    {%endif%}
+                </tr>
+
+                <tr> 
+                    <th>وضعیت</th> 
+                    {%if STATUS%}
+                        <td>{{ENUM_STATUS[STATUS[0]].label}}
+                    {%else%}
+                        <td>{{NO_DATA}}
+                    {%endif%}
+                </tr>
+
+                <tr> 
+                    <th>تاریخ کارکرد تا</th> 
+                    {%if UNTIL_FUNC_DATE%}
+                        <td>{{UNTIL_FUNC_DATE | jalali}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+                </tr>
+
+                <tr> 
+                    <th>شماره نامه ارسال/دریافت</th> 
+                    {%if SENT_NO_CORR%}
+                        <td>{{SENT_NO_CORR}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+                </tr>
+
+                <tr> 
+                    <th>تاریخ ارسال/دریافت</th> 
+                    {%if DATE_CNFRMED_EMPLYR%}
+                        <td>{{DATE_CNFRMED_EMPLYR | jalali}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+                </tr>
+
+                <tr> 
+                    <th>مهلت پرداخت به روز</th>
+                    {%if INVS_PAY_DEADLINE%}
+                        <td>{{INVS_PAY_DEADLINE}} روز</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+                </tr>
+
+                <tr> 
+                    <th>ناخالص دوره کارکرد</th> 
+                    <p>{{ amount_handler(FUNC_IMPURE) }}</p>
+        
+                </tr>
+
+                <tr> 
+                    <th>توضیحات</th> 
+                    {%if DESCR%}
+                        <td>{{DESCR}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+                </tr>
+
+                <tr> 
+                    <th>پیوست</th>
+                    {%if ATTACH%}
+                        <td>{{ATTACH}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+                </tr>
+
+                <tr> 
+                    <th>سایر پیوستها</th> 
+                    {%if OTHER%}
+                        <td>{{OTHER}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+                </tr>
+
+                <tr>
+                    <th rowspan="6">پیمانکار</th>  
+                </tr>
+
+                <tr> 
+                    <th>تاریخ ارسال پیمانکار</th>
+                    {%if DATE_SENT_CONTRACTOR%}
+                        <td>{{DATE_SENT_CONTRACTOR | jalali}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+                </tr>
+
+                <tr> 
+                    <th>شماره نامه  پیمانکار</th> 
+                    {%if NO_CORR_CONTRACTOR%}
+                        <td>{{NO_CORR_CONTRACTOR}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+                </tr>
+
+                <tr> 
+                    <th>مبلغ تجمعی پیمانکار</th> 
+                    <p>{{ amount_handler(SUM_IMPURE) }}</p>
+                </tr>
+
+                <tr> 
+                    <th>پیوست نامه ارسالی</th> 
+                    {%if CORR_SENT_CONTRACTOR%}
+                        <td>{{CORR_SENT_CONTRACTOR}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+                </tr>
+
+                <tr> 
+                    <th>پیوست صورت وضعیت ارسالی</th> 
+                    {%if INV_SENT_CONTRACTOR%}
+                        <td>{{INV_SENT_CONTRACTOR}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+                </tr>
+
+                <th rowspan="8">مشاور</tr>
+
+                <tr> 
+                    <th>تاریخ ارسال به مشاور</th>
+                    {%if DATE_SENT_CONSULT%}
+                        <td>{{DATE_SENT_CONSULT | jalali}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+                </tr>
+
+                <tr> 
+                    <th>شماره نامه ارسال به مشاور</th>   
+                    {%if NO_CORR_SENT_CONSULT%}
+                        <td>{{NO_CORR_SENT_CONSULT}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+                </tr> 
+
+                <tr> 
+                    <th>تاریخ تایید مشاور</th> 
+                    {%if DATE_CNFRMED_CONSULT%}
+                        <td>{{DATE_CNFRMED_CONSULT | jalali}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+                </tr>
+                
+                <tr> 
+                    <th>شماره نامه  تاییدی مشاور</th>
+                    {%if TECH_CONSUL%}
+                        <td>{{TECH_CONSUL}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+                </tr>
+
+                <tr> 
+                    <th>مبلغ تجمعی مشاور</th> 
+                    <p>{{ amount_handler(SUM_CNFRMED_CONSULT) }}</p>
+                </tr>
+
+                <tr> 
+                    <th>پیوست نامه تاییدی</th> 
+                    {%if CORR_CNFRMED_CONSULT%}
+                        <td>{{CORR_CNFRMED_CONSULT}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+                </tr>
+
+                <tr> 
+                    <th>پیوست صورت وضعیت تاییدی</th> 
+                    {%if CNFRMED_CONSULT%}
+                        <td>{{CNFRMED_CONSULT}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+                </tr>
+
+                <th rowspan="6">مدیر طرح</th>
+
+                <tr> 
+                    <th>تاریخ تایید مدیر طرح</th> 
+                    {%if DATE_CNFRMED_MNG%}
+                        <td>{{DATE_CNFRMED_MNG | jalali}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+                </tr>
+
+                <tr> 
+                    <th>شماره نامه تاییدی مدیر طرح</th>
+                    {%if NO_CNFRMED_MNG%}
+                        <td>{{NO_CNFRMED_MNG}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+                </tr>
+
+                <tr> 
+                    <th>مبلغ تجمعی مدیر طرح</th> 
+                    <p>{{ amount_handler(SUM_CNFRMED_MNG) }}</p>         
+                </tr>
+
+                <tr> 
+                    <th>پیوست نامه تاییدی مدیر طرح</th>
+                    {%if CORR_CNFRMED_MNG%}
+                        <td>{{CORR_CNFRMED_MNG}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+                </tr>
+
+                <tr> 
+                    <th>پیوست صورت وضعیت تاییدی</th> 
+                    {%if CNFRMED_MNG%}
+                        <td>{{CNFRMED_MNG}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+                </tr>
+
+                <th rowspan="8">کارفرما</th>
+                
+                <tr> 
+                    <th>تاریخ ارسال به کارفرما</th> 
+                    {%if DATE_SENT_EMPLYR%}
+                        <td>{{DATE_SENT_EMPLYR | jalali}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+                </tr>
+
+                <tr> 
+                    <th>شماره نامه ارسال به کارفرما</th> 
+                    {%if NO_CORR_SENT_EMPLYR%}
+                        <td>{{NO_CORR_SENT_EMPLYR}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+                </tr>
+                
+                <tr> 
+                    <th>تاریخ تایید کارفرما</th>
+                    {%if DATE_CNFRMED_EMPLYR%}
+                        <td>{{DATE_CNFRMED_EMPLYR | jalali}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+                </tr>  
+
+                <tr> 
+                    <th>شماره نامه تاییدی کارفرما</th>
+                    {%if NO_CORR_CNFRMED%}
+                        <td>{{NO_CORR_CNFRMED}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+                </tr>
+
+                <tr>
+                    <th>مبلغ تجمعی کارفرما</th>
+                    <p>{{ amount_handler(SUM_CNFRMED_EMPLYR) }}</p>    
+                </tr>
+
+                <tr>  
+                    <th>پیوست نامه تاییدی</th>
+                    {%if CORR_CNFRMED_EMPLYR%}
+                        <td>{{CORR_CNFRMED_EMPLYR}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+                </tr>
+
+                <tr> 
+                    <th>پیوست صورت وضعیت تاییدی</th> 
+                    {%if CNFRMED_CONTRACTOR%}
+                        <td>{{CNFRMED_CONTRACTOR}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+                </tr>
+
+                <th rowspan="10">مبالغ/کسورات</th>
+
+                <tr> 
+                    <th>کسورات حسن انجام کار</th>
+                    <p>{{ amount_handler(PERFORM_DEDUC) }}</p>    
+                </tr>
+
+                <tr> 
+                    <th>مبلغ استهلاک پیش پرداخت</th> 
+                    <p>{{ amount_handler(PREPAY_DEPREC) }}</p>    
+                </tr>
+
+                <tr> 
+                    <th>مبلغ مالیات بر ارزش افزوده</th>
+                    <p>{{ amount_handler(AMNT_TAX) }}</p>    
+                </tr>
+
+                <tr> 
+                    <th>مبلغ خالص دوره کارکرد</th> 
+                    <p>{{ amount_handler(FUNC_PURE) }}</p>    
+                </tr>
+
+                <tr> 
+                    <th>درصد مالیات بر ارزش افزوده</th> 
+                    {%if PRCNT_TAX%}
+                        <td>{{PRCNT_TAX}}%</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+                </tr>
+
+                <tr> 
+                    <th>کسورات سایر</th>
+                    <p>{{ amount_handler(OTHER_DEDUC) }}</p>    
+                </tr>
+
+                <tr> 
+                    <th>مالیات مستقیم مشاور حقیقی</th> 
+                    <p>{{ amount_handler(DRECT_TAX_CONSULT) }}</p>    
+                </tr>
+
+                <tr> 
+                    <th>تجمعی مبلغ استهلاک پیش پرداخت</th>
+                    <p>{{ amount_handler(SUM_PREPAY_DEPREC) }}</p>    
+                </tr>
+
+                <tr> 
+                    <th>فاکتور</th>
+                    {%if FACTOR%}
+                        <td>{{FACTOR | map(attribute = 'FACTOR_NO')|join(', ')}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+                </tr>
+
+            </tbody>
+        </table>
+    </body>
+</html>

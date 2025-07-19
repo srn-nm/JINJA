@@ -1,0 +1,89 @@
+<html lang="fa">
+    <head>
+        <title>گزارش صورت حساب های هر قرارداد</title>
+        <style>
+            table, td, th{
+                border: 1px solid;
+                border-collapse: collapse;
+            }
+            td, th {
+                padding: 10px;
+                text-align: center;
+              font-size: 12px;
+            }
+        </style>
+    </head>
+    <body>
+
+        {% set NO_DATA = "<span style='font-size:12;color:gray;'>اطلاعات ناموجود </span>" %}
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th> </th>
+                    <th colspan="7">نوع صورت وضعیت</th> 
+
+                    <th colspan="3">وضعیت</th>
+
+                    <th colspan="2">تعداد</th> 
+
+                    <th colspan="2">مبالغ</th> 
+
+                </tr>
+
+                <tr>
+                    <th>شناسه</th>
+                    <th>تعداد کل صورت وضعیت ها</th>
+                    <th>صورت وضعیت کارکرد</th>
+                    <th>صورت وضعیت تعدیل</th>
+                    <th>صورت وضعیت مابه التفاوت نرخ ارز</th>
+                    <th>صورت وضعیت فرزندآوری</th>
+                    <th>صورت وضعیت پاداش</th>
+                    <th>صورت وضعیت پیش پرداخت</th>
+
+                    <th>خاتمه داده شده</th>
+                    <th>فسخ شده</th>
+                    <th>تکمیل شده</th>
+
+                    <th>تعداد صورت وضعیت قطعی</th>
+                    <th>تعداد فاکتورها</th>
+                    
+                
+                    <th>مبلغ تجمعی پیمانکار</th> 
+                    <th>ناخالص دوره کارکرد</th> 
+                   
+
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>{{id}}</td>
+                    <td>{{INVS | length}}</td>
+                    <td>{{INVS | selectattr("TYPE", "equalto", [0]) | list | length }}</td>
+                    <td>{{INVS | selectattr("TYPE", "equalto", [1]) | list | length }}</td>
+                    <td>{{INVS | selectattr("TYPE", "equalto", [2]) | list | length }}</td>
+                    <td>{{INVS | selectattr("TYPE", "equalto", [3]) | list | length }}</td>
+                    <td>{{INVS | selectattr("TYPE", "equalto", [4]) | list | length }}</td>
+                    <td>{{INVS | selectattr("TYPE", "equalto", [5]) | list | length }}</td>
+
+                    <td>{{INVS | selectattr("STATUS", "equalto", [0]) | list | length }}</td>
+                    <td>{{INVS | selectattr("STATUS", "equalto", [1]) | list | length }}</td>
+                    <td>{{INVS | selectattr("STATUS", "equalto", [2]) | list | length }}</td>
+
+                    <td>{{INVS | selectattr("FINAL", "equalto", 1) | list | length }}</td>
+                    <td>{{INVS | selectattr("FACTOR") | list | length }}</td>
+                      
+                    
+                    <td>{{INVS | map(attribute='FUNC_IMPURE') | map(attribute=0) | map(attribute='amount') | sum }}</td>                           
+                    <td>{{INVS | map(attribute='SUM_IMPURE') | map(attribute=0) | map(attribute='amount') | sum }}</td>
+               
+                </tr>
+            </tbody>
+
+        </table>
+    </body>
+</html>
+
+               
