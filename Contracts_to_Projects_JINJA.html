@@ -1,8 +1,8 @@
 <html lang="fa">
     <head>
-        <title>گزارش پروژه ها</title>
+        <title>پروژه های هر قرارداد</title>
         <style>
-            table, td, th{
+            table, td, th {
                 border: 1px solid;
                 border-collapse: collapse;
             }
@@ -15,9 +15,10 @@
     </head>
     <body>
 
-        {% set NO_DATA = "<span style='font-size:12;color:gray;'>اطلاعات ناموجود </span>" %}
+        {% set NO_DATA = "<span style='font-size:12;color:gray;'>اطلاعات ناموجود</span>" %}
 
-        {% set enum_get_credit= [
+        
+        {% set ENUM_GET_CREDIT = [
             {
             "value": 1,
             "label": "بودجه عمرانی دولت",
@@ -78,7 +79,7 @@
             }
         ]%}
 
-        {% set enum_domain_execut =  [
+        {% set ENUM_DOMAIN_EXECUT =  [
             {
               "value": 1,
               "label": "آسیای میانه",
@@ -110,16 +111,12 @@
 
             <thead>
                 <tr>
-                    <th colspan="13">پروژه ها</th>
+                    <th colspan="9">پروژه های قرارداد {{id}}</th>
                 </tr>
 
                 <tr>
                     <th>شناسه</th>
                     <th>نام</th> 
-                    <th>قرارداد</th> 
-                    <th>تعداد قراردادها</th>
-                    <th>ایمیل پروژه</th> 
-                    <th>شناسه قدیمی</th> 
                     <th>تامین اعتبار</th>
                     <th>موقعیت عمومی پروژه</th>
                     <th>مسئول</th> 
@@ -127,80 +124,62 @@
                     <th>حوزه اجرا</th> 
                     <th>مختصات جغرافیایی</th> 
                     <th>چارت سازمانی</th> 
-
                 </tr>
             </thead>
 
             <tbody>
-                <tr>
-                    <td>{{id}}</td>
+    
+                {%for projectOne in PROJECT%}
+                    <tr>
+                        <td>{{projectOne.id}}</td>
 
-                    <td>{{NAME}}</td>
-                    
-                    {%if CONTR%}
-                        <td>{{CONTR | map(attribute = 'SUBJECT')|join(', ')}}</td>
-                    {%else%}
-                        <td>{{NO_DATA}}</td>
-                    {%endif%}
+                        <td>{{projectOne.NAME}}</td>
+                
+                        {%if projectOne.GET_CREDIT is defined and projectOne.GET_CREDIT | length > 0%}
+                            <td>{{ENUM_GET_CREDIT[projectOne.GET_CREDIT[0]].label}}</td>
+                        {%else%}
+                            <td>{{NO_DATA}}</td>
+                        {%endif%}
 
-                    <td>{{CONTR | length}}</td>
+                        {%if projectOne.LOC_EXECUT is defined and projectOne.LOC_EXECUT | length > 0%}
+                            <td>{{ENUM_LOC_EXECUT[projectOne.LOC_EXECUT[0]].label}}</td>
+                        {%else%}
+                            <td>{{NO_DATA}}</td>
+                        {%endif%}
 
-                    {%if EMAIL%}
-                        <td>{{EMAIL}}</td>
-                    {%else%}
-                        <td>{{NO_DATA}}</td>
-                    {%endif%}
+                        {%if projectOne.RESPONSIBLE is defined and projectOne.RESPONSIBLE | length > 0%}
+                            <td>{{projectOne.RESPONSIBLE}}</td>
+                        {%else%}
+                            <td>{{NO_DATA}}</td>
+                        {%endif%}
 
-                    {%if OLD_ID%}
-                        <td>{{OLD_ID}}</td>
-                    {%else%}
-                        <td>{{NO_DATA}}</td>
-                    {%endif%}
+                        {%if projectOne.ABBREVIATION is defined and projectOne.ABBREVIATION | length > 0%}
+                            <td>{{projectOne.ABBREVIATION}}</td>
+                        {%else%}
+                            <td>{{NO_DATA}}</td>
+                        {%endif%}
 
-                    {%if GET_CREDIT%}
-                        <td>{{enum_get_credit[GET_CREDIT[0]].label}}
-                    {%else %}
-                        <td>{{NO_DATA}}
-                    {%endif%}
+                        {%if projectOne.DOMAIN_EXECUT is defined and projectOne.DOMAIN_EXECUT | length > 0%}
+                            <td>{{ENUM_DOMAIN_EXECUT[projectOne.DOMAIN_EXECUT[0]].label}}</td>
+                        {%else%}
+                            <td>{{NO_DATA}}</td>
+                        {%endif%}
 
-                    {%if LOC_EXECUT%}
-                        <td>{{ENUM_LOC_EXECUT[LOC_EXECUT[0]].label}}
-                    {%else %}
-                        <td>{{NO_DATA}}
-                    {%endif%}
+                        {% if projectOne.GEO_COORDINAT is defined and projectOne.GEO_COORDINAT | length > 0%}
+                                <td>{{projectOne.GEO_COORDINAT | join(", ")}}</td>
+                        {%else%}
+                            <td>{{NO_DATA}}</td>    
+                        {%endif%}
 
-                    {%if RESPONSIBLE%}
-                        <td>{{RESPONSIBLE | map(attribute = 'PERSON')|join(', ')}}</td>
-                    {%else%}
-                        <td>{{NO_DATA}}</td>
-                    {%endif%}
-
-                    {%if ABBREVIATION%}
-                        <td>{{ABBREVIATION}}</td>
-                    {%else%}
-                        <td>{{NO_DATA}}</td>
-                    {%endif%}
-
-                    {%if DOMAIN_EXECUT%}
-                        <td>{{enum_domain_execut[DOMAIN_EXECUT[0]].label}}
-                    {%else %}
-                        <td>{{NO_DATA}}
-                    {%endif%}
-
-                    {% if GEO_COORDINAT %}
-                            <td>{{GEO_COORDINAT | join(", ")}}</td>
-                    {%else%}
-                        <td>{{NO_DATA}}</td>    
-                    {% endif %}
-
-                    {%if ORGANIZ_CHART%}
-                        <td>{{ORGANIZ_CHART}}</td>
-                    {%else%}
-                        <td>{{NO_DATA}}</td>
-                    {%endif%}
-
-                </tr>
+                        {%if projectOne.ORGANIZ_CHART is defined and projectOne.ORGANIZ_CHART | length > 0%}
+                            <td>{{projectOne.ORGANIZ_CHART}}</td>
+                        {%else%}
+                            <td>{{NO_DATA}}</td>
+                        {%endif%}
+                    </tr>
+                {%endfor%}
             </tbody>
+
         </table>
     </body>
 </html>

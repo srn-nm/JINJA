@@ -1,0 +1,179 @@
+<html lang="fa">
+    <head>
+        <title>گزارش تضامین هر قرارداد</title>
+        <style>
+            table, td, th{
+                border: 1px solid;
+                border-collapse: collapse;
+            }
+            td, th {
+                padding: 10px;
+                text-align: center;
+                font-size: 12px;
+            }
+        </style>
+    </head>
+    <body>
+
+        {% macro amount_handler(value) %}
+            {% if value is defined and value | length > 0 and value[0] is defined %}
+                {% set item = value[0] %}
+                {% if item["IRR "] is defined %}
+                    {{ item["IRR "] }} ریال
+                {% elif item["USD"] is defined %}
+                    {{ item["USD"] }} دلار
+                {% elif item["GBP"] is defined %}
+                    {{ item["GBP"] }} پوند
+                {% elif item["EUR"] is defined %}
+                    {{ item["EUR"] }} یورو
+                {% elif item["currency"] == "IRR " %}
+                    {{ item["amount"] }} ریال
+                {% elif item["currency"] == "USD" %}
+                    {{ item["amount"] }} دلار
+                {% elif item["currency"] == "GBP" %}
+                    {{ item["amount"] }} پوند
+                {% elif item["currency"] == "EUR" %}
+                    {{ item["amount"] }} یورو
+                {% else %}
+                    {{ NO_DATA }}
+                {% endif %}
+            {% else %}
+                {{ NO_DATA }}
+            {% endif %}
+        {% endmacro %}
+
+
+        {% set NO_DATA = "<span style='font-size:12;color:gray;'>اطلاعات ناموجود</span>" %}
+
+        {% set ENUM_TYPE = [
+            {
+            "value": 0,
+            "label": "چک",
+            "sort": 1
+            },
+            {
+            "value": 1,
+            "label": "سفته",
+            "sort": 2
+            },
+            {
+            "value": 2,
+            "label": "ضمانت نامه بانکی",
+            "sort": 3
+            },
+            {
+            "value": 3,
+            "label": "سایر",
+            "sort": 4
+            }
+        ]%}
+
+        {% set ENUM_GROUP = [
+            {
+              "value": 0,
+              "label": "تعهدات",
+              "sort": 1
+            },
+            {
+              "value": 1,
+              "label": "پیش پرداخت",
+              "sort": 2
+            },
+            {
+              "value": 2,
+              "label": "آزاد سازی سپرده حسن انجام کار",
+              "sort": 3
+            },
+            {
+              "value": 3,
+              "label": "آزاد سازی سپرده بیمه",
+              "sort": 4
+            },
+            {
+              "value": 4,
+              "label": "سایر",
+              "sort": 5
+            }
+        ]%}
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th colspan="8">تضامین هر قرارداد</th>
+                </tr>
+
+                <tr>
+                    <th>شناسه</th>
+                    <th>نوع ضمانت نامه</th>
+                    <th>دسته بندی ضمانت نامه</th>
+                    <th>شماره منحصر به فرد</th>
+                    <th>تاریخ اعتبار نهایی</th>
+                    <th>ابطال ضمانت نامه</th>
+                    <th>مبلغ اولیه ضمانت نامه</th>
+                    <th>مبلغ نهایی ضمانت نامه</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    {%if GUARANT is defined and GUARANT | length > 0 and GUARANT[0] is defined  %}
+                        {%for guarantee in GUARANT%}
+
+                            <td>{{guarantee.id}}</td>
+
+                            {%if guarantee.TYPE%}
+                                <td>{{ENUM_TYPE[guarantee.TYPE[0]].label}}</td>
+                            {%else %}
+                                <td>{{NO_DATA}}</td>
+                            {%endif%}
+
+                            {%if guarantee.GROUP%}
+                                <td>{{ENUM_GROUP[guarantee.GROUP[0]].label}}</td>
+                            {%else %}
+                                <td>{{NO_DATA}}</td>
+                            {%endif%}
+
+                            {%if guarantee.UNIQUE_NO%}
+                                <td>{{guarantee.UNIQUE_NO}}</td>
+                            {%else%}
+                                <td>{{NO_DATA}}</td>
+                            {%endif%}
+
+                            {%if guarantee.FINAL_VALIDITY_DATE%}
+                                <td>{{guarantee.FINAL_VALIDITY_DATE | jalali}}</td>
+                            {%else%}
+                                <td>{{NO_DATA}}</td>
+                            {%endif%}
+
+                            {%if guarantee.EXPIRE%}
+                                <td>بله</td>
+                            {%else%}
+                                <td>خیر</td>
+                            {%endif%}
+
+                           
+                            {%if guarantee.PRIMARY_AMNT%}
+                                <td>{{amount_handler(guarantee.PRIMARY_AMNT)}}</td>
+                            {%else%}
+                                <td>{{NO_DATA}}</td>
+                            {%endif%}
+
+                            {%if guarantee.FINAL_AMNT%}
+                                <td>{{amount_handler(guarantee.FINAL_AMNT)}}</td>
+                            {%else%}
+                                <td>{{NO_DATA}}</td>
+                            {%endif%}
+
+                        {%endfor%}
+                    {%else%}
+                        <td colspan="8">{{NO_DATA}}</td>
+                    {%endif%}                  
+                </tr>
+            
+            </tbody>
+
+        </table>
+    </body>
+</html>

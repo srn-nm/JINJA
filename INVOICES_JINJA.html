@@ -9,7 +9,7 @@
             td, th {
                 padding: 10px;
                 text-align: center;
-              font-size: 12px;
+                font-size: 12px;
             }
         </style>
     </head>
@@ -71,19 +71,23 @@
         {%macro amount_handler(value)%}
             <amount_handler value="{{ value }}">
 
-            {%if value and value[0]%}
+            {%if value is defined and value and value[0] is defined%}
                 {%if value[0]["IRR "]%}
                     <td>{{value[0]["IRR "]}} ریال</td>
                 {%elif value[0]["USD"]%}
                     <td>{{value[0]["USD"]}} دلار</td>
-                {%elif value[0]["PS"]%}
-                    <td>{{value[0]["PS"]}} پوند</td>
+                {%elif value[0]["GBP"]%}
+                    <td>{{value[0]["GBP"]}} پوند</td>
+                {%elif value[0]["EUR"]%}
+                    <td>{{value[0]["GBP"]}} یورو</td>
                 {%elif value[0]["currency"] == "IRR "%}
                     <td>{{value[0]["amount"]}} ریال</td> 
                 {%elif value[0]["currency"] == "USD"%}
                     <td>{{value[0]["amount"]}} دلار</td>     
-                {%elif value[0]["currency"] == "PS"%}
-                    <td>{{value[0]["amount"]}} پوند</td>    
+                {%elif value[0]["currency"] == "GBP"%}
+                    <td>{{value[0]["amount"]}} پوند</td>
+                {%elif value[0]["currency"] == "EUR"%}
+                    <td>{{value[0]["amount"]}} یورو</td>    
                 {%else%}
                     <td>{{value[0]["IRR "]}} ریال</td>
                 {%endif%}
@@ -190,7 +194,6 @@
                 <tr> 
                     <th>ناخالص دوره کارکرد</th> 
                     <p>{{ amount_handler(FUNC_IMPURE) }}</p>
-        
                 </tr>
 
                 <tr> 
