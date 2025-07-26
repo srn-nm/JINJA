@@ -95,6 +95,7 @@
 
                 <tr style="background-color: #e9e6e6">
 
+           
                     <th>شناسه صورت وضعیت</th>
                     <th>نوع صورت وضعیت</th>
                     <th>آیا قطعی است؟</th>
@@ -122,8 +123,7 @@
 
             <tbody>
     
-                {%for contract in data%}
-                {%for invoice in contract.INVS%}
+                {%for invoice in INVS%}
                 <tr>
 
                     {%if invoice.id%}
@@ -191,7 +191,7 @@
                         <td>{{NO_DATA}}</td>
                     {%endif%}    
 
-                    {%if invoice.FUNC_IMPURE is defined and invoice.FUNC_IMPURE[0] is defined%}
+                    {%if invoice.FUNC_IMPURE is defined%}
                         <td>
                             <span style="direction: ltr; unicode-bidi: embed;">
                                 {{  "{:,}".format(invoice.FUNC_IMPURE[0]['amount'] | int ) }} {{currency_handler(invoice.FUNC_IMPURE[0]["currency"])}}
@@ -201,7 +201,7 @@
                         <td>{{NO_DATA}}</td>
                     {%endif%}
 
-                    {%if invoice.SUM_IMPURE is defined and invoice.SUM_IMPURE[0]  is defined%}
+                    {%if invoice.SUM_IMPURE is defined%}
                     <td>
                         <span style="direction: ltr; unicode-bidi: embed;">
                             {{  "{:,}".format(invoice.SUM_IMPURE[0]['amount'] | int ) }} {{currency_handler(invoice.SUM_IMPURE[0]["currency"])}}
@@ -211,7 +211,7 @@
                         <td>{{NO_DATA}}</td>
                     {%endif%}
 
-                    {%if invoice.AMNT_TAX is defined and invoice.AMNT_TAX[0] is defined%}
+                    {%if invoice.AMNT_TAX is defined%}
                     <td>
                         <span style="direction: ltr; unicode-bidi: embed;">
                             {{  "{:,}".format(invoice.AMNT_TAX[0]['amount'] | int ) }} {{currency_handler(invoice.AMNT_TAX[0]["currency"])}}
@@ -221,7 +221,7 @@
                         <td>{{NO_DATA}}</td>
                     {%endif%}
 
-                    {%if invoice.FUNC_PURE is defined and invoice.FUNC_PURE[0] is defined%}
+                    {%if invoice.FUNC_PURE is defined%}
                     <td>
                         <span style="direction: ltr; unicode-bidi: embed;">
                             {{  "{:,}".format(invoice.FUNC_PURE[0]['amount'] | int ) }} {{currency_handler(invoice.FUNC_PURE[0]["currency"])}}
@@ -231,7 +231,7 @@
                         <td>{{NO_DATA}}</td>
                     {%endif%}
 
-                    {%if invoice.PRCNT_TAX is defined and invoice.PRCNT_TAX[0] is defined%}
+                    {%if invoice.PRCNT_TAX is defined%}
                     <td>
                         <span style="direction: ltr; unicode-bidi: embed;">
                             {{  "{:,}".format(invoice.PRCNT_TAX[0]['amount'] | int ) }} {{currency_handler(invoice.PRCNT_TAX[0]["currency"])}}
@@ -241,7 +241,7 @@
                         <td>{{NO_DATA}}</td>
                     {%endif%}
 
-                    {%if invoice.PERFORM_DEDUC is defined and invoice.PERFORM_DEDUC[0] is defined%}
+                    {%if invoice.PERFORM_DEDUC is defined%}
                     <td>
                         <span style="direction: ltr; unicode-bidi: embed;">
                             {{  "{:,}".format(invoice.PERFORM_DEDUC[0]['amount'] | int ) }} {{currency_handler(invoice.PERFORM_DEDUC[0]["currency"])}}
@@ -251,7 +251,7 @@
                         <td>{{NO_DATA}}</td>
                     {%endif%}
 
-                    {%if invoice.OTHER_DEDUC is defined and invoice.OTHER_DEDUC[0] is defined%}
+                    {%if invoice.OTHER_DEDUC is defined%}
                     <td>
                         <span style="direction: ltr; unicode-bidi: embed;">
                             {{  "{:,}".format(invoice.OTHER_DEDUC[0]['amount'] | int ) }} {{currency_handler(invoice.OTHER_DEDUC[0]["currency"])}}
@@ -261,7 +261,7 @@
                         <td>{{NO_DATA}}</td>
                     {%endif%}
 
-                    {%if invoice.PREPAY_DEPREC is defined and invoice.PREPAY_DEPREC[0] is defined%}
+                    {%if invoice.PREPAY_DEPREC is defined%}
                     <td>
                         <span style="direction: ltr; unicode-bidi: embed;">
                             {{  "{:,}".format(invoice.PREPAY_DEPREC[0]['amount'] | int ) }} {{currency_handler(invoice.PREPAY_DEPREC[0]["currency"])}}
@@ -271,7 +271,7 @@
                         <td>{{NO_DATA}}</td>
                     {%endif%}
                     
-                    {%if invoice.SUM_CNFRMED_MNG is defined and invoice.SUM_CNFRMED_MNG[0] is defined%}
+                    {%if invoice.SUM_CNFRMED_MNG is defined%}
                     <td>
                         <span style="direction: ltr; unicode-bidi: embed;">
                             {{  "{:,}".format(invoice.SUM_CNFRMED_MNG[0]['amount'] | int ) }} {{currency_handler(invoice.SUM_CNFRMED_MNG[0]["currency"])}}
@@ -281,7 +281,7 @@
                         <td>{{NO_DATA}}</td>
                     {%endif%}
 
-                    {%if invoice.SUM_CNFRMED_EMPLYR is defined and invoice.SUM_CNFRMED_EMPLYR[0] is defined%}
+                    {%if invoice.SUM_CNFRMED_EMPLYR is defined%}
                     <td>
                         <span style="direction: ltr; unicode-bidi: embed;">
                             {{  "{:,}".format(invoice.SUM_CNFRMED_EMPLYR[0]['amount'] | int ) }} {{currency_handler(invoice.SUM_CNFRMED_EMPLYR[0]["currency"])}}
@@ -291,7 +291,7 @@
                         <td>{{NO_DATA}}</td>
                     {%endif%}
 
-                    {%if invoice.SUM_CNFRMED_CONSULT is defined and SUM_CNFRMED_CONSULT[0] is defined%}
+                    {%if invoice.SUM_CNFRMED_CONSULT is defined%}
                     <td>
                         <span style="direction: ltr; unicode-bidi: embed;">
                             {{  "{:,}".format(invoice.SUM_CNFRMED_CONSULT[0]['amount'] | int ) }} {{currency_handler(invoice.SUM_CNFRMED_CONSULT[0]["currency"])}}
@@ -303,7 +303,6 @@
                       
                 </tr>
 
-                {%endfor%}
                 {%endfor%}
 
                 <tr style = "background-color: #d6d2d2">

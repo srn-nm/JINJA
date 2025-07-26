@@ -1,0 +1,239 @@
+<html lang="fa">
+    <head>
+        <title>گزارش وضعیت هر قرارداد</title>
+        <style>
+            table, td, th{
+                border: 1px solid;
+                border-collapse: collapse;
+            }
+            td, th {
+                padding: 10px;
+                text-align: center;
+                font-size: 12px;
+            }
+        </style>
+    </head>
+    <body>
+
+        {% macro currency_handler(currency) %}
+            
+                {% if currency == "IRR " %}
+                    ریال
+                {% elif currency == "IRR" %}
+                    ریال
+                {% elif currency == "USD" %}
+                    دلار
+                {% elif currency == "GBP" %}
+                    پوند
+                {% elif currency == "EUR" %}
+                    یورو
+                {% else %}
+                    {{ NO_DATA }}
+                {% endif %}
+      
+        {% endmacro %}
+
+        {% set NO_DATA = "<span style='font-size:12;color:gray;'>اطلاعات ناموجود</span>" %}
+        
+        {%set ENUM_TYPE =  [
+            {
+              "value": 0,
+              "label": "اجرایی",
+              "sort": 1
+            },
+            {
+              "value": 1,
+              "label": "طراحی و مهندسی",
+              "sort": 2
+            },
+            {
+              "value": 2,
+              "label": "تدارکات/تامین کالا",
+              "sort": 3
+            },
+            {
+              "value": 3,
+              "label": "مشاوره ای",
+              "sort": 4
+            },
+            {
+              "value": 4,
+              "label": "انفورماتیک (IT)",
+              "sort": 5
+            },
+            {
+              "value": 5,
+              "label": "خدمات",
+              "sort": 6
+            },
+            {
+              "value": 6,
+              "label": "مشارکت و سرمایه گذاری",
+              "sort": 7
+            },
+            {
+              "value": 7,
+              "label": "ترکیبی یا جامع",
+              "sort": 8
+            },
+            {
+              "value": 8,
+              "label": "ماشین آلات",
+              "sort": 9
+            },
+            {
+              "value": 9,
+              "label": "املاک",
+              "sort": 10
+            },
+            {
+              "value": 10,
+              "label": "سایر",
+              "sort": 11
+            }
+        ]%}
+
+        {%set ENUM_CNCLU = [
+            {
+              "value": 3,
+              "label": "سایر",
+              "sort": 1
+            },
+            {
+              "value": 0,
+              "label": "تکمیل موضوع پیمان",
+              "sort": 2
+            },
+            {
+              "value": 1,
+              "label": "خاتمه از سوی کارفرما (ماده 48)",
+              "sort": 3
+            },
+            {
+              "value": 2,
+              "label": "فسخ از سوی کارفرما (ماده 46)",
+              "sort": 4
+            }
+        ]%}
+
+        {%set ENUM_STATE = [
+            {
+              "value": 0,
+              "label": "شروع نشده",
+              "sort": 1
+            },
+            {
+              "value": 1,
+              "label": "جاری",
+              "sort": 2
+            },
+            {
+              "value": 2,
+              "label": "تکمیل شده",
+              "sort": 3
+            },
+            {
+              "value": 3,
+              "label": "خاتمه داده شده",
+              "sort": 4
+            },
+            {
+              "value": 4,
+              "label": "فسخ شده",
+              "sort": 5
+            }
+        ]%}
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th colspan="22" style = "background-color: #d6d2d2"> وضعیت قرارداد {{id}} - {{TITLE}}</th>
+                </tr>
+
+                <tr style="background-color: #e9e6e6">
+                    <th>شناسه</th>
+                    <th>عنوان قرارداد</th>
+                    <th>نوع قرارداد</th>
+                    <th>مبنای اختتام قرارداد</th>
+                    <th>وضعیت قرارداد</th>
+                    <th>تاریخ شروع</th>
+                    <th>تاریخ پایان مدت اولیه قرارداد</th>
+                    <th>مدت دوره تضمین روز</th>
+                    <th>تاریخ خاتمه پیمان</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+
+                    {%if id%}
+                        <td>{{id}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+                    
+                    {%if TITLE%}
+                        <td>{{TITLE}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+
+                    {%if TYPE%}
+                        <td>{{ENUM_TYPE[TYPE[0]].label}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+
+                    {%if CNCLU%}
+                        <td>{{ENUM_CNCLU[CNCLU[0]].label}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+
+                    {%if STATE%}
+                        <td>{{ENUM_STATE[STATE[0]].label}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+
+                    {%if START_DATE%}
+                        <td>{{START_DATE | jalali}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+
+                    {%if INIT_END_DATE%}
+                        <td>{{INIT_END_DATE | jalali}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+
+                    {%if GUARANT_PERIOD%}
+                        <td>{{GUARANT_PERIOD | jalali}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}   
+
+                    {%if TERMINATE_DATE%}
+                        <td>{{TERMINATE_DATE | jalali}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+
+                    
+                </tr>
+                 
+
+                <tr style = "background-color: #d6d2d2">
+                    <!-- یه سری سام محاسباتی      -->
+                     <!-- اضافه شود -->
+                </tr>
+
+
+            </tbody>
+
+        </table>
+    </body>
+</html>

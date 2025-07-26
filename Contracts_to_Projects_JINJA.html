@@ -111,12 +111,12 @@
 
             <thead>
                 <tr>
-                    <th colspan="9">پروژه های قرارداد {{id}}</th>
+                    <th colspan="9" style = "background-color: #d6d2d2">پروژه های قرارداد {{id}} - {{TITLE}}</th>
                 </tr>
 
-                <tr>
-                    <th>شناسه</th>
-                    <th>نام</th> 
+                <tr style = "background-color: #e9e6e6">
+                    <th>شناسه پروژه</th>
+                    <th>نام پروژه</th> 
                     <th>تامین اعتبار</th>
                     <th>موقعیت عمومی پروژه</th>
                     <th>مسئول</th> 
@@ -129,54 +129,56 @@
 
             <tbody>
     
-                {%for projectOne in PROJECT%}
+                {%for contract in data%}
+                {%for projectOne in contract.PROJECT%}
                     <tr>
                         <td>{{projectOne.id}}</td>
 
                         <td>{{projectOne.NAME}}</td>
                 
-                        {%if projectOne.GET_CREDIT is defined and projectOne.GET_CREDIT | length > 0%}
+                        {%if projectOne.GET_CREDIT is defined and projectOne.GET_CREDIT is not none%}
                             <td>{{ENUM_GET_CREDIT[projectOne.GET_CREDIT[0]].label}}</td>
                         {%else%}
                             <td>{{NO_DATA}}</td>
                         {%endif%}
 
-                        {%if projectOne.LOC_EXECUT is defined and projectOne.LOC_EXECUT | length > 0%}
+                        {%if projectOne.LOC_EXECUT is defined and projectOne.LOC_EXECUT is not none%}
                             <td>{{ENUM_LOC_EXECUT[projectOne.LOC_EXECUT[0]].label}}</td>
                         {%else%}
                             <td>{{NO_DATA}}</td>
                         {%endif%}
 
-                        {%if projectOne.RESPONSIBLE is defined and projectOne.RESPONSIBLE | length > 0%}
-                            <td>{{projectOne.RESPONSIBLE}}</td>
+                        {%if SIDE and SIDE is not none%}
+                            <td>{{SIDE[0]["PERSON_NAME"]}}</td>
                         {%else%}
                             <td>{{NO_DATA}}</td>
                         {%endif%}
 
-                        {%if projectOne.ABBREVIATION is defined and projectOne.ABBREVIATION | length > 0%}
+                        {%if projectOne.ABBREVIATION and projectOne.ABBREVIATION is not none%}
                             <td>{{projectOne.ABBREVIATION}}</td>
                         {%else%}
                             <td>{{NO_DATA}}</td>
                         {%endif%}
 
-                        {%if projectOne.DOMAIN_EXECUT is defined and projectOne.DOMAIN_EXECUT | length > 0%}
+                        {%if projectOne.DOMAIN_EXECUT and projectOne.DOMAIN_EXECUT is not none%}
                             <td>{{ENUM_DOMAIN_EXECUT[projectOne.DOMAIN_EXECUT[0]].label}}</td>
                         {%else%}
                             <td>{{NO_DATA}}</td>
                         {%endif%}
 
-                        {% if projectOne.GEO_COORDINAT is defined and projectOne.GEO_COORDINAT | length > 0%}
+                        {% if projectOne.GEO_COORDINAT and projectOne.GEO_COORDINAT is not none%}
                                 <td>{{projectOne.GEO_COORDINAT | join(", ")}}</td>
                         {%else%}
                             <td>{{NO_DATA}}</td>    
                         {%endif%}
 
-                        {%if projectOne.ORGANIZ_CHART is defined and projectOne.ORGANIZ_CHART | length > 0%}
+                        {%if projectOne.ORGANIZ_CHART and projectOne.ORGANIZ_CHART is not none%}
                             <td>{{projectOne.ORGANIZ_CHART}}</td>
                         {%else%}
                             <td>{{NO_DATA}}</td>
                         {%endif%}
                     </tr>
+                {%endfor%}
                 {%endfor%}
             </tbody>
 

@@ -1,0 +1,653 @@
+<!-- az orije shoru nakonim -->
+
+<html lang="fa">
+    <head>
+        <title>گزارش قراردادهای پروژه {{NAME}}</title>
+        <style>
+            table, td, th{
+                border: 1px solid;
+                border-collapse: collapse;
+            }
+            td, th {
+                padding: 10px;
+                text-align: center;
+                font-size: 12px;
+            }
+        </style>
+    </head>
+    <body>
+
+        {% set NO_DATA = "<span style='font-size:12;color:gray;'>اطلاعات ناموجود </span>" %}
+        
+        {% macro amount_handler(value) %}
+            {% if value is defined and value | length > 0 and value[0] is defined %}
+                {% set item = value[0] %}
+                {% if item["IRR "] is defined %}
+                    {{ item["IRR "] }} ریال
+                {% elif item["USD"] is defined %}
+                    {{ item["USD"] }} دلار
+                {% elif item["GBP"] is defined %}
+                    {{ item["GBP"] }} پوند
+                {% elif item["EUR"] is defined %}
+                    {{ item["EUR"] }} یورو
+                {% elif item["currency"] == "IRR " %}
+                    {{ item["amount"] }} ریال
+                {% elif item["currency"] == "USD" %}
+                    {{ item["amount"] }} دلار
+                {% elif item["currency"] == "GBP" %}
+                    {{ item["amount"] }} پوند
+                {% elif item["currency"] == "EUR" %}
+                    {{ item["amount"] }} یورو
+                {% else %}
+                    {{ NO_DATA }}
+                {% endif %}
+            {% else %}
+                {{ NO_DATA }}
+            {% endif %}
+        {% endmacro %}
+
+        {% set Enum_NATURE= [
+            {
+              "value": 0,
+              "label": "درآمدی",
+              "sort": 1
+            },
+            {
+              "value": 1,
+              "label": "هزینه ای",
+              "sort": 2
+            }
+          ]
+        %}  
+      
+        {% set Enum_TYPE=  [
+            {
+              "value": 0,
+              "label": "اجرا",
+              "sort": 1
+            },
+            {
+              "value": 1,
+              "label": "طراحی و مهندسی",
+              "sort": 2
+            },
+            {
+              "value": 2,
+              "label": "تدارکات/تامین کالا",
+              "sort": 3
+            },
+            {
+              "value": 3,
+              "label": "مشاوره ای",
+              "sort": 4
+            },
+            {
+              "value": 4,
+              "label": "انفورماتیک (IT)",
+              "sort": 5
+            },
+            {
+              "value": 5,
+              "label": "خدمات",
+              "sort": 6
+            },
+            {
+              "value": 6,
+              "label": "مشارکت و سرمایه گذاری",
+              "sort": 7
+            },
+            {
+              "value": 7,
+              "label": "ترکیبی یا جامع",
+              "sort": 8
+            },
+            {
+              "value": 8,
+              "label": "قرارداد ماشین آلات",
+              "sort": 9
+            },
+            {
+              "value": 9,
+              "label": "املاک",
+              "sort": 10
+            },
+            {
+              "value": 10,
+              "label": "سایر",
+              "sort": 11
+            }
+          ]
+        %}
+
+        {%  set Enum_CATEGORY= [
+            {
+              "value": 0,
+              "label": "عملیات مقدماتی",
+              "sort": 1
+            },
+            {
+              "value": 1,
+              "label": "عملیات خاکی",
+              "sort": 2
+            },
+            {
+              "value": 2,
+              "label": "فونداسیون و پی سازی",
+              "sort": 3
+            },
+            {
+              "value": 3,
+              "label": "اسکلت سازه",
+              "sort": 4
+            },
+            {
+              "value": 4,
+              "label": "دیوارچینی و تیغه بندی",
+              "sort": 5
+            },
+            {
+              "value": 5,
+              "label": "نازک کاری",
+              "sort": 6
+            },
+            {
+              "value": 6,
+              "label": "تاسیسات مکانیکی",
+              "sort": 7
+            },
+            {
+              "value": 7,
+              "label": "تاسیسات برقی",
+              "sort": 8
+            },
+            {
+              "value": 8,
+              "label": "محوطه سازی و فضای سبز",
+              "sort": 9
+            },
+            {
+              "value": 9,
+              "label": "پایان کار و تحویل پروژه",
+              "sort": 10
+            },
+            {
+              "value": 10,
+              "label": "تامین مصالح و مواد اولیه",
+              "sort": 11
+            },
+            {
+              "value": 11,
+              "label": "خدمات پشتیبانی تدارکات",
+              "sort": 12
+            },
+            {
+              "value": 12,
+              "label": "خرید بین المللی",
+              "sort": 13
+            },
+            {
+              "value": 13,
+              "label": "مشاوره مهندسی",
+              "sort": 14
+            },
+            {
+              "value": 14,
+              "label": "مشاوره مدیریتی",
+              "sort": 15
+            },
+            {
+              "value": 15,
+              "label": "مشاوره حقوقی- مالی",
+              "sort": 16
+            },
+            {
+              "value": 16,
+              "label": "مشاوره زیست محیطی/ایمنی",
+              "sort": 17
+            },
+            {
+              "value": 17,
+              "label": "مشاوره منابع انسانی",
+              "sort": 18
+            },
+            {
+              "value": 18,
+              "label": "مشاوره بیمه",
+              "sort": 19
+            },
+            {
+              "value": 19,
+              "label": "طراحی و توسعه نرم افزار",
+              "sort": 20
+            },
+            {
+              "value": 20,
+              "label": "خرید و نصب تجهیزات سخت افزاری",
+              "sort": 21
+            },
+            {
+              "value": 21,
+              "label": "اجرای شبکه و دیتا سنتر",
+              "sort": 22
+            },
+            {
+              "value": 22,
+              "label": "پشتیبانی و آموزش",
+              "sort": 23
+            },
+            {
+              "value": 23,
+              "label": "مشاوره اطلاعات",
+              "sort": 24
+            },
+            {
+              "value": 24,
+              "label": "خدمات عمومی",
+              "sort": 25
+            },
+            {
+              "value": 25,
+              "label": "خدمات تخصصی",
+              "sort": 26
+            },
+            {
+              "value": 26,
+              "label": "BOT",
+              "sort": 27
+            },
+            {
+              "value": 27,
+              "label": "BOO",
+              "sort": 28
+            },
+            {
+              "value": 28,
+              "label": "BOOT",
+              "sort": 29
+            },
+            {
+              "value": 29,
+              "label": "DBFO",
+              "sort": 30
+            },
+            {
+              "value": 30,
+              "label": "EPC",
+              "sort": 31
+            },
+            {
+              "value": 31,
+              "label": "EPCF",
+              "sort": 32
+            },
+            {
+              "value": 32,
+              "label": "DB",
+              "sort": 33
+            },
+            {
+              "value": 33,
+              "label": "PC",
+              "sort": 34
+            },
+            {
+              "value": 34,
+              "label": "خرید",
+              "sort": 35
+            },
+            {
+              "value": 35,
+              "label": "اجاره",
+              "sort": 36
+            },
+            {
+              "value": 36,
+              "label": "اجاره به شرط تملک",
+              "sort": 37
+            },
+            {
+              "value": 37,
+              "label": "تعمیر و نگه داری",
+              "sort": 38
+            },
+            {
+              "value": 38,
+              "label": "بهره برداری",
+              "sort": 39
+            },
+            {
+              "value": 39,
+              "label": "خرید و فروش",
+              "sort": 40
+            },
+            {
+              "value": 40,
+              "label": "اجاره",
+              "sort": 41
+            },
+            {
+              "value": 41,
+              "label": "مشارکت در ساخت",
+              "sort": 42
+            },
+            {
+              "value": 42,
+              "label": "پیش فروش",
+              "sort": 43
+            },
+            {
+              "value": 43,
+              "label": "مدیریت بهره برداری",
+              "sort": 44
+            },
+            {
+              "value": 44,
+              "label": "رهن و اجاره به شرط تملک",
+              "sort": 45
+            },
+            {
+              "value": 45,
+              "label": "واگذاری حق بهره برداری",
+              "sort": 46
+            },
+            {
+              "value": 46,
+              "label": "خدمات مشاوره یا واسطه گری ملک",
+              "sort": 47
+            }
+          ] 
+        %}
+ 
+        {% set  Enum_STATE=[
+            {
+              "value": 0,
+              "label": "شروع نشده",
+              "sort": 1
+            },
+            {
+              "value": 1,
+              "label": "جاری",
+              "sort": 2
+            },
+            {
+              "value": 2,
+              "label": "تکمیل شده",
+              "sort": 3
+            },
+            {
+              "value": 3,
+              "label": "خاتمه داده شده",
+              "sort": 4
+            },
+            {
+              "value": 4,
+              "label": "فسخ شده",
+              "sort": 5
+            }
+          ]
+        %}
+    
+        {% set Enum_BASE_START_DATE =[
+            {
+              "value": 0,
+              "label": "تاریخ امضا",
+              "sort": 1
+            },
+            {
+              "value": 1,
+              "label": "تاریخ ابلاغ",
+              "sort": 2
+            },
+            {
+              "value": 2,
+              "label": "تاریخ تنفیذ",
+              "sort": 3
+            },
+            {
+              "value": 3,
+              "label": "تاریخ تحویل زمین",
+              "sort": 4
+            },
+            {
+              "value": 4,
+              "label": "سایر",
+              "sort": 5
+            }
+          ]
+        %}
+
+        {% set  Enum_CNCLU = [
+            {
+              "value": 3,
+              "label": "سایر",
+              "sort": 1
+            },
+            {
+              "value": 0,
+              "label": "تکمیل موضوع پیمان",
+              "sort": 2
+            },
+            {
+              "value": 1,
+              "label": "خاتمه از سوی کارفرما (ماده 48)",
+              "sort": 3
+            },
+            {
+              "value": 2,
+              "label": "فسخ از سوی کارفرما (ماده 46)",
+              "sort": 4
+            }
+          ]
+        %}
+    
+        {% set Enum_ADJ_TYPE =[
+            {
+              "value": 0,
+              "label": "بخشنامه رایج تعدیل (173073)",
+              "sort": 1
+            },
+            {
+              "value": 1,
+              "label": "بخشنامه مابه التفاوت ارز",
+              "sort": 2
+            },
+            {
+              "value": 2,
+              "label": "بخشنامه مابه التفاوت نرخ سیمان و آهن آلات ",
+              "sort": 3
+            },
+            {
+              "value": 3,
+              "label": "سایر",
+              "sort": 4
+            }
+          ]
+        %}
+   
+        {% set Enum_TYPE_Invoice= [
+            { "value": 1, "label": "صورت وضعیت کارکرد", "sort": 1 },
+            { "value": 2, "label": "تعدیل", "sort": 2 } ] 
+        %}
+
+        {% set enum_GUARANT_TYPE=[ 
+            { "value": 1, "label": "چک", "sort": 1 },
+            { "value": 2, "label": "سفته", "sort": 2 },
+            { "value": 3, "label": "ضمانت نامه بانکی", "sort": 3 }, 
+            { "value": 4, "label": "سایر", "sort": 4 } ] 
+        %}
+
+        {% set enum_AMEN_TYPE= [
+            { "value": 1, "label": "تغییر مدت", "sort": 1 },
+            { "value": 2, "label": "تغییر مبلغ قرارداد", "sort": 2 },
+            { "value": 3, "label": "تغییر طرف قرارداد", "sort": 3 },
+            { "value": 4, "label": "سایر", "sort": 4 } ] 
+        %}
+        
+        {% set Enum_Type_Invoice=[
+            { "value": 1, "label": "صورت وضعیت کارکرد", "sort": 1 },
+            { "value": 2, "label": "تعدیل", "sort": 2 } ] 
+        %} 
+        
+        <table>
+
+            <thead>
+                <tr>
+                    <th colspan="15" style = "background-color: #d6d2d2">گزارش قراردادهای پروژه {{NAME}}</th> 
+                </tr>
+
+                <tr style = "background-color: #e9e6e6"> 
+                    <th>شناسه قرارداد</th>
+                    <th>موضوع</th>
+                    <th>نوع قرارداد</th>
+                    <th>ماهیت قرارداد</th> 
+                    <th>دسته بندی قرارداد</th>
+                    <th>وضعیت</th>
+                    <th>شماره قرارداد</th>
+                    <th>طرف قرارداد</th>
+                    <th>تاریخ شروع</th>
+                    <th>تاریخ شروع مطابق</th>
+                    <th>مبلغ اولیه</th>
+                    <th>مبنای اختتام قرارداد</th>
+                    <th>تعدیل</th>
+                    <th>پیش پرداخت</th>
+                    <th>تعداد صورت وضعیت های تاییدی</th>
+
+                    <!--  <th>دسته بندی قرارداد</th>
+            
+                    <th>مدت اولیه قرارداد (روز)</th>
+                    <th>مدت(روز)</th> 
+                    <th>تاریخ شروع مطابق</th>
+                    <th>تاریخ تحویل زمین</th>
+                    <th>تاریخ سایر</th>
+                    <th>تاریخ امضا (مبادله)</th>
+                    <th>تاریخ ابلاغ</th>
+                    <th>شماره نامه ابلاغ</th>
+                    <th>تاریخ تنفیذ</th>
+                    <th>طرف</th>
+                    <th>شرکا</th>
+                    <th>توضیحات شراکت</th>
+                    <th>مشاور</th>
+                    <th>مدیر طرح</th>
+                
+                    <th>متمم/الحاقیه</th>
+
+                    <th>6تاریخ پایان مدت اولیه قرارداد</th> 
+                    <th>7درآمد/هزینه</th>
+                    <th>8نوع قرارداد</th>
+                    <th>9قرارداد</th> 
+                    <th>10وضعیت قرارداد</th>
+                    <th>11پیش پرداخت درصد</th> 
+                    <th>13تعداد</th> 
+                    <th>14درصد پیشرفت زمانی</th> 
+                    <th>15</th> 
+                    <th>16تضامین</th> 
+                    <th>17ضریب ارجاع</th> 
+                    <th>18ضریب پیمان</th> 
+                    -->
+                </tr>
+            </thead>
+
+            <tbody>
+                {%for contract in CONTR%}
+                    <tr>
+
+                        {%if CONTR | length < 1%} 
+                            <td colspan="15">{{NO_DATA}}</td> 
+                        {%endif%}
+                    
+                        {%if contract.id is defined%}
+                            <td>{{contract.id}}</td>
+                        {%else%}
+                            <td>{{NO_DATA}}</td>
+                        {%endif%}  
+
+                        {%if contract.SUBJECT is defined%}
+                            <td>{{contract.SUBJECT}}</td>
+                        {%else%}
+                            <td>{{NO_DATA}}</td>
+                        {%endif%}    
+
+                        {%if contract.TYPE is defined%}
+                            <td>{{Enum_TYPE[contract.TYPE[0]].label}}</td>
+                        {%else%}
+                            <td>{{NO_DATA}}</td>
+                        {%endif%}  
+
+                        {%if contract.NATURE is defined%}
+                            <td>{{Enum_NATURE[contract.NATURE[0]].label}}</td>
+                        {%else%}
+                            <td>{{NO_DATA}}</td>
+                        {%endif%} 
+
+                        {%if contract.CATEGORY is defined%}
+                            <td>{{Enum_CATEGORY[contract.CATEGORY[0]].label}}</td>
+                        {%else%}
+                            <td>{{NO_DATA}}</td>
+                        {%endif%}
+
+                        {%if contract.STATE is defined%}
+                            <td>{{Enum_STATE[contract.STATE[0]].label}}</td>
+                        {%else%}
+                            <td>{{NO_DATA}}</td>
+                        {%endif%}
+
+                        {%if contract.NO_CONTR%}
+                            <td>{{ contract.NO_CONTR }}</td>
+                        {%else%}
+                            <td>{{NO_DATA}}</td>
+                        {%endif%}
+
+                        {%if contract.SIDE is defined%}
+                            <td>{{contract.SIDE}}</td>
+                        {%else%}
+                            <td>{{NO_DATA}}</td>
+                        {%endif%}
+
+                        {%if contract.START_DATE is defined and contract.START_DATE is not none%}
+                            <td>{{contract.START_DATE}}</td>
+                        {%else%}
+                            <td>{{NO_DATA}}</td>
+                        {%endif%}
+
+                        {%if contract.BASE_START_DATE is defined and contract.BASE_START_DATE is not none%}
+                            <td>{{Enum_BASE_START_DATE[contract.BASE_START_DATE[0]].label}}</td>
+                        {%else%}
+                            <td>{{NO_DATA}}</td>
+                        {%endif%}
+
+                        {%if contract.FIRST_AMNT is defined%}
+                            <td>{{amount_handler(contract.FIRST_AMNT)}}</td>
+                        {%else%} 
+                            <td>{{NO_DATA}}</td>
+                        {%endif%}
+
+                        {%if contract.CNCLU is defined%}
+                            <td>{{Enum_CNCLU[contract.CNCLU[0]].label}}</td>
+                        {%else%}
+                            <td>{{NO_DATA}}</td>
+                        {%endif%}
+
+                        {%if contract.ADJ and contract.ADJ[0] and contract.ADJ[0].ADJ_YEAR%}
+                            <td>{{contract.ADJ[0].ADJ_YEAR}}</td>
+                        {%else%}
+                            <td>{{NO_DATA}}</td>
+                        {%endif%}
+
+                        {%if contract.PREPAY and contract.PREPAY[0] and contract.PREPAY[0].NO_INSTLL%}
+                            <td>{{contract.PREPAY[0].NO_INSTLL}}</td>
+                        {%else%}
+                            <td>{{NO_DATA}}</td>
+                        {%endif%}
+
+                        {%if contract.NO_INVS is defined%}
+                            <td>{{contract.NO_INVS}}</td>
+                        {%else%}
+                            <td>{{NO_DATA}}</td>
+                        {%endif%}
+                    </tr>
+
+                {%endfor%}
+            </tbody>
+        </table>
+    </body>
+</html>
