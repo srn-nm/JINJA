@@ -1,5 +1,5 @@
 {
-  "name": "CONTRACT",
+  "name": "CONTRACT_IT",
   "properties": {
     "ADJ": {
       "title": {
@@ -42,7 +42,7 @@
       "searchable": true,
       "sort": 210,
       "ref": {
-        "ref_id": 74,
+        "ref_id": 161,
         "deprecated": false,
         "ref_display": null,
         "ref_query": null
@@ -101,58 +101,23 @@
       "enum": [
         {
           "value": 0,
-          "label": "اجرایی",
+          "label": "تدارکات/تامین کالا",
           "sort": 1
         },
         {
           "value": 1,
-          "label": "طراحی و مهندسی",
+          "label": "مشاوره ای",
           "sort": 2
         },
         {
           "value": 2,
-          "label": "تدارکات/تامین کالا",
+          "label": "انفورماتیک (IT)",
           "sort": 3
         },
         {
           "value": 3,
-          "label": "مشاوره ای",
-          "sort": 4
-        },
-        {
-          "value": 4,
-          "label": "انفورماتیک (IT)",
-          "sort": 5
-        },
-        {
-          "value": 5,
           "label": "خدمات",
-          "sort": 6
-        },
-        {
-          "value": 6,
-          "label": "مشارکت و سرمایه گذاری",
-          "sort": 7
-        },
-        {
-          "value": 7,
-          "label": "ترکیبی یا جامع",
-          "sort": 8
-        },
-        {
-          "value": 8,
-          "label": "ماشین آلات",
-          "sort": 9
-        },
-        {
-          "value": 9,
-          "label": "املاک",
-          "sort": 10
-        },
-        {
-          "value": 10,
-          "label": "سایر",
-          "sort": 11
+          "sort": 4
         }
       ]
     },
@@ -482,7 +447,7 @@
       "searchable": false,
       "sort": 248,
       "ref": {
-        "ref_id": 158,
+        "ref_id": 162,
         "deprecated": false,
         "ref_display": null,
         "ref_query": null
@@ -565,238 +530,98 @@
       "enum": [
         {
           "value": 0,
-          "label": "عملیات مقدماتی",
+          "label": "پشتیبانی عمومی",
           "sort": 1
         },
         {
           "value": 1,
-          "label": "عملیات خاکی",
+          "label": "پشتیبانی تخصصی و آموزش",
           "sort": 2
         },
         {
           "value": 2,
-          "label": "فونداسیون و پی سازی",
+          "label": "توسعه و استقرار نرم افزار",
           "sort": 3
         },
         {
           "value": 3,
-          "label": "اسکلت سازه",
+          "label": "اجرای شبکه و دیتا سنتر",
           "sort": 4
         },
         {
           "value": 4,
-          "label": "دیوارچینی و تیغه بندی",
+          "label": "خرید و نصب تجهیزات سخت افزاری",
           "sort": 5
         },
         {
           "value": 5,
-          "label": "نازک کاری",
+          "label": "مشاوره",
           "sort": 6
         },
         {
           "value": 6,
-          "label": "تاسیسات مکانیکی",
+          "label": "سایر",
           "sort": 7
         },
         {
           "value": 7,
-          "label": "تاسیسات برقی",
+          "label": "خرید کالا و تجهیزات (مطابق سیستم سما)",
           "sort": 8
         },
         {
           "value": 8,
-          "label": "محوطه سازی و فضای سبز",
+          "label": "تامین مصالح و مواد اولیه (مطابق سیستم سما)",
           "sort": 9
         },
         {
           "value": 9,
-          "label": "پایان کار و تحویل پروژه",
+          "label": "خدمات پشتیبانی تدارکات",
           "sort": 10
         },
         {
           "value": 10,
-          "label": "تامین مصالح و مواد اولیه",
+          "label": "خرید بین المللی",
           "sort": 11
         },
         {
           "value": 11,
-          "label": "خدمات پشتیبانی تدارکات",
+          "label": "مشاوره مهندسی",
           "sort": 12
         },
         {
           "value": 12,
-          "label": "خرید بین المللی",
+          "label": "مشاوره مدیریتی",
           "sort": 13
         },
         {
           "value": 13,
-          "label": "مشاوره مهندسی",
+          "label": "مشاوره حقوقی- مالی",
           "sort": 14
         },
         {
           "value": 14,
-          "label": "مشاوره مدیریتی",
+          "label": "مشاوره زیست محیطی/ایمنی",
           "sort": 15
         },
         {
           "value": 15,
-          "label": "مشاوره حقوقی- مالی",
+          "label": "مشاوره منابع انسانی",
           "sort": 16
         },
         {
           "value": 16,
-          "label": "مشاوره زیست محیطی/ایمنی",
+          "label": "مشاوره بیمه",
           "sort": 17
         },
         {
           "value": 17,
-          "label": "مشاوره منابع انسانی",
+          "label": "خدمات عمومی",
           "sort": 18
         },
         {
           "value": 18,
-          "label": "مشاوره بیمه",
-          "sort": 19
-        },
-        {
-          "value": 19,
-          "label": "طراحی و توسعه نرم افزار",
-          "sort": 20
-        },
-        {
-          "value": 20,
-          "label": "خرید و نصب تجهیزات سخت افزاری",
-          "sort": 21
-        },
-        {
-          "value": 21,
-          "label": "اجرای شبکه و دیتا سنتر",
-          "sort": 22
-        },
-        {
-          "value": 22,
-          "label": "پشتیبانی و آموزش",
-          "sort": 23
-        },
-        {
-          "value": 23,
-          "label": "مشاوره اطلاعات",
-          "sort": 24
-        },
-        {
-          "value": 24,
-          "label": "خدمات عمومی",
-          "sort": 25
-        },
-        {
-          "value": 25,
           "label": "خدمات تخصصی",
-          "sort": 26
-        },
-        {
-          "value": 26,
-          "label": "BOT",
-          "sort": 27
-        },
-        {
-          "value": 27,
-          "label": "BOO",
-          "sort": 28
-        },
-        {
-          "value": 28,
-          "label": "BOOT",
-          "sort": 29
-        },
-        {
-          "value": 29,
-          "label": "DBFO",
-          "sort": 30
-        },
-        {
-          "value": 30,
-          "label": "EPC",
-          "sort": 31
-        },
-        {
-          "value": 31,
-          "label": "EPCF",
-          "sort": 32
-        },
-        {
-          "value": 32,
-          "label": "DB",
-          "sort": 33
-        },
-        {
-          "value": 33,
-          "label": "PC",
-          "sort": 34
-        },
-        {
-          "value": 34,
-          "label": "خرید",
-          "sort": 35
-        },
-        {
-          "value": 35,
-          "label": "اجاره",
-          "sort": 36
-        },
-        {
-          "value": 36,
-          "label": "اجاره به شرط تملک",
-          "sort": 37
-        },
-        {
-          "value": 37,
-          "label": "تعمیر و نگه داری",
-          "sort": 38
-        },
-        {
-          "value": 38,
-          "label": "بهره برداری",
-          "sort": 39
-        },
-        {
-          "value": 39,
-          "label": "خرید و فروش",
-          "sort": 40
-        },
-        {
-          "value": 40,
-          "label": "اجاره",
-          "sort": 41
-        },
-        {
-          "value": 41,
-          "label": "مشارکت در ساخت",
-          "sort": 42
-        },
-        {
-          "value": 42,
-          "label": "پیش فروش",
-          "sort": 43
-        },
-        {
-          "value": 43,
-          "label": "مدیریت بهره برداری",
-          "sort": 44
-        },
-        {
-          "value": 44,
-          "label": "رهن و اجاره به شرط تملک",
-          "sort": 45
-        },
-        {
-          "value": 45,
-          "label": "واگذاری حق بهره برداری",
-          "sort": 46
-        },
-        {
-          "value": 46,
-          "label": "خدمات مشاوره یا واسطه گری ملک",
-          "sort": 47
+          "sort": 19
         }
       ]
     },
@@ -826,32 +651,6 @@
       "max": 1,
       "enum": null
     },
-    "MNG_NAME": {
-      "title": {
-        "fa": "مدیر طرح",
-        "en": null
-      },
-      "help": null,
-      "default": null,
-      "base_type": "array",
-      "editable": true,
-      "required": false,
-      "primary": false,
-      "calculated": false,
-      "searchable": false,
-      "sort": 205,
-      "ref": {
-        "ref_id": 46,
-        "deprecated": false,
-        "ref_display": null,
-        "ref_query": null
-      },
-      "group": "افراد مرتبط با قرارداد",
-      "ui_type": "select",
-      "min": 1,
-      "max": 1,
-      "enum": null
-    },
     "NO_CONTR": {
       "title": {
         "fa": "شماره قرارداد",
@@ -872,32 +671,6 @@
       "min": 1,
       "max": 20,
       "pattern": null
-    },
-    "PROPERTY": {
-      "title": {
-        "fa": "مدیریت املاک ",
-        "en": null
-      },
-      "help": null,
-      "default": null,
-      "base_type": "array",
-      "editable": false,
-      "required": false,
-      "primary": false,
-      "calculated": false,
-      "searchable": false,
-      "sort": 70,
-      "ref": {
-        "ref_id": 130,
-        "deprecated": false,
-        "ref_display": null,
-        "ref_query": null
-      },
-      "group": "مشخصات",
-      "ui_type": "select",
-      "min": 1,
-      "max": 1,
-      "enum": null
     },
     "INSURANCE": {
       "title": {
@@ -1101,27 +874,6 @@
       "max": 1,
       "pattern": null
     },
-    "REFER_COEF": {
-      "title": {
-        "fa": "ضریب ارجاع",
-        "en": null
-      },
-      "help": null,
-      "default": null,
-      "base_type": "number",
-      "editable": true,
-      "required": false,
-      "primary": false,
-      "calculated": false,
-      "searchable": false,
-      "sort": 160,
-      "ref": null,
-      "group": "کنترل قرارداد",
-      "ui_type": "percent",
-      "precision": 0,
-      "min": 1,
-      "max": 1
-    },
     "START_DATE": {
       "title": {
         "fa": "تاریخ شروع",
@@ -1130,7 +882,7 @@
       "help": null,
       "default": {
         "type": "expression",
-        "expression": "$fromMillis(( BASE_START_DATE[0]=0 ? $toMillis(SIGN_DATE)  : (BASE_START_DATE[0]= 1 ? $toMillis(NOTIF_DATE)  : (BASE_START_DATE[0]= 2 ?  $toMillis(ENFORCED_DATE)  : (BASE_START_DATE[0]= 3 ?  $toMillis(SITEDELIVERDATE) : undefined ) ) ) ) )",
+        "expression": "$fromMillis(( BASE_START_DATE[0]=0 ? $toMillis(SIGN_DATE)  : (BASE_START_DATE[0]= 1 ? $toMillis(NOTIF_DATE)  : (BASE_START_DATE[0]= 2 ?  $toMillis(ENFORCED_DATE)  : undefined ) ) ) ) )",
         "parser": "jNata"
       },
       "base_type": "str",
@@ -1155,10 +907,10 @@
       "help": null,
       "default": {
         "type": "expression",
-        "expression": "FIRST_AMNT[0] +  ( $count(ADD_AMEN)=0 ? 0 : $sum(ADD_AMEN[AMNT !=null].AMNT))",
+        "expression": "FIRST_AMNT[0].amount +  ( $count(ADD_AMEN[0].amount)=0 ? 0 : $sum(ADD_AMEN[AMNT !=null].AMNT[0].amount))",
         "parser": "jNata"
       },
-      "base_type": "array",
+      "base_type": "number",
       "editable": false,
       "required": true,
       "primary": true,
@@ -1167,10 +919,10 @@
       "sort": 65,
       "ref": null,
       "group": "مشخصات",
-      "ui_type": "money",
+      "ui_type": "digit",
+      "precision": 0,
       "min": 1,
-      "max": 3,
-      "enum": null
+      "max": 3
     },
     "PARTNR_NAME": {
       "title": {
@@ -1194,31 +946,6 @@
       },
       "group": "افراد مرتبط با قرارداد",
       "ui_type": "select",
-      "min": 1,
-      "max": 3,
-      "enum": null
-    },
-    "PREPAY_AMNT": {
-      "title": {
-        "fa": "مبلغ پیش پرداخت",
-        "en": null
-      },
-      "help": null,
-      "default": {
-        "type": "expression",
-        "expression": "FIRST_AMNT[0]*PREPAY_PRCNT",
-        "parser": "jNata"
-      },
-      "base_type": "array",
-      "editable": true,
-      "required": false,
-      "primary": false,
-      "calculated": true,
-      "searchable": false,
-      "sort": 145,
-      "ref": null,
-      "group": "کنترل قرارداد",
-      "ui_type": "money",
       "min": 1,
       "max": 3,
       "enum": null
@@ -1320,7 +1047,7 @@
       "help": null,
       "default": {
         "type": "expression",
-        "expression": "((INVS^(INVS.UNTIL_FUNC_DATE)[-1].SUM_CNFRMED_EMPLYR[0])/TOTAL_AMNT[0])*100",
+        "expression": "((INVS^(INVS.UNTIL_FUNC_DATE)[-1].SUM_CNFRMED_EMPLYR[0].amount)/TOTAL_AMNT[0].amount)*100",
         "parser": "jNata"
       },
       "base_type": "number",
@@ -1333,27 +1060,6 @@
       "ref": null,
       "group": "کنترل قرارداد",
       "ui_type": "progress",
-      "precision": 0,
-      "min": 1,
-      "max": 1
-    },
-    "UP_HEAD_COEF": {
-      "title": {
-        "fa": "ضریب بالاسری",
-        "en": null
-      },
-      "help": null,
-      "default": null,
-      "base_type": "number",
-      "editable": true,
-      "required": false,
-      "primary": false,
-      "calculated": false,
-      "searchable": false,
-      "sort": 152,
-      "ref": null,
-      "group": "کنترل قرارداد",
-      "ui_type": "percent",
       "precision": 0,
       "min": 1,
       "max": 1
@@ -1387,7 +1093,7 @@
       "help": null,
       "default": {
         "type": "expression",
-        "expression": "$fromMillis( (PRIMARY_DUR*86400000) + ( BASE_START_DATE[0]=0 ? $toMillis(SIGN_DATE)  : (BASE_START_DATE[0]= 1 ? $toMillis(NOTIF_DATE)  : (BASE_START_DATE[0]= 2 ?  $toMillis(ENFORCED_DATE)  : (BASE_START_DATE[0]= 3 ?  $toMillis(SITEDELIVERDATE) : undefined ) ) ) ))",
+        "expression": "$fromMillis( (PRIMARY_DUR*86400000) + ( BASE_START_DATE[0]=0 ? $toMillis(SIGN_DATE)  : (BASE_START_DATE[0]= 1 ? $toMillis(NOTIF_DATE)  : (BASE_START_DATE[0]= 2 ?  $toMillis(ENFORCED_DATE)   : undefined ) ) ) ))",
         "parser": "jNata"
       },
       "base_type": "str",
@@ -1419,7 +1125,7 @@
       "searchable": false,
       "sort": 20,
       "ref": null,
-      "group": "تاریخ",
+      "group": "کنترل قرارداد",
       "ui_type": "digit",
       "precision": 0,
       "min": 1,
@@ -1572,13 +1278,8 @@
         },
         {
           "value": 3,
-          "label": "تاریخ تحویل زمین",
-          "sort": 4
-        },
-        {
-          "value": 4,
           "label": "سایر",
-          "sort": 5
+          "sort": 4
         }
       ]
     },
@@ -1606,27 +1307,6 @@
       "precision": 0,
       "min": 1,
       "max": 1000000
-    },
-    "SITEDELIVERDATE": {
-      "title": {
-        "fa": "تاریخ تحویل زمین",
-        "en": null
-      },
-      "help": null,
-      "default": null,
-      "base_type": "str",
-      "editable": true,
-      "required": false,
-      "primary": false,
-      "calculated": false,
-      "searchable": false,
-      "sort": 105,
-      "ref": null,
-      "group": "تاریخ",
-      "ui_type": "date",
-      "min": 1,
-      "max": 1,
-      "pattern": null
     },
     "INSR_STTLE_FORCED": {
       "title": {
@@ -1656,12 +1336,12 @@
       "base_type": "number",
       "editable": false,
       "required": false,
-      "primary": false,
+      "primary": true,
       "calculated": false,
       "searchable": false,
       "sort": 212,
       "ref": null,
-      "group": "صورت وضعیت/پرداخت",
+      "group": "کنترل قرارداد",
       "ui_type": "digit",
       "precision": 0,
       "min": 1,
@@ -1675,10 +1355,10 @@
       "help": null,
       "default": {
         "type": "expression",
-        "expression": "INVS^(INVS.UNTIL_FUNC_DATE)[-1].SUM_CNFRMED_EMPLYR[0]",
+        "expression": "INVS^(INVS.UNTIL_FUNC_DATE)[-1].SUM_CNFRMED_EMPLYR[0].amount",
         "parser": "jNata"
       },
-      "base_type": "array",
+      "base_type": "number",
       "editable": false,
       "required": false,
       "primary": false,
@@ -1687,10 +1367,10 @@
       "sort": 245,
       "ref": null,
       "group": "صورت وضعیت/پرداخت",
-      "ui_type": "money",
+      "ui_type": "digit",
+      "precision": 0,
       "min": 1,
-      "max": 3,
-      "enum": null
+      "max": 3
     },
     "CNFRMED_INVS_PRCNT": {
       "title": {
@@ -1716,6 +1396,27 @@
       "precision": 0,
       "min": 1,
       "max": 1
+    },
+    "INVS_CNFM_DEADLINE": {
+      "title": {
+        "fa": "مهلت تایید صورت وضعیت (روز)",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "number",
+      "editable": false,
+      "required": false,
+      "primary": true,
+      "calculated": false,
+      "searchable": false,
+      "sort": 211,
+      "ref": null,
+      "group": "کنترل قرارداد",
+      "ui_type": "digit",
+      "precision": 0,
+      "min": 1,
+      "max": 1000000
     },
     "PRCNT_PERFORM_BOND": {
       "title": {
@@ -1746,10 +1447,10 @@
       "help": null,
       "default": {
         "type": "expression",
-        "expression": "INVS^(INVS.UNTIL_FUNC_DATE)[-1].SUM_IMPURE[0]",
+        "expression": "INVS^(INVS.UNTIL_FUNC_DATE)[-1].SUM_IMPURE[0].amount",
         "parser": "jNata"
       },
-      "base_type": "array",
+      "base_type": "number",
       "editable": false,
       "required": false,
       "primary": false,
@@ -1758,13 +1459,13 @@
       "sort": 235,
       "ref": null,
       "group": "صورت وضعیت/پرداخت",
-      "ui_type": "money",
+      "ui_type": "digit",
+      "precision": 0,
       "min": 1,
-      "max": 3,
-      "enum": null
+      "max": 3
     }
   },
-  "description": "قرارداد",
+  "description": "قرارداد انفورماتیک",
   "meta": {
     "apps": [
       "contract"
@@ -1773,5 +1474,5 @@
     "displayField": "TITLE & '_' & NO_CONTR",
     "recursive": false
   },
-  "id": 51
+  "id": 160
 }

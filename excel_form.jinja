@@ -1,0 +1,186 @@
+<html lang="fa">
+<head>
+    <title>فرم</title>
+    <style>
+        body {
+            direction: rtl;
+            padding: 40px;
+            background-color: white;
+        }
+        table {
+            width: 100%;
+            max-width: 1000px;
+            border-collapse: collapse;
+            border: 2px solid #444;
+            background-color: #fdfdfd;
+        }
+        td, th {
+            border: 1px solid #444;
+      
+        }
+        td, th {
+            padding: 14px;
+            text-align: right;
+            font-size: 13px;
+            vertical-align: middle;
+        }
+        th {
+            text-align: center;
+            font-size: 20px;
+        }
+        td, th {
+            width: 500px; 
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+        hr {
+            display: block;
+            height: 1px;
+            border: 0;
+            border-top: 1px solid #807c7c;
+            width: 50%;
+        }
+
+    </style>
+</head>
+<body>
+
+    {% set NO_DATA = "<span style='font-size:12;color:gray;'>اطلاعات ناموجود</span>" %}
+
+    {% macro currency_handler(currency) %}
+            
+                {% if currency == "IRR " %}
+                    ریال
+                {% elif currency == "IRR" %}
+                    ریال
+                {% elif currency == "USD" %}
+                    دلار
+                {% elif currency == "GBP" %}
+                    پوند
+                {% elif currency == "EUR" %}
+                    یورو
+                {% else %}
+                    {{ NO_DATA }}
+                {% endif %}
+      
+        {% endmacro %}
+
+        {%set ENUM_TYPE = [
+            {
+              "value": 0,
+              "label": "تدارکات/تامین کالا",
+              "sort": 1
+            },
+            {
+              "value": 1,
+              "label": "مشاوره ای",
+              "sort": 2
+            },
+            {
+              "value": 2,
+              "label": "انفورماتیک (IT)",
+              "sort": 3
+            },
+            {
+              "value": 3,
+              "label": "خدمات",
+              "sort": 4
+            }
+        ]%}
+
+    <table>
+        <thead>
+            <th colspan="2" style="background-color: white">نام شرکت</th>
+            <tr>
+                <td>شماره قرارداد: {{data[0].NO_CONTR}}</td>
+                <td>تاریخ شروع قرارداد: {{data[0].START_DATE | jalali}}</td>
+            </tr>
+            <tr>
+                <td>کارفرما: {{data[0].SIDE[0].PERSON_NAME}}</td>
+                <td>مدت کل قرارداد(روز): {{data[0].TOTAL_DUR}}</td>
+            </tr>
+            <tr>
+                <td>موضوع قرارداد: {{data[0].SUBJECT}}</td>
+                <td>نوع قرارداد: {%if data[0].TYPE%}
+                        {{ENUM_TYPE[data[0].TYPE[0]].label}}
+                    {%else %}
+                        {{NO_DATA}}
+                    {%endif%}
+                </td>
+            </tr>
+            <tr>
+                <td>مبلغ اولیه قرارداد(ریال): {{data[0].FIRST_AMNT[0]['amount'] | int | money }} {{currency_handler(data[0].FIRST_AMNT[0]["currency"])}}</td>
+                <td>درصد پیشرفت ریالی(بااحتساب این صورت وضعیت) : 
+                    {%if data[0] and data[0].PROG_FINANCE and data[0].PROG_FINANCE is not none%}
+                        {{data[0].PROG_FINANCE}}
+                    {%else%}
+                        {{NO_DATA}}
+                    {%endif%}
+                </td>
+            </tr>
+            <tr></tr>
+            <tr>
+                <td colspan="2" style="background-color: white;">مبلغ ناخالص تایید نشده تا صورت وضعیت دوره قبل(ریال):</td>
+            </tr>
+            <tr>
+                <td colspan="2" style="background-color: white;">مبلغ ناخالص تایید شده تا صورت وضعیت دوره قبل(ریال):</td>
+            </tr>
+            <tr>
+                <td style="line-height:2.5;">
+                    مبلغ ناخالص صورت وضعیت (ریال): <br>
+                    کسورات (ریال): <br>
+                    اضافات (ریال): <br>
+                    مبلغ ناخالص نهایی صورت وضعیت این دوره (ریال):
+                </td>
+
+                <td style="line-height:2.5; border-right-style: hidden;">
+                    <br>
+                    <br>
+                    <br>
+                    <hr/>
+                    <br>
+                </td>
+            </tr>
+            <tr>
+                <td style="background-color: white;">مبلغ ناخالص تجمعی صورت وضعیت‌های صادر شده تاکنون (ریال):</td>
+                <td style="background-color: white;  border-right-style: hidden;">
+                    {%if data[0] and data[0].TOTAL_INV_CNFRMED[0] and data[0].TOTAL_INV_CNFRMED[0]['amount']%}
+                        {{data[0].TOTAL_INV_CNFRMED[0]['amount'] | int | money }} {{currency_handler(data[0].TOTAL_INV_CNFRMED[0]["currency"])}}<br>
+                    {%else%}
+                        {{NO_DATA}}
+                    {%endif%}
+                </td>
+            </tr>
+            <tr>
+                <td style="line-height:2.5;">
+                    مبلغ ناخالص تایید شده صورت وضعیت این دوره (ریال): <br>
+                    مبلغ ناخالص تجمعی تایید شده صورت وضعیت‌های صادر شده تاکنون (ریال):
+                </td>
+                <td style="line-height:2.5; border-right-style: hidden;">
+                    <br>
+                    {%if data[0] and data[0].TOTAL_INV_CNFRMED[0] and data[0].TOTAL_INV_CNFRMED[0]['amount']%}
+                        {{data[0].TOTAL_INV_CNFRMED[0]['amount'] | int | money }} {{currency_handler(data[0].TOTAL_INV_CNFRMED[0]["currency"])}}<br>
+                    {%else%}
+                        {{NO_DATA}}
+                    {%endif%}
+
+                </td>
+            </tr>
+            <tr>
+                <td style="background-color: white">تهیه کننده(پیمانکار):<br><br><br></td>
+                <td style="background-color: white">تایید کننده(کارفرما):<br><br><br></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="font-size:11px; font-weight:normal; text-align:center;">
+                    لطفا  نسخه دوم / اسکن / کپی این برگه را پس از تایید برای شرکت فناوری اطلاعات کیسون ارسال نمایید.
+                </td>
+            </tr>
+        </thead>
+
+        <tbody>
+          
+        </tbody>
+    </table>
+
+</body>
+</html>

@@ -90,7 +90,7 @@
 
             <thead>
                 <tr>
-                    <th colspan="22" style = "background-color: #d6d2d2">صورت وضعیت های قرارداد {{id}} - {{TITLE}}</th>
+                    <th colspan="22" style = "background-color: #d6d2d2">صورت وضعیت های قرارداد</th>
                 </tr>
 
                 <tr style="background-color: #e9e6e6">
@@ -193,110 +193,88 @@
 
                     {%if invoice.FUNC_IMPURE is defined and invoice.FUNC_IMPURE[0] is defined%}
                         <td>
-                            <span style="direction: ltr; unicode-bidi: embed;">
-                                {{  "{:,}".format(invoice.FUNC_IMPURE[0]['amount'] | int ) }} {{currency_handler(invoice.FUNC_IMPURE[0]["currency"])}}
-                            </span>     
+                                {{invoice.FUNC_IMPURE[0]['amount'] | int | money }} {{currency_handler(invoice.FUNC_IMPURE[0]["currency"])}}
                         </td>
                     {%else%} 
                         <td>{{NO_DATA}}</td>
                     {%endif%}
 
                     {%if invoice.SUM_IMPURE is defined and invoice.SUM_IMPURE[0]  is defined%}
-                    <td>
-                        <span style="direction: ltr; unicode-bidi: embed;">
-                            {{  "{:,}".format(invoice.SUM_IMPURE[0]['amount'] | int ) }} {{currency_handler(invoice.SUM_IMPURE[0]["currency"])}}
-                        </span>     
-                    </td>
+                        <td>
+                            {{invoice.SUM_IMPURE[0]['amount'] | int | money }} {{currency_handler(invoice.SUM_IMPURE[0]["currency"])}}
+                        </td>
                     {%else%}
                         <td>{{NO_DATA}}</td>
                     {%endif%}
 
                     {%if invoice.AMNT_TAX is defined and invoice.AMNT_TAX[0] is defined%}
-                    <td>
-                        <span style="direction: ltr; unicode-bidi: embed;">
-                            {{  "{:,}".format(invoice.AMNT_TAX[0]['amount'] | int ) }} {{currency_handler(invoice.AMNT_TAX[0]["currency"])}}
-                        </span>     
-                    </td>
+                        <td>
+                            {{invoice.AMNT_TAX[0]['amount'] | int | money }} {{currency_handler(invoice.AMNT_TAX[0]["currency"])}}
+                        </td>
                     {%else%} 
                         <td>{{NO_DATA}}</td>
                     {%endif%}
 
                     {%if invoice.FUNC_PURE is defined and invoice.FUNC_PURE[0] is defined%}
-                    <td>
-                        <span style="direction: ltr; unicode-bidi: embed;">
-                            {{  "{:,}".format(invoice.FUNC_PURE[0]['amount'] | int ) }} {{currency_handler(invoice.FUNC_PURE[0]["currency"])}}
-                        </span>     
-                    </td>
+                        <td>
+                            {{invoice.FUNC_PURE[0]['amount'] | int | money}} {{currency_handler(invoice.FUNC_PURE[0]["currency"])}}   
+                        </td>
                     {%else%} 
                         <td>{{NO_DATA}}</td>
                     {%endif%}
 
                     {%if invoice.PRCNT_TAX is defined and invoice.PRCNT_TAX[0] is defined%}
-                    <td>
-                        <span style="direction: ltr; unicode-bidi: embed;">
-                            {{  "{:,}".format(invoice.PRCNT_TAX[0]['amount'] | int ) }} {{currency_handler(invoice.PRCNT_TAX[0]["currency"])}}
-                        </span>     
-                    </td>
+                        <td>
+                            {{invoice.PRCNT_TAX[0]['amount'] | int | money }} {{currency_handler(invoice.PRCNT_TAX[0]["currency"])}}
+                        </td>
                     {%else%} 
                         <td>{{NO_DATA}}</td>
                     {%endif%}
 
                     {%if invoice.PERFORM_DEDUC is defined and invoice.PERFORM_DEDUC[0] is defined%}
-                    <td>
-                        <span style="direction: ltr; unicode-bidi: embed;">
-                            {{  "{:,}".format(invoice.PERFORM_DEDUC[0]['amount'] | int ) }} {{currency_handler(invoice.PERFORM_DEDUC[0]["currency"])}}
-                        </span>     
-                    </td>
+                        <td>
+                            {{invoice.PERFORM_DEDUC[0]['amount'] | int | money }} {{currency_handler(invoice.PERFORM_DEDUC[0]["currency"])}}
+                        </td>
                     {%else%} 
                         <td>{{NO_DATA}}</td>
                     {%endif%}
 
                     {%if invoice.OTHER_DEDUC is defined and invoice.OTHER_DEDUC[0] is defined%}
-                    <td>
-                        <span style="direction: ltr; unicode-bidi: embed;">
-                            {{  "{:,}".format(invoice.OTHER_DEDUC[0]['amount'] | int ) }} {{currency_handler(invoice.OTHER_DEDUC[0]["currency"])}}
-                        </span>     
-                    </td>
+                        <td>
+                            {{invoice.OTHER_DEDUC[0]['amount'] | int | money }} {{currency_handler(invoice.OTHER_DEDUC[0]["currency"])}}
+                        </td>
                     {%else%} 
                         <td>{{NO_DATA}}</td>
                     {%endif%}
 
                     {%if invoice.PREPAY_DEPREC is defined and invoice.PREPAY_DEPREC[0] is defined%}
-                    <td>
-                        <span style="direction: ltr; unicode-bidi: embed;">
-                            {{  "{:,}".format(invoice.PREPAY_DEPREC[0]['amount'] | int ) }} {{currency_handler(invoice.PREPAY_DEPREC[0]["currency"])}}
-                        </span>     
-                    </td>
+                        <td>
+                            {{invoice.PREPAY_DEPREC[0]['amount'] | int | money }} {{currency_handler(invoice.PREPAY_DEPREC[0]["currency"])}}
+                        </td>
                     {%else%} 
                         <td>{{NO_DATA}}</td>
                     {%endif%}
                     
                     {%if invoice.SUM_CNFRMED_MNG is defined and invoice.SUM_CNFRMED_MNG[0] is defined%}
-                    <td>
-                        <span style="direction: ltr; unicode-bidi: embed;">
-                            {{  "{:,}".format(invoice.SUM_CNFRMED_MNG[0]['amount'] | int ) }} {{currency_handler(invoice.SUM_CNFRMED_MNG[0]["currency"])}}
-                        </span>     
-                    </td>
+                        <td>
+                            {{invoice.SUM_CNFRMED_MNG[0]['amount'] | int | money }} {{currency_handler(invoice.SUM_CNFRMED_MNG[0]["currency"])}}
+                        </td>
                     {%else%} 
                         <td>{{NO_DATA}}</td>
                     {%endif%}
 
                     {%if invoice.SUM_CNFRMED_EMPLYR is defined and invoice.SUM_CNFRMED_EMPLYR[0] is defined%}
-                    <td>
-                        <span style="direction: ltr; unicode-bidi: embed;">
-                            {{  "{:,}".format(invoice.SUM_CNFRMED_EMPLYR[0]['amount'] | int ) }} {{currency_handler(invoice.SUM_CNFRMED_EMPLYR[0]["currency"])}}
-                        </span>     
-                    </td>
+                        <td>
+                            {{invoice.SUM_CNFRMED_EMPLYR[0]['amount'] | int | money  }} {{currency_handler(invoice.SUM_CNFRMED_EMPLYR[0]["currency"])}}
+                        </td>
                     {%else%} 
                         <td>{{NO_DATA}}</td>
                     {%endif%}
 
                     {%if invoice.SUM_CNFRMED_CONSULT is defined and SUM_CNFRMED_CONSULT[0] is defined%}
-                    <td>
-                        <span style="direction: ltr; unicode-bidi: embed;">
-                            {{  "{:,}".format(invoice.SUM_CNFRMED_CONSULT[0]['amount'] | int ) }} {{currency_handler(invoice.SUM_CNFRMED_CONSULT[0]["currency"])}}
-                        </span>     
-                    </td>
+                        <td>
+                            {{invoice.SUM_CNFRMED_CONSULT[0]['amount'] | int | money }} {{currency_handler(invoice.SUM_CNFRMED_CONSULT[0]["currency"])}}
+                        </td>
                     {%else%} 
                         <td>{{NO_DATA}}</td>
                     {%endif%}
@@ -309,8 +287,10 @@
                 <tr style = "background-color: #d6d2d2">
                     <td style="text-align: right"> مجموع:</td>
                     <td colspan="9"></td>
-                
-                    {% set sum_amounts = INVS
+
+                    {% set sum_amounts = data 
+                        | map(attribute="INVS")
+                        | sum(start=[])
                         | selectattr('FUNC_IMPURE', 'defined')
                         | map(attribute='FUNC_IMPURE')
                         | selectattr('0', 'defined')
@@ -318,12 +298,12 @@
                         | selectattr('amount', 'defined')
                         | map(attribute='amount') %}
                         <td>
-                            <span style="direction: ltr; unicode-bidi: embed;">
-                                {{  "{:,}".format(sum_amounts | sum | int ) }} ریال
-                            </span>     
+                            {{sum_amounts | sum | int | money }} ریال
                         </td>
-                    
-                    {% set sum_amounts = INVS
+
+                    {% set sum_amounts = data 
+                        | map(attribute="INVS")
+                        | sum(start=[])
                         | selectattr('SUM_IMPURE', 'defined')
                         | map(attribute='SUM_IMPURE')
                         | selectattr('0', 'defined')
@@ -331,12 +311,12 @@
                         | selectattr('amount', 'defined')
                         | map(attribute='amount') %}
                         <td>
-                            <span style="direction: ltr; unicode-bidi: embed;">
-                                {{  "{:,}".format(sum_amounts | sum | int ) }} ریال
-                            </span>     
+                            {{sum_amounts | sum | int | money }} ریال
                         </td>
 
-                    {% set sum_amounts = INVS
+                    {% set sum_amounts = data 
+                        | map(attribute="INVS")
+                        | sum(start=[])
                         | selectattr('AMNT_TAX', 'defined')
                         | map(attribute='AMNT_TAX')
                         | selectattr('0', 'defined')
@@ -344,12 +324,12 @@
                         | selectattr('amount', 'defined')
                         | map(attribute='amount') %}
                         <td>
-                            <span style="direction: ltr; unicode-bidi: embed;">
-                                {{  "{:,}".format(sum_amounts | sum | int ) }} ریال
-                            </span>     
+                            {{sum_amounts | sum | int | money }} ریال
                         </td>
 
-                    {% set sum_amounts = INVS
+                    {% set sum_amounts = data 
+                        | map(attribute="INVS")
+                        | sum(start=[])
                         | selectattr('FUNC_PURE', 'defined')
                         | map(attribute='FUNC_PURE')
                         | selectattr('0', 'defined')
@@ -357,14 +337,14 @@
                         | selectattr('amount', 'defined')
                         | map(attribute='amount') %}
                         <td>
-                            <span style="direction: ltr; unicode-bidi: embed;">
-                                {{  "{:,}".format(sum_amounts | sum | int ) }} ریال
-                            </span>     
+                            {{sum_amounts | sum | int | money }} ریال
                         </td>
 
                     <td> -- </td>
 
-                    {% set sum_amounts = INVS
+                    {% set sum_amounts = data 
+                        | map(attribute="INVS")
+                        | sum(start=[])
                         | selectattr('PERFORM_DEDUC', 'defined')
                         | map(attribute='PERFORM_DEDUC')
                         | selectattr('0', 'defined')
@@ -372,12 +352,12 @@
                         | selectattr('amount', 'defined')
                         | map(attribute='amount') %}
                         <td>
-                            <span style="direction: ltr; unicode-bidi: embed;">
-                                {{  "{:,}".format(sum_amounts | sum | int ) }} ریال
-                            </span>     
+                            {{sum_amounts | sum | int | money }} ریال
                         </td>
 
-                    {% set sum_amounts = INVS
+                    {% set sum_amounts = data 
+                        | map(attribute="INVS")
+                        | sum(start=[])
                         | selectattr('OTHER_DEDUC', 'defined')
                         | map(attribute='OTHER_DEDUC')
                         | selectattr('0', 'defined')
@@ -385,12 +365,12 @@
                         | selectattr('amount', 'defined')
                         | map(attribute='amount') %}
                         <td>
-                            <span style="direction: ltr; unicode-bidi: embed;">
-                                {{  "{:,}".format(sum_amounts | sum | int ) }} ریال
-                            </span>     
+                            {{sum_amounts | sum | int | money }} ریال
                         </td>
 
-                    {% set sum_amounts = INVS
+                    {% set sum_amounts = data 
+                        | map(attribute="INVS")
+                        | sum(start=[])
                         | selectattr('PREPAY_DEPREC', 'defined')
                         | map(attribute='PREPAY_DEPREC')
                         | selectattr('0', 'defined')
@@ -398,12 +378,12 @@
                         | selectattr('amount', 'defined')
                         | map(attribute='amount') %}
                         <td>
-                            <span style="direction: ltr; unicode-bidi: embed;">
-                                {{  "{:,}".format(sum_amounts | sum | int ) }} ریال
-                            </span>     
+                            {{sum_amounts | sum | int | money }} ریال
                         </td>
 
-                    {% set sum_amounts = INVS
+                    {% set sum_amounts = data 
+                        | map(attribute="INVS")
+                        | sum(start=[])
                         | selectattr('SUM_CNFRMED_MNG', 'defined')
                         | map(attribute='SUM_CNFRMED_MNG')
                         | selectattr('0', 'defined')
@@ -411,12 +391,12 @@
                         | selectattr('amount', 'defined')
                         | map(attribute='amount') %}
                         <td>
-                            <span style="direction: ltr; unicode-bidi: embed;">
-                                {{  "{:,}".format(sum_amounts | sum | int ) }} ریال
-                            </span>     
+                            {{sum_amounts | sum | int | money }} ریال
                         </td>
 
-                    {% set sum_amounts = INVS
+                    {% set sum_amounts = data 
+                        | map(attribute="INVS")
+                        | sum(start=[])
                         | selectattr('SUM_CNFRMED_EMPLYR', 'defined')
                         | map(attribute='SUM_CNFRMED_EMPLYR')
                         | selectattr('0', 'defined')
@@ -424,12 +404,12 @@
                         | selectattr('amount', 'defined')
                         | map(attribute='amount') %}
                         <td>
-                            <span style="direction: ltr; unicode-bidi: embed;">
-                                {{  "{:,}".format(sum_amounts | sum | int ) }} ریال
-                            </span>     
+                            {{sum_amounts | sum | int | money }} ریال
                         </td>
 
-                    {% set sum_amounts = INVS
+                    {% set sum_amounts = data 
+                        | map(attribute="INVS")
+                        | sum(start=[])
                         | selectattr('SUM_CNFRMED_CONSULT', 'defined')
                         | map(attribute='SUM_CNFRMED_CONSULT')
                         | selectattr('0', 'defined')
@@ -437,9 +417,7 @@
                         | selectattr('amount', 'defined')
                         | map(attribute='amount') %}
                         <td>
-                            <span style="direction: ltr; unicode-bidi: embed;">
-                                {{  "{:,}".format(sum_amounts | sum | int ) }} ریال
-                            </span>     
+                            {{sum_amounts | sum | int | money }} ریال
                         </td>
 
                 </tr>

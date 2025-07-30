@@ -118,9 +118,11 @@
             <tbody>
 
                 <tr>
-                    {%if GUARANT is defined and GUARANT | length > 0 and GUARANT[0] is defined  %}
-                        {%for contract in data %}
-                        {%for guarantee in contract.GUARANT%}
+                    
+                    {%for contract in data %}
+                    {%for guarantee in contract.GUARANT%}
+
+                        {%if GUARANT is defined and GUARANT | length > 0 and GUARANT[0] is defined  %}
 
                             <td>{{guarantee.id}}</td>
 
@@ -167,11 +169,13 @@
                                 <td>{{NO_DATA}}</td>
                             {%endif%}
 
-                        {%endfor%}
-                        {%endfor%}
-                    {%else%}
-                        <td colspan="8">{{NO_DATA}}</td>
-                    {%endif%}                  
+                        
+                        {%else%}
+                            <td colspan="8">{{NO_DATA}}</td>
+                        {%endif%}     
+                    
+                    {%endfor%}
+                    {%endfor%}
                 </tr>
             
             </tbody>

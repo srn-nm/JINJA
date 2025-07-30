@@ -15,24 +15,6 @@
     </head>
     <body>
 
-        {% macro currency_handler(currency) %}
-            
-                {% if currency == "IRR " %}
-                    ریال
-                {% elif currency == "IRR" %}
-                    ریال
-                {% elif currency == "USD" %}
-                    دلار
-                {% elif currency == "GBP" %}
-                    پوند
-                {% elif currency == "EUR" %}
-                    یورو
-                {% else %}
-                    {{ NO_DATA }}
-                {% endif %}
-      
-        {% endmacro %}
-
         {% set NO_DATA = "<span style='font-size:12;color:gray;'>اطلاعات ناموجود</span>" %}
         
         {%set ENUM_TYPE =  [
@@ -148,90 +130,90 @@
 
             <thead>
                 <tr>
-                    <th colspan="22" style = "background-color: #d6d2d2"> وضعیت قرارداد {{id}} - {{TITLE}}</th>
+                    <th colspan="20" style = "background-color: #d6d2d2"> وضعیت قرارداد</th>
                 </tr>
 
                 <tr style="background-color: #e9e6e6">
                     <th>شناسه</th>
                     <th>عنوان قرارداد</th>
                     <th>نوع قرارداد</th>
-                    <th>مبنای اختتام قرارداد</th>
                     <th>وضعیت قرارداد</th>
                     <th>تاریخ شروع</th>
                     <th>تاریخ پایان مدت اولیه قرارداد</th>
-                    <th>مدت دوره تضمین روز</th>
-                    <th>تاریخ خاتمه پیمان</th>
+                    <th>مدت اولیه قرارداد (روز)</th>
+                    <th>مدت کل قرارداد با احتساب متمم/الحاقی</th>
+
                 </tr>
             </thead>
-
             <tbody>
 
+              {%for item in data%}
+
                 <tr>
-
-                    {%if id%}
-                        <td>{{id}}</td>
+                    {%if item.id%}
+                        <td>{{item.id}}</td>
                     {%else%}
                         <td>{{NO_DATA}}</td>
                     {%endif%}
                     
-                    {%if TITLE%}
-                        <td>{{TITLE}}</td>
+                    {%if item.TITLE%}
+                        <td>{{item.TITLE}}</td>
                     {%else%}
                         <td>{{NO_DATA}}</td>
                     {%endif%}
 
-                    {%if TYPE%}
-                        <td>{{ENUM_TYPE[TYPE[0]].label}}</td>
+                    {%if item.TYPE%}
+                        <td>{{ENUM_TYPE[item.TYPE[0]].label}}</td>
                     {%else%}
                         <td>{{NO_DATA}}</td>
                     {%endif%}
 
-                    {%if CNCLU%}
-                        <td>{{ENUM_CNCLU[CNCLU[0]].label}}</td>
+                    {%if item.STATE%}
+                        <td>{{ENUM_STATE[item.STATE[0]].label}}</td>
                     {%else%}
                         <td>{{NO_DATA}}</td>
                     {%endif%}
 
-                    {%if STATE%}
-                        <td>{{ENUM_STATE[STATE[0]].label}}</td>
+                    {%if item.START_DATE%}
+                        <td>{{item.START_DATE | jalali}}</td>
                     {%else%}
                         <td>{{NO_DATA}}</td>
                     {%endif%}
 
-                    {%if START_DATE%}
-                        <td>{{START_DATE | jalali}}</td>
+                    {%if item.INIT_END_DATE%}
+                        <td>{{item.INIT_END_DATE | jalali}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+                    
+                    {%if item.PRIMARY_DUR%}
+                        <td>{{item.PRIMARY_DUR}}</td>
                     {%else%}
                         <td>{{NO_DATA}}</td>
                     {%endif%}
 
-                    {%if INIT_END_DATE%}
-                        <td>{{INIT_END_DATE | jalali}}</td>
+                    {%if item.TOTAL_DUR%}
+                        <td>{{item.TOTAL_DUR}}</td>
                     {%else%}
                         <td>{{NO_DATA}}</td>
                     {%endif%}
 
-                    {%if GUARANT_PERIOD%}
-                        <td>{{GUARANT_PERIOD | jalali}}</td>
+                    {%if (now() > datetime.strptime(item.INIT_END_DATE, '%Y-%m-%d %H:%M:%S.%f').strftime('%m/%d/%Y') )%} 
+                        <td style="color: green">به پایان رسیده</td> 
                     {%else%}
-                        <td>{{NO_DATA}}</td>
-                    {%endif%}   
-
-                    {%if TERMINATE_DATE%}
-                        <td>{{TERMINATE_DATE | jalali}}</td>
-                    {%else%}
-                        <td>{{NO_DATA}}</td>
+                        <td style="color red">به پایان نرسیده</td>
                     {%endif%}
-
                     
                 </tr>
-                 
-
+                
                 <tr style = "background-color: #d6d2d2">
+                  <td colspan="20"></td>
                     <!-- یه سری سام محاسباتی      -->
-                     <!-- اضافه شود -->
+                    <!-- اضافه شود -->
                 </tr>
 
-
+              {%endfor%}
+              
             </tbody>
 
         </table>
