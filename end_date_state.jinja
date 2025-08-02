@@ -1,6 +1,6 @@
 <html lang="fa">
     <head>
-        <title>گزارش وضعیت هر قرارداد</title>
+        <title>گزارش وضعیت پایان هر قرارداد</title>
         <style>
             table, td, th{
                 border: 1px solid;
@@ -129,8 +129,9 @@
         <table>
 
             <thead>
+
                 <tr>
-                    <th colspan="20" style = "background-color: #d6d2d2"> وضعیت قرارداد</th>
+                    <th colspan="20" style = "background-color: #d6d2d2">وضعیت قرارداد</th>
                 </tr>
 
                 <tr style="background-color: #e9e6e6">
@@ -142,12 +143,17 @@
                     <th>تاریخ پایان مدت اولیه قرارداد</th>
                     <th>مدت اولیه قرارداد (روز)</th>
                     <th>مدت کل قرارداد با احتساب متمم/الحاقی</th>
+                    <th>وضعیت اتمام زمان قرارداد</th>
 
                 </tr>
+
             </thead>
+
             <tbody>
 
               {%for item in data%}
+
+              {# {%if (item.state[0] == 0 or item.state[0] == 1) and (now() > datetime.strptime(item.INIT_END_DATE, '%Y-%m-%d %H:%M:%S.%f').strftime('%m/%d/%Y')) %} #}
 
                 <tr>
                     {%if item.id%}
@@ -198,19 +204,19 @@
                         <td>{{NO_DATA}}</td>
                     {%endif%}
 
-                    {%if (now() > datetime.strptime(item.INIT_END_DATE, '%Y-%m-%d %H:%M:%S.%f').strftime('%m/%d/%Y') )%} 
-                        <td style="color: green">به پایان رسیده</td> 
+                    {%if (now() > datetime.strptime(item.START_DATE + add_days(item.TOTAL_DUR), '%Y-%m-%d %H:%M:%S.%f').strftime('%m/%d/%Y'))%} 
+                        <td style="color: green">زمان به پایان نرسیده</td> 
                     {%else%}
-                        <td style="color red">به پایان نرسیده</td>
+                        <td style="color red">زمان به پایان رسیده</td>
                     {%endif%}
-                    
                 </tr>
                 
                 <tr style = "background-color: #d6d2d2">
                   <td colspan="20"></td>
-                    <!-- یه سری سام محاسباتی      -->
-                    <!-- اضافه شود -->
+                    {#یه سری سام محاسباتی اضافه شود #}
                 </tr>
+
+              {# {%endif%} #}
 
               {%endfor%}
               

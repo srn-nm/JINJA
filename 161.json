@@ -1,0 +1,888 @@
+{
+  "name": "INVOICE_IT",
+  "properties": {
+    "NUM": {
+      "title": {
+        "fa": "شماره صورت وضعیت",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "str",
+      "editable": true,
+      "required": true,
+      "primary": true,
+      "calculated": false,
+      "searchable": true,
+      "sort": 10,
+      "ref": null,
+      "group": "مشخصات",
+      "ui_type": "text",
+      "min": 1,
+      "max": 20,
+      "pattern": null
+    },
+    "TYPE": {
+      "title": {
+        "fa": "نوع صورت وضعیت",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "array",
+      "editable": true,
+      "required": true,
+      "primary": true,
+      "calculated": false,
+      "searchable": true,
+      "sort": 5,
+      "ref": null,
+      "group": "مشخصات",
+      "ui_type": "select",
+      "min": 1,
+      "max": 1,
+      "enum": [
+        {
+          "value": 0,
+          "label": "کارکرد",
+          "sort": 1
+        },
+        {
+          "value": 1,
+          "label": "تعدیل",
+          "sort": 2
+        },
+        {
+          "value": 2,
+          "label": "مابه التفاوت نرخ ارز",
+          "sort": 3
+        },
+        {
+          "value": 3,
+          "label": "ماموریت",
+          "sort": 4
+        },
+        {
+          "value": 4,
+          "label": "پاداش",
+          "sort": 5
+        },
+        {
+          "value": 5,
+          "label": "پیش پرداخت",
+          "sort": 6
+        },
+        {
+          "value": 6,
+          "label": "سایر",
+          "sort": 7
+        }
+      ]
+    },
+    "DESCR": {
+      "title": {
+        "fa": "توضیحات",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "str",
+      "editable": true,
+      "required": false,
+      "primary": false,
+      "calculated": false,
+      "searchable": false,
+      "sort": 45,
+      "ref": null,
+      "group": "مشخصات",
+      "ui_type": "text",
+      "min": 1,
+      "max": 100,
+      "pattern": null
+    },
+    "FINAL": {
+      "title": {
+        "fa": "قطعی",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "bool",
+      "editable": true,
+      "required": false,
+      "primary": false,
+      "calculated": false,
+      "searchable": false,
+      "sort": 26,
+      "ref": null,
+      "group": "مشخصات",
+      "ui_type": "checkbox"
+    },
+    "OTHER": {
+      "title": {
+        "fa": "سایر پیوستها",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "str",
+      "editable": true,
+      "required": false,
+      "primary": false,
+      "calculated": false,
+      "searchable": false,
+      "sort": 146,
+      "ref": null,
+      "group": "مشخصات",
+      "ui_type": "url",
+      "min": 1,
+      "max": 1,
+      "pattern": null
+    },
+    "ATTACH": {
+      "title": {
+        "fa": "پیوست",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "str",
+      "editable": true,
+      "required": false,
+      "primary": false,
+      "calculated": false,
+      "searchable": false,
+      "sort": 50,
+      "ref": null,
+      "group": "مشخصات",
+      "ui_type": "url",
+      "min": 1,
+      "max": 1,
+      "pattern": null
+    },
+    "FACTOR": {
+      "title": {
+        "fa": "فاکتور",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "array",
+      "editable": true,
+      "required": false,
+      "primary": false,
+      "calculated": false,
+      "searchable": false,
+      "sort": 220,
+      "ref": {
+        "ref_id": 159,
+        "deprecated": false,
+        "ref_display": null,
+        "ref_query": null
+      },
+      "group": "مبالغ/کسورات",
+      "ui_type": "select",
+      "min": 1,
+      "max": 1,
+      "enum": null
+    },
+    "OLD_ID": {
+      "title": {
+        "fa": "شناسه قدیمی",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "str",
+      "editable": true,
+      "required": false,
+      "primary": false,
+      "calculated": false,
+      "searchable": false,
+      "sort": 1,
+      "ref": null,
+      "group": "مشخصات",
+      "ui_type": "text",
+      "min": 1,
+      "max": 30,
+      "pattern": null
+    },
+    "STATUS": {
+      "title": {
+        "fa": "وضعیت",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "array",
+      "editable": true,
+      "required": false,
+      "primary": false,
+      "calculated": false,
+      "searchable": false,
+      "sort": 27,
+      "ref": null,
+      "group": "مشخصات",
+      "ui_type": "select",
+      "min": 1,
+      "max": 1,
+      "enum": [
+        {
+          "value": 0,
+          "label": "خاتمه داده شده",
+          "sort": 1
+        },
+        {
+          "value": 1,
+          "label": "فسخ شده",
+          "sort": 2
+        },
+        {
+          "value": 2,
+          "label": "تکمیل شده",
+          "sort": 3
+        }
+      ]
+    },
+    "AMNT_TAX": {
+      "title": {
+        "fa": "مبلغ مالیات بر ارزش افزوده",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "array",
+      "editable": true,
+      "required": false,
+      "primary": false,
+      "calculated": false,
+      "searchable": false,
+      "sort": 200,
+      "ref": null,
+      "group": "مبالغ/کسورات",
+      "ui_type": "money",
+      "min": 1,
+      "max": 1,
+      "enum": null
+    },
+    "FUNC_PURE": {
+      "title": {
+        "fa": "مبلغ خالص دوره کارکرد",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "array",
+      "editable": true,
+      "required": false,
+      "primary": true,
+      "calculated": false,
+      "searchable": true,
+      "sort": 215,
+      "ref": null,
+      "group": "مبالغ/کسورات",
+      "ui_type": "money",
+      "min": 1,
+      "max": 1,
+      "enum": null
+    },
+    "PRCNT_TAX": {
+      "title": {
+        "fa": "درصد مالیات بر ارزش افزوده",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "number",
+      "editable": true,
+      "required": false,
+      "primary": false,
+      "calculated": false,
+      "searchable": false,
+      "sort": 195,
+      "ref": null,
+      "group": "مبالغ/کسورات",
+      "ui_type": "percent",
+      "precision": 0,
+      "min": 1,
+      "max": 1
+    },
+    "SUM_IMPURE": {
+      "title": {
+        "fa": "مبلغ ارسالی پیمانکار (تجمعی)",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "array",
+      "editable": true,
+      "required": true,
+      "primary": false,
+      "calculated": false,
+      "searchable": false,
+      "sort": 65,
+      "ref": null,
+      "group": "ارسالی پیمانکار",
+      "ui_type": "money",
+      "min": 1,
+      "max": 3,
+      "enum": null
+    },
+    "FUNC_IMPURE": {
+      "title": {
+        "fa": "ناخالص دوره کارکرد تاییدی",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "array",
+      "editable": true,
+      "required": true,
+      "primary": true,
+      "calculated": false,
+      "searchable": true,
+      "sort": 42,
+      "ref": null,
+      "group": "مشخصات",
+      "ui_type": "money",
+      "min": 1,
+      "max": 3,
+      "enum": null
+    },
+    "OTHER_DEDUC": {
+      "title": {
+        "fa": "کسورات سایر",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "array",
+      "editable": true,
+      "required": false,
+      "primary": false,
+      "calculated": false,
+      "searchable": false,
+      "sort": 210,
+      "ref": null,
+      "group": "مبالغ/کسورات",
+      "ui_type": "money",
+      "min": 1,
+      "max": 3,
+      "enum": null
+    },
+    "TECH_CONSUL": {
+      "title": {
+        "fa": "شماره نامه  تاییدی مشاور ",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "str",
+      "editable": true,
+      "required": false,
+      "primary": false,
+      "calculated": false,
+      "searchable": false,
+      "sort": 95,
+      "ref": null,
+      "group": "تاییدی مشاور",
+      "ui_type": "text",
+      "min": 1,
+      "max": 20,
+      "pattern": null
+    },
+    "PERFORM_DEDUC": {
+      "title": {
+        "fa": " حسن انجام کار",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "array",
+      "editable": true,
+      "required": false,
+      "primary": false,
+      "calculated": false,
+      "searchable": false,
+      "sort": 180,
+      "ref": null,
+      "group": "مبالغ/کسورات",
+      "ui_type": "money",
+      "min": 1,
+      "max": 3,
+      "enum": null
+    },
+    "PREPAY_DEPREC": {
+      "title": {
+        "fa": "مبلغ استهلاک پیش پرداخت",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "array",
+      "editable": true,
+      "required": false,
+      "primary": false,
+      "calculated": false,
+      "searchable": false,
+      "sort": 185,
+      "ref": null,
+      "group": "مبالغ/کسورات",
+      "ui_type": "money",
+      "min": 1,
+      "max": 3,
+      "enum": null
+    },
+    "CNFRMED_CONSULT": {
+      "title": {
+        "fa": "پیوست صورت وضعیت تاییدی مشاور",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "str",
+      "editable": true,
+      "required": false,
+      "primary": false,
+      "calculated": false,
+      "searchable": false,
+      "sort": 110,
+      "ref": null,
+      "group": "تاییدی مشاور",
+      "ui_type": "url",
+      "min": 1,
+      "max": 1,
+      "pattern": null
+    },
+    "NO_CORR_CNFRMED": {
+      "title": {
+        "fa": "شماره نامه تاییدی کارفرما",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "str",
+      "editable": true,
+      "required": false,
+      "primary": false,
+      "calculated": false,
+      "searchable": false,
+      "sort": 155,
+      "ref": null,
+      "group": "تاییدی کارفرما",
+      "ui_type": "text",
+      "min": 1,
+      "max": 20,
+      "pattern": null
+    },
+    "OTHER_DEDUC_DES": {
+      "title": {
+        "fa": "توضیحات کسورات سایر",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "str",
+      "editable": true,
+      "required": false,
+      "primary": false,
+      "calculated": false,
+      "searchable": false,
+      "sort": 211,
+      "ref": null,
+      "group": "مبالغ/کسورات",
+      "ui_type": "text",
+      "min": 1,
+      "max": 50,
+      "pattern": null
+    },
+    "UNTIL_FUNC_DATE": {
+      "title": {
+        "fa": "تاریخ کارکرد تا",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "str",
+      "editable": true,
+      "required": true,
+      "primary": true,
+      "calculated": false,
+      "searchable": true,
+      "sort": 25,
+      "ref": null,
+      "group": "مشخصات",
+      "ui_type": "date",
+      "min": 1,
+      "max": 1,
+      "pattern": null
+    },
+    "DATE_SENT_EMPLYR": {
+      "title": {
+        "fa": "تاریخ ارسال به کارفرما",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "str",
+      "editable": true,
+      "required": false,
+      "primary": false,
+      "calculated": false,
+      "searchable": false,
+      "sort": 140,
+      "ref": null,
+      "group": "تاییدی کارفرما",
+      "ui_type": "date",
+      "min": 1,
+      "max": 1,
+      "pattern": null
+    },
+    "DATE_SENT_CONSULT": {
+      "title": {
+        "fa": "تاریخ ارسال به مشاور",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "str",
+      "editable": true,
+      "required": false,
+      "primary": false,
+      "calculated": false,
+      "searchable": false,
+      "sort": 80,
+      "ref": null,
+      "group": "تاییدی مشاور",
+      "ui_type": "date",
+      "min": 1,
+      "max": 1,
+      "pattern": null
+    },
+    "DRECT_TAX_CONSULT": {
+      "title": {
+        "fa": "مالیات مستقیم مشاور حقیقی",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "array",
+      "editable": true,
+      "required": false,
+      "primary": false,
+      "calculated": false,
+      "searchable": false,
+      "sort": 205,
+      "ref": null,
+      "group": "مبالغ/کسورات",
+      "ui_type": "money",
+      "min": 1,
+      "max": 3,
+      "enum": null
+    },
+    "SUM_PREPAY_DEPREC": {
+      "title": {
+        "fa": "تجمعی مبلغ استهلاک پیش پرداخت",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "array",
+      "editable": true,
+      "required": false,
+      "primary": false,
+      "calculated": false,
+      "searchable": false,
+      "sort": 190,
+      "ref": null,
+      "group": "مبالغ/کسورات",
+      "ui_type": "money",
+      "min": 1,
+      "max": 3,
+      "enum": null
+    },
+    "CNFRMED_CONTRACTOR": {
+      "title": {
+        "fa": "پیوست صورت وضعیت تاییدی کارفرما",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "str",
+      "editable": true,
+      "required": false,
+      "primary": false,
+      "calculated": false,
+      "searchable": false,
+      "sort": 170,
+      "ref": null,
+      "group": "تاییدی کارفرما",
+      "ui_type": "url",
+      "min": 1,
+      "max": 1,
+      "pattern": null
+    },
+    "NO_CORR_CONTRACTOR": {
+      "title": {
+        "fa": "شماره نامه  پیمانکار",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "str",
+      "editable": true,
+      "required": true,
+      "primary": false,
+      "calculated": false,
+      "searchable": false,
+      "sort": 60,
+      "ref": null,
+      "group": "ارسالی پیمانکار",
+      "ui_type": "text",
+      "min": 1,
+      "max": 20,
+      "pattern": null
+    },
+    "SUM_CNFRMED_EMPLYR": {
+      "title": {
+        "fa": "مبلغ تاییدی کارفرما (تجمعی)",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "array",
+      "editable": true,
+      "required": false,
+      "primary": false,
+      "calculated": false,
+      "searchable": false,
+      "sort": 160,
+      "ref": null,
+      "group": "تاییدی کارفرما",
+      "ui_type": "money",
+      "min": 1,
+      "max": 3,
+      "enum": null
+    },
+    "CORR_CNFRMED_EMPLYR": {
+      "title": {
+        "fa": "پیوست نامه تاییدی کارفرما",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "str",
+      "editable": true,
+      "required": false,
+      "primary": false,
+      "calculated": false,
+      "searchable": false,
+      "sort": 165,
+      "ref": null,
+      "group": "تاییدی کارفرما",
+      "ui_type": "url",
+      "min": 1,
+      "max": 1,
+      "pattern": null
+    },
+    "DATE_CNFRMED_EMPLYR": {
+      "title": {
+        "fa": "تاریخ تایید کارفرما",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "str",
+      "editable": true,
+      "required": false,
+      "primary": false,
+      "calculated": false,
+      "searchable": false,
+      "sort": 150,
+      "ref": null,
+      "group": "تاییدی کارفرما",
+      "ui_type": "date",
+      "min": 1,
+      "max": 1,
+      "pattern": null
+    },
+    "INV_SENT_CONTRACTOR": {
+      "title": {
+        "fa": "پیوست صورت وضعیت ارسالی پیمانکار",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "str",
+      "editable": true,
+      "required": false,
+      "primary": false,
+      "calculated": false,
+      "searchable": false,
+      "sort": 75,
+      "ref": null,
+      "group": "ارسالی پیمانکار",
+      "ui_type": "url",
+      "min": 1,
+      "max": 1,
+      "pattern": null
+    },
+    "NO_CORR_SENT_EMPLYR": {
+      "title": {
+        "fa": "شماره نامه ارسال به کارفرما",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "str",
+      "editable": true,
+      "required": false,
+      "primary": false,
+      "calculated": false,
+      "searchable": false,
+      "sort": 145,
+      "ref": null,
+      "group": "تاییدی کارفرما",
+      "ui_type": "text",
+      "min": 1,
+      "max": 20,
+      "pattern": null
+    },
+    "SUM_CNFRMED_CONSULT": {
+      "title": {
+        "fa": "مبلغ تاییدی مشاور (تجمعی)",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "array",
+      "editable": true,
+      "required": false,
+      "primary": false,
+      "calculated": false,
+      "searchable": false,
+      "sort": 100,
+      "ref": null,
+      "group": "تاییدی مشاور",
+      "ui_type": "money",
+      "min": 1,
+      "max": 3,
+      "enum": null
+    },
+    "CORR_CNFRMED_CONSULT": {
+      "title": {
+        "fa": "پیوست نامه تاییدی مشاور",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "str",
+      "editable": true,
+      "required": false,
+      "primary": false,
+      "calculated": false,
+      "searchable": false,
+      "sort": 105,
+      "ref": null,
+      "group": "تاییدی مشاور",
+      "ui_type": "url",
+      "min": 1,
+      "max": 1,
+      "pattern": null
+    },
+    "CORR_SENT_CONTRACTOR": {
+      "title": {
+        "fa": "پیوست نامه ارسالی پیمانکار",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "str",
+      "editable": true,
+      "required": false,
+      "primary": false,
+      "calculated": false,
+      "searchable": false,
+      "sort": 70,
+      "ref": null,
+      "group": "ارسالی پیمانکار",
+      "ui_type": "url",
+      "min": 1,
+      "max": 1,
+      "pattern": null
+    },
+    "DATE_CNFRMED_CONSULT": {
+      "title": {
+        "fa": "تاریخ تایید مشاور",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "str",
+      "editable": true,
+      "required": false,
+      "primary": false,
+      "calculated": false,
+      "searchable": false,
+      "sort": 90,
+      "ref": null,
+      "group": "تاییدی مشاور",
+      "ui_type": "date",
+      "min": 1,
+      "max": 1,
+      "pattern": null
+    },
+    "DATE_SENT_CONTRACTOR": {
+      "title": {
+        "fa": "تاریخ ارسال پیمانکار",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "str",
+      "editable": true,
+      "required": true,
+      "primary": false,
+      "calculated": false,
+      "searchable": false,
+      "sort": 55,
+      "ref": null,
+      "group": "ارسالی پیمانکار",
+      "ui_type": "date",
+      "min": 1,
+      "max": 1,
+      "pattern": null
+    },
+    "NO_CORR_SENT_CONSULT": {
+      "title": {
+        "fa": "شماره نامه ارسال به مشاور",
+        "en": null
+      },
+      "help": null,
+      "default": null,
+      "base_type": "str",
+      "editable": true,
+      "required": false,
+      "primary": false,
+      "calculated": false,
+      "searchable": false,
+      "sort": 85,
+      "ref": null,
+      "group": "تاییدی مشاور",
+      "ui_type": "text",
+      "min": 1,
+      "max": 20,
+      "pattern": null
+    }
+  },
+  "description": "صورت وضعیت انفورماتیک",
+  "meta": {
+    "apps": [
+      "contract"
+    ],
+    "isBase": true,
+    "displayField": "NUM & '_' & $jalali(DATE_SENT_CONTRACTOR)",
+    "recursive": false
+  },
+  "id": 161
+}

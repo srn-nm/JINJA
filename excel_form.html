@@ -1,0 +1,236 @@
+<html lang="fa">
+<head>
+    <title>فرم صورت وضعیت هر قرارداد</title>
+    <style>
+        body {
+            direction: rtl;
+            padding: 40px;
+            background-color: white;
+            vertical-align: middle;
+            font-family: 'Vazir FD';
+        }
+        table {
+            width: 100%;
+            max-width: 1000px;
+            border-collapse: collapse;
+            border: 2px solid #444;
+            background-color: #fdfdfd;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        td, th {
+            padding: 14px;
+            text-align: right;
+            font-size: 13px;
+            vertical-align: middle;
+            width: 500px; 
+            background-color: #f0f0f0;
+            font-weight: bold;
+            border: 1px solid #444;
+        }
+        th {
+            text-align: center;
+            font-size: 20px;
+        }
+        hr {
+            height: 1px;
+            border: 0;
+            border-top: 1px solid #696666;
+            width: 100%;
+            vertical-align: right;
+        
+        }
+        .table-cell {
+            position: relative;
+            width: 100px;
+            height: 50px;
+            border: 1px solid #000;
+            text-align: center;
+            vertical-align: middle;
+        }
+        .corner-text {
+            position: absolute;
+            font-size: 15px;
+            color: gray;
+        }
+        .top-left {
+            top: 2px;
+            left: 2px;
+        }
+        .top-right {
+            top: 2px;
+            right: 2px;
+        }
+        .bottom-left {
+            bottom: 2px;
+            left: 2px;
+        }
+        .bottom-right {
+            bottom: 2px;
+            right: 2px;
+        }
+        @page {
+        size: A4 portrait;
+        margin: 2mm;
+        }
+
+    </style>
+</head>
+<body>
+
+    {% set NO_DATA = "<span style='font-size:12;color:gray;'>اطلاعات ناموجود</span>" %}
+
+    {% macro currency_handler(currency) %}
+            
+            {% if currency == "IRR " %}
+                ریال
+            {% elif currency == "IRR" %}
+                ریال
+            {% elif currency == "USD" %}
+                دلار
+            {% elif currency == "GBP" %}
+                پوند
+            {% elif currency == "EUR" %}
+                یورو
+            {% else %}
+                {{ NO_DATA }}
+            {% endif %}
+    
+    {% endmacro %}
+
+    {%set ENUM_TYPE = [
+        {
+            "value": 0,
+            "label": "تدارکات/تامین کالا",
+            "sort": 1
+        },
+        {
+            "value": 1,
+            "label": "مشاوره ای",
+            "sort": 2
+        },
+        {
+            "value": 2,
+            "label": "انفورماتیک (IT)",
+            "sort": 3
+        },
+        {
+            "value": 3,
+            "label": "خدمات",
+            "sort": 4
+        }
+    ]%}
+
+    {%set invoiceIndex = (INVS | length) - 1%}
+
+    <table>
+        <thead>
+            <tr>
+                <th colspan="4" style="background-color: white" class="table-cell">
+                    شرکت فناوری اطلاعات کیسون (کیتکو)
+                    <span class="corner-text top-left"></span> 
+                    <span class="corner-text top-right"></span>
+                    <span class="corner-text bottom-left" style="font-size:10px">تاریخ گزارش: {{now() | jalali}}</span>
+                    <span class="corner-text bottom-right" style="font-size:10px">صورت وضعیت موقت شماره: {{data[0].INVS[invoiceIndex].NUM}} - به تاریخ {{data[0].INVS[invoiceIndex].UNTIL_FUNC_DATE | jalali}} </span>
+                </th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+          
+            <tr>
+                <td colspan="2">شماره قرارداد: {{data[0].NO_CONTR}}</td>
+                <td colspan="2">تاریخ شروع قرارداد: {{data[0].START_DATE | jalali}}</td>
+            </tr>
+            <tr>
+                <td colspan="2">کارفرما: {{data[0].SIDE[0].PERSON_NAME}}</td>
+                <td colspan="2">مدت کل قرارداد(روز): {{data[0].TOTAL_DUR}}</td>
+            </tr>
+            <tr>
+                <td colspan="2">موضوع قرارداد: {{data[0].SUBJECT}}</td>
+                <td colspan="2">نوع قرارداد: {%if data[0].TYPE%}
+                                        {{ENUM_TYPE[data[0].TYPE[0]].label}}
+                                  {%else %}
+                                        {{NO_DATA}}
+                                  {%endif%}
+                </td>
+            </tr>
+            
+            <tr>
+                <td colspan="2">مبلغ اولیه قرارداد: {{data[0].FIRST_AMNT[0]['amount'] | int | money }} {{currency_handler(data[0].FIRST_AMNT[0]["currency"])}}</td>
+                <td colspan="2">درصد پیشرفت ریالی(بااحتساب این صورت وضعیت): 
+                    {%if data[0] and data[0].PROG_FINANCE and data[0].PROG_FINANCE is not none%}
+                        {{data[0].PROG_FINANCE}} 
+                    {%else%}
+                        0 
+                    {%endif%}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="background-color: white;">مبلغ ناخالص تایید نشده تا صورت وضعیت دوره قبل : </td>
+                <td colspan="2" style="line-height:2.5; border-right-style: hidden; background-color: white;">
+                    {{ data[0].INVS[:invoiceIndex] | selectattr('FUNC_IMPURE', 'none') | map(attribute='SUM_IMPURE') | map('int') | sum | money }} ریال
+
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="background-color: white;">مبلغ ناخالص تایید شده تا صورت وضعیت دوره قبل : </td>
+                <td colspan="2" style="line-height:2.5; border-right-style: hidden; background-color: white;">
+                    {{ data[0].INVS[:invoiceIndex] | map(attribute='FUNC_IMPURE') | map(attribute=0) | map(attribute='amount') | map('int') | sum | money }} ریال
+
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="line-height:2.5;">
+                    مبلغ ناخالص صورت وضعیت این دوره : <br>
+                    کسورات : <br>
+                    مبلغ ناخالص نهایی صورت وضعیت این دوره :
+                </td>
+
+                <td colspan="2" style="line-height:2.5; border-right-style: hidden;">
+                    {{data[0].INVS[invoiceIndex].FUNC_IMPURE[0]['amount'] | int | money }} {{currency_handler(data[0].INVS[invoiceIndex].FUNC_IMPURE[0]["currency"])}}
+                    <br>
+                    <br>
+                    <hr/>
+    
+                    {%if data[0].INVS[invoiceIndex].FUNC_PURE and data[0].INVS[invoiceIndex].FUNC_PURE[0] %}
+                        {{data[0].INVS[invoiceIndex].FUNC_PURE[0]['amount'] | int | money}}
+                    {%else%}
+                        0
+                    {%endif%}                    
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="background-color: white;">مبلغ ناخالص تجمعی صورت وضعیت‌های ارسال شده تاکنون :</td>
+                <td colspan="2" style="background-color: white;  border-right-style: hidden;">
+                   {{ ((data[0].INVS[:invoiceIndex] | selectattr('FUNC_IMPURE', 'none') | map(attribute='SUM_IMPURE') | map('int') | sum ) + (data[0].INVS[:invoiceIndex] | map(attribute='FUNC_IMPURE') | map(attribute=0) | map(attribute='amount') | map('int') | sum ) ) | money }} {{currency_handler(data[0].INVS[invoiceIndex].FUNC_IMPURE[0]["currency"])}}
+                </td>            
+            </tr>
+            <tr>
+                <td colspan="4" style="line-height:2.5;">
+                    مبلغ ناخالص تایید شده صورت وضعیت این دوره (ریال): <br>
+                    مبلغ ناخالص تجمعی تایید شده صورت وضعیت‌های صادر شده تاکنون (ریال):
+                </td>
+            </tr>
+
+            <tr>
+                <td style="background-color: white;">تهیه کننده (پیمانکار):<br><br><br><br></td>
+                <td style="background-color: white; background-color: white; border-right-style: hidden;">تایید‌کننده (پیمانکار):<br><br><br><br></td>
+                <td style="background-color: white;">تایید کننده (کارفرما):<br><br><br><br></td>
+                <td style="border-right-style: hidden; background-color: white;"><br><br><br><br></td>
+            </tr>
+            
+            <tr>
+                <td colspan="4" style="font-size:11px; font-weight:normal; text-align:center; background-color:#f0f0f0">
+                    لطفا  نسخه دوم / اسکن / کپی این برگه را پس از تایید برای شرکت فناوری اطلاعات کیسون ارسال نمایید.
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>
+
+
+{#digit2word#}
