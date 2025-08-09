@@ -1,0 +1,696 @@
+{
+    "name": "STACKHOLDER",
+    "properties": {
+      "TEL": {
+        "title": {
+          "fa": "تلفن",
+          "en": null
+        },
+        "help": null,
+        "default": null,
+        "base_type": "str",
+        "editable": true,
+        "required": false,
+        "primary": false,
+        "calculated": false,
+        "searchable": false,
+        "sort": 37,
+        "ref": null,
+        "group": "مشخصات",
+        "ui_type": "text",
+        "min": 4,
+        "max": 15,
+        "pattern": null
+      },
+      "TYPE": {
+        "title": {
+          "fa": "نوع",
+          "en": null
+        },
+        "help": null,
+        "default": null,
+        "base_type": "array",
+        "editable": true,
+        "required": true,
+        "primary": true,
+        "calculated": false,
+        "searchable": false,
+        "sort": 4,
+        "ref": null,
+        "group": "مشخصات",
+        "ui_type": "select",
+        "min": 1,
+        "max": 1,
+        "enum": [
+          {
+            "value": 0,
+            "label": "حقوقی ایرانی",
+            "sort": 1
+          },
+          {
+            "value": 1,
+            "label": "حقیقی ایرانی",
+            "sort": 2
+          },
+          {
+            "value": 2,
+            "label": "حقیقی غیر ایرانی",
+            "sort": 3
+          },
+          {
+            "value": 3,
+            "label": "حقوقی غیر ایرانی",
+            "sort": 4
+          }
+        ]
+      },
+      "DESCR": {
+        "title": {
+          "fa": "توضیحات",
+          "en": null
+        },
+        "help": null,
+        "default": null,
+        "base_type": "str",
+        "editable": true,
+        "required": false,
+        "primary": false,
+        "calculated": false,
+        "searchable": false,
+        "sort": 47,
+        "ref": null,
+        "group": "مشخصات",
+        "ui_type": "text",
+        "min": 1,
+        "max": 50,
+        "pattern": null
+      },
+      "EMAIL": {
+        "title": {
+          "fa": "پست الکترونیکی",
+          "en": null
+        },
+        "help": null,
+        "default": null,
+        "base_type": "str",
+        "editable": true,
+        "required": false,
+        "primary": false,
+        "calculated": false,
+        "searchable": false,
+        "sort": 43,
+        "ref": null,
+        "group": "مشخصات",
+        "ui_type": "email",
+        "min": 1,
+        "max": 30,
+        "pattern": null
+      },
+      "ID_PIC": {
+        "title": {
+          "fa": "تصویر مدرک هویتی ",
+          "en": null
+        },
+        "help": null,
+        "default": null,
+        "base_type": "str",
+        "editable": true,
+        "required": false,
+        "primary": false,
+        "calculated": false,
+        "searchable": false,
+        "sort": 54,
+        "ref": null,
+        "group": "پیوست",
+        "ui_type": "url",
+        "min": 1,
+        "max": 1,
+        "pattern": null
+      },
+      "OLD_ID": {
+        "title": {
+          "fa": "شناسه قدیمی",
+          "en": null
+        },
+        "help": null,
+        "default": null,
+        "base_type": "number",
+        "editable": true,
+        "required": false,
+        "primary": false,
+        "calculated": false,
+        "searchable": false,
+        "sort": 1,
+        "ref": null,
+        "group": "مشخصات",
+        "ui_type": "digit",
+        "precision": 0,
+        "min": 1,
+        "max": 30
+      },
+      "REG_NO": {
+        "title": {
+          "fa": "شماره ثبت",
+          "en": null
+        },
+        "help": null,
+        "default": null,
+        "base_type": "str",
+        "editable": true,
+        "required": false,
+        "primary": true,
+        "calculated": false,
+        "searchable": false,
+        "sort": 18,
+        "ref": null,
+        "group": "مشخصات",
+        "ui_type": "text",
+        "min": 1,
+        "max": 20,
+        "pattern": null
+      },
+      "ADDRESS": {
+        "title": {
+          "fa": "آدرس",
+          "en": null
+        },
+        "help": null,
+        "default": null,
+        "base_type": "str",
+        "editable": true,
+        "required": false,
+        "primary": false,
+        "calculated": false,
+        "searchable": false,
+        "sort": 36,
+        "ref": null,
+        "group": "مشخصات",
+        "ui_type": "textarea",
+        "min": 1,
+        "max": 50,
+        "pattern": null
+      },
+      "CO_TYPE": {
+        "title": {
+          "fa": "نوع شرکت",
+          "en": null
+        },
+        "help": null,
+        "default": null,
+        "base_type": "array",
+        "editable": true,
+        "required": false,
+        "primary": true,
+        "calculated": false,
+        "searchable": false,
+        "sort": 10,
+        "ref": null,
+        "group": "مشخصات",
+        "ui_type": "select",
+        "min": 1,
+        "max": 1,
+        "enum": [
+          {
+            "value": 0,
+            "label": "سهامی عام",
+            "sort": 1
+          },
+          {
+            "value": 1,
+            "label": "سهامی خاص",
+            "sort": 2
+          },
+          {
+            "value": 2,
+            "label": "با مسئولیت محدود",
+            "sort": 3
+          },
+          {
+            "value": 3,
+            "label": "تضامنی",
+            "sort": 4
+          },
+          {
+            "value": 4,
+            "label": "تعاونی",
+            "sort": 5
+          },
+          {
+            "value": 5,
+            "label": "مختلط",
+            "sort": 6
+          }
+        ]
+      },
+      "EDU_DOC": {
+        "title": {
+          "fa": "مدارک تحصیلی",
+          "en": null
+        },
+        "help": null,
+        "default": null,
+        "base_type": "array",
+        "editable": true,
+        "required": false,
+        "primary": false,
+        "calculated": false,
+        "searchable": false,
+        "sort": 33,
+        "ref": {
+          "ref_id": 26,
+          "deprecated": false,
+          "ref_display": null,
+          "ref_query": null
+        },
+        "group": "مشخصات",
+        "ui_type": "select",
+        "min": 1,
+        "max": 1,
+        "enum": null
+      },
+      "ID_CODE": {
+        "title": {
+          "fa": "کد مدرک هویتی",
+          "en": null
+        },
+        "help": null,
+        "default": null,
+        "base_type": "str",
+        "editable": true,
+        "required": false,
+        "primary": false,
+        "calculated": false,
+        "searchable": false,
+        "sort": 34,
+        "ref": null,
+        "group": "مشخصات",
+        "ui_type": "text",
+        "min": 1,
+        "max": 30,
+        "pattern": null
+      },
+      "REG_LOC": {
+        "title": {
+          "fa": "محل صدور",
+          "en": null
+        },
+        "help": null,
+        "default": null,
+        "base_type": "str",
+        "editable": true,
+        "required": false,
+        "primary": false,
+        "calculated": false,
+        "searchable": false,
+        "sort": 28,
+        "ref": null,
+        "group": "مشخصات",
+        "ui_type": "text",
+        "min": 1,
+        "max": 15,
+        "pattern": null
+      },
+      "WEBSITE": {
+        "title": {
+          "fa": "وب سایت",
+          "en": null
+        },
+        "help": null,
+        "default": null,
+        "base_type": "str",
+        "editable": true,
+        "required": false,
+        "primary": false,
+        "calculated": false,
+        "searchable": false,
+        "sort": 44,
+        "ref": null,
+        "group": "مشخصات",
+        "ui_type": "url",
+        "min": 1,
+        "max": 30,
+        "pattern": null
+      },
+      "POSTCODE": {
+        "title": {
+          "fa": "کد پستی",
+          "en": null
+        },
+        "help": null,
+        "default": null,
+        "base_type": "str",
+        "editable": true,
+        "required": false,
+        "primary": false,
+        "calculated": false,
+        "searchable": false,
+        "sort": 38,
+        "ref": null,
+        "group": "مشخصات",
+        "ui_type": "text",
+        "min": 10,
+        "max": 10,
+        "pattern": null
+      },
+      "BIRTH_DATE": {
+        "title": {
+          "fa": "تاریخ تولد",
+          "en": null
+        },
+        "help": null,
+        "default": null,
+        "base_type": "str",
+        "editable": true,
+        "required": false,
+        "primary": false,
+        "calculated": false,
+        "searchable": false,
+        "sort": 30,
+        "ref": null,
+        "group": "مشخصات",
+        "ui_type": "date",
+        "min": 1,
+        "max": 1,
+        "pattern": null
+      },
+      "NATIONALID": {
+        "title": {
+          "fa": "شناسه ملی",
+          "en": null
+        },
+        "help": null,
+        "default": null,
+        "base_type": "str",
+        "editable": true,
+        "required": false,
+        "primary": true,
+        "calculated": false,
+        "searchable": false,
+        "sort": 20,
+        "ref": null,
+        "group": "مشخصات",
+        "ui_type": "text",
+        "min": 11,
+        "max": 11,
+        "pattern": null
+      },
+      "CORR_PERSON": {
+        "title": {
+          "fa": "شخصیت  مکاتباتی",
+          "en": null
+        },
+        "help": null,
+        "default": null,
+        "base_type": "str",
+        "editable": true,
+        "required": false,
+        "primary": false,
+        "calculated": false,
+        "searchable": false,
+        "sort": 41,
+        "ref": null,
+        "group": "مشخصات",
+        "ui_type": "text",
+        "min": 1,
+        "max": 30,
+        "pattern": null
+      },
+      "DOCS_RATING": {
+        "title": {
+          "fa": "مدارک جهت رتبه بندی",
+          "en": null
+        },
+        "help": null,
+        "default": null,
+        "base_type": "str",
+        "editable": true,
+        "required": false,
+        "primary": false,
+        "calculated": false,
+        "searchable": false,
+        "sort": 46,
+        "ref": null,
+        "group": "مشخصات",
+        "ui_type": "text",
+        "min": 1,
+        "max": 100,
+        "pattern": null
+      },
+      "FATHER_NAME": {
+        "title": {
+          "fa": "نام پدر",
+          "en": null
+        },
+        "help": null,
+        "default": null,
+        "base_type": "str",
+        "editable": true,
+        "required": false,
+        "primary": false,
+        "calculated": false,
+        "searchable": false,
+        "sort": 32,
+        "ref": null,
+        "group": "مشخصات",
+        "ui_type": "text",
+        "min": 1,
+        "max": 20,
+        "pattern": null
+      },
+      "PERSON_NAME": {
+        "title": {
+          "fa": "نام",
+          "en": null
+        },
+        "help": null,
+        "default": null,
+        "base_type": "str",
+        "editable": true,
+        "required": true,
+        "primary": true,
+        "calculated": false,
+        "searchable": false,
+        "sort": 2,
+        "ref": null,
+        "group": "مشخصات",
+        "ui_type": "text",
+        "min": 1,
+        "max": 20,
+        "pattern": null
+      },
+      "RECORD_DATE": {
+        "title": {
+          "fa": "تاریخ ثبت",
+          "en": null
+        },
+        "help": null,
+        "default": null,
+        "base_type": "str",
+        "editable": true,
+        "required": false,
+        "primary": false,
+        "calculated": false,
+        "searchable": false,
+        "sort": 24,
+        "ref": null,
+        "group": "مشخصات",
+        "ui_type": "date",
+        "min": 1,
+        "max": 1,
+        "pattern": null
+      },
+      "NATIONAL_CARD": {
+        "title": {
+          "fa": "تصویر کارت ملی",
+          "en": null
+        },
+        "help": null,
+        "default": null,
+        "base_type": "str",
+        "editable": true,
+        "required": false,
+        "primary": false,
+        "calculated": false,
+        "searchable": false,
+        "sort": 50,
+        "ref": null,
+        "group": "پیوست",
+        "ui_type": "url",
+        "min": 1,
+        "max": 1,
+        "pattern": null
+      },
+      "NATIONAL_CODE": {
+        "title": {
+          "fa": "کد ملی",
+          "en": null
+        },
+        "help": null,
+        "default": null,
+        "base_type": "str",
+        "editable": true,
+        "required": false,
+        "primary": true,
+        "calculated": false,
+        "searchable": false,
+        "sort": 16,
+        "ref": null,
+        "group": "مشخصات",
+        "ui_type": "text",
+        "min": 10,
+        "max": 10,
+        "pattern": null
+      },
+      "NO_OWNER_SIGN": {
+        "title": {
+          "fa": "تعداد صاحبان امضای مجاز",
+          "en": null
+        },
+        "help": null,
+        "default": {
+          "type": "expression",
+          "expression": "$count(OWNER_ALLOWED_SIGN)",
+          "parser": "jNata"
+        },
+        "base_type": "number",
+        "editable": true,
+        "required": false,
+        "primary": false,
+        "calculated": true,
+        "searchable": false,
+        "sort": 41,
+        "ref": null,
+        "group": "مشخصات",
+        "ui_type": "digit",
+        "precision": 0,
+        "min": 1,
+        "max": 1
+      },
+      "ESTABLISHED_LOC": {
+        "title": {
+          "fa": "محل ثبت",
+          "en": null
+        },
+        "help": null,
+        "default": null,
+        "base_type": "str",
+        "editable": true,
+        "required": false,
+        "primary": false,
+        "calculated": false,
+        "searchable": false,
+        "sort": 26,
+        "ref": null,
+        "group": "مشخصات",
+        "ui_type": "text",
+        "min": 1,
+        "max": 20,
+        "pattern": null
+      },
+      "RELATED_COMPANY": {
+        "title": {
+          "fa": "شرکت مربوطه ",
+          "en": null
+        },
+        "help": {
+          "fa": " برای شخصیت حقیقی شرکت مشغول به فعالیت در آن و برای شخصیت حقوقی شرکت مادر انتخاب شود.",
+          "en": null
+        },
+        "default": null,
+        "base_type": "array",
+        "editable": true,
+        "required": false,
+        "primary": false,
+        "calculated": false,
+        "searchable": false,
+        "sort": 8,
+        "ref": {
+          "ref_id": 46,
+          "deprecated": false,
+          "ref_display": null,
+          "ref_query": null
+        },
+        "group": "مشخصات",
+        "ui_type": "select",
+        "min": 1,
+        "max": 1,
+        "enum": null
+      },
+      "ISPERSONCONFRMED?": {
+        "title": {
+          "fa": "شخصیت تایید شده",
+          "en": null
+        },
+        "help": {
+          "fa": " زمانیکه شخصیت در مرحله انعقاد قرارداد قرار می گیرد می بایستی شخصیت تایید شده باشد.",
+          "en": null
+        },
+        "default": null,
+        "base_type": "bool",
+        "editable": true,
+        "required": false,
+        "primary": true,
+        "calculated": false,
+        "searchable": false,
+        "sort": 6,
+        "ref": null,
+        "group": "مشخصات",
+        "ui_type": "checkbox"
+      },
+      "OFFICIAL_NEWSPAPER": {
+        "title": {
+          "fa": "تصویر روزنامه رسمی ",
+          "en": null
+        },
+        "help": null,
+        "default": null,
+        "base_type": "str",
+        "editable": true,
+        "required": false,
+        "primary": false,
+        "calculated": false,
+        "searchable": false,
+        "sort": 52,
+        "ref": null,
+        "group": "پیوست",
+        "ui_type": "url",
+        "min": 1,
+        "max": 1,
+        "pattern": null
+      },
+      "OWNER_ALLOWED_SIGN": {
+        "title": {
+          "fa": "صاحبان امضای مجاز",
+          "en": null
+        },
+        "help": null,
+        "default": null,
+        "base_type": "array",
+        "editable": true,
+        "required": false,
+        "primary": false,
+        "calculated": false,
+        "searchable": false,
+        "sort": 42,
+        "ref": {
+          "ref_id": 27,
+          "deprecated": false,
+          "ref_display": null,
+          "ref_query": null
+        },
+        "group": "مشخصات",
+        "ui_type": "select",
+        "min": 1,
+        "max": 3,
+        "enum": null
+      }
+    },
+    "description": "ذینفعان",
+    "meta": {
+      "apps": [],
+      "isBase": false,
+      "displayField": "PERSON_NAME",
+      "recursive": false
+    },
+    "id": 46
+  }

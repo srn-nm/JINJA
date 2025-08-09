@@ -7,7 +7,6 @@
         }
         table {
             width: 100%;
-            max-width: 1000px;
             border-collapse: collapse;
             border: 2px solid #444;
             background-color: #fdfdfd;
@@ -49,6 +48,7 @@
             vertical-align: middle;
         }
         .corner-text {
+            display: inline;
             position: absolute;
             font-size: 15px;
             color: gray;
@@ -58,25 +58,27 @@
             left: 5px;
         }
         .top-right {
-            top: 2px;
-            right: 5px;
+            top: 3px;
+            right: 6px;
         }
         .bottom-left {
             bottom: 2px;
-            left: 2px;
+            left: 10px;
         }
         .bottom-right {
             bottom: 2px;
-            right: 2px;
+            right: 10px;
         }
         .page-break-container {
             page-break-before: always;
+        }
+        #SIDE {
+            width: 120px;
         }
         @page {
         size: A4 portrait;
         margin: 2mm;
         }
-
     </style>
 </head>
 <body>
@@ -124,9 +126,15 @@
         }
     ]%}
 
-    {%set invoiceIndex = (INVS | length) - 1%}
+
 
     {%for contract in data%}
+
+    {%if contract.INVS | length == 0%} 
+        صورت حسابی برای نمایش وجود ندارد.
+    {%else %}
+
+    {%set invoiceIndex = (contract.INVS | length) - 1%}
 
     <div class="page-break-container"></div>
     <table>
@@ -135,13 +143,13 @@
                 <th colspan="4" style="background-color: white" class="table-cell">
                     <br>
                     شرکت فناوری اطلاعات کیسون (کیتکو)
-                    <span class="corner-text top-left"><img src="http://172.16.0.183:90/root/kitpublic/-/raw/main/kitco.png?ref_type=heads&inline=false" width="70px"></span> 
-                    <span class="corner-text top-right"></span>
+                    <span class="corner-text top-left"><img src="http://172.16.0.183:90/root/kitpublic/-/raw/main/14008545415.png?ref_type=heads&inline=false" width="70px"></span> 
+                    <span class="corner-text top-right"><img id="SIDE" src={{"http://172.16.0.183:90/root/kitpublic/-/raw/main/" ~ contract.SIDE[0].NATIONALID ~ ".png?ref_type=heads&inline=false"}}></span>
                     <span class="corner-text bottom-left" style="font-size:10px">تاریخ گزارش: {{now() | jalali}}</span>
                     <span class="corner-text bottom-right" style="font-size:10px">صورت وضعیت موقت شماره {{contract.INVS[invoiceIndex].NUM}} - به تاریخ {{contract.INVS[invoiceIndex].UNTIL_FUNC_DATE | jalali}} </span>
                     <br>
                     <br>
-                  
+                    <br>
                 </th>
 
             </tr>
@@ -249,7 +257,8 @@
     </table>
     </div>
 
+    {%endif%}
     {%endfor%}
-
+    
 </body>
 </html>
