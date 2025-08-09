@@ -4,33 +4,33 @@
         <style>
             table, tr, td, th {
                 height: 100%;
-                vertical-align: center;
+                vertical-align: center;   
+            }
+            #myChart {
+              width: 100%;
+              max-width: 300px;
+              margin: auto;
+              display: flex;
+              flex-direction: row;
             }
         </style>
     </head>
     <body>
-        <table class="charts-css column show-data-on-hover">
+      
+        <div id="myChart">
+          <table class="charts-css column show-data-on-hover">
 
-            <caption> Front End Developer Salary </caption>
+            <caption> Table </caption>
           
             <tbody>
-              <tr>
-                <td style="--size: calc( 40 / 100 )"> <span class="data"> $40K </span> </td>
-              </tr>
-              <tr>
-                <td style="--size: calc( 60 / 100 )"> <span class="data"> $60K </span> </td>
-              </tr>
-              <tr>
-                <td style="--size: calc( 75 / 100 )"> <span class="data"> $75K </span> </td>
-              </tr>
-              <tr>
-                <td style="--size: calc( 30 / 100 )"> <span class="data"> $30K </span> </td>
-              </tr>
-              <tr>
-                <td style="--size: calc( 100 / 100 )"> <span class="data"> $100K </span> </td>
-              </tr>
+              {%for contract in data%}
+                <tr>
+                  <td style="--size: calc( {{contract.INVS | length}} / {{data | map(attribute="INVS") | sum(start=[]) | list | length}} )"> <span class="data"> {{contract.INVS | length}} </span></td>
+                </tr>
+              {%endfor%}
             </tbody>
           
           </table>
+        </div>
     </body>
 </html>

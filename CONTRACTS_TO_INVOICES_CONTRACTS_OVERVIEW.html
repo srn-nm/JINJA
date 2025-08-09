@@ -1,0 +1,113 @@
+<html lang="fa">
+    <head>
+        <title>گزارش صورت وضعیت های هر قرارداد</title>
+        <style>
+            table, td, th{
+                border: 1px solid;
+                border-collapse: collapse;
+            }
+            td, th {
+                padding: 10px;
+                text-align: center;
+                font-size: 12px;
+            }
+        </style>
+    </head>
+    <body>
+
+        {% set NO_DATA = "<span style='font-size:12;color:gray;'>اطلاعات ناموجود</span>" %}
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th colspan="17">نگاه کلی به صورت وضعیت های هر قرارداد</th>
+                </tr>
+
+                <tr>
+                    <th colspan="2">کلیات</th>
+
+                    <th colspan="6">نوع صورت وضعیت</th> 
+
+                    <th colspan="3">وضعیت صورت وضعیت</th>
+
+                    <th colspan="2">تعداد</th> 
+
+                    <th colspan="2">مجموع مبالغ</th> 
+                </tr>
+
+                <tr>
+
+                    <th>شناسه قرارداد</th>
+                    <th>تعداد کل صورت وضعیت ها</th>
+
+                    <th>صورت وضعیت کارکرد</th>
+                    <th>صورت وضعیت تعدیل</th>
+                    <th>صورت وضعیت مابه التفاوت نرخ ارز</th>
+                    <th>صورت وضعیت فرزندآوری</th>
+                    <th>صورت وضعیت پاداش</th>
+                    <th>صورت وضعیت پیش پرداخت</th>
+
+                    <th>خاتمه داده شده</th>
+                    <th>فسخ شده</th>
+                    <th>تکمیل شده</th>
+
+                    <th>تعداد صورت وضعیت قطعی</th>
+                    <th>تعداد فاکتورها</th>
+                    
+                    <th>مبلغ تجمعی پیمانکار</th> 
+                    <th>ناخالص دوره کارکرد</th> 
+                   
+                </tr>
+            </thead>
+
+            {%for contract in data%}
+
+                <tbody>
+        
+                    <tr>
+                        <td>{{contract.id}}</td>
+                        <td>{{contract.INVS | length}}</td>
+
+                        <td>{{contract.INVS | selectattr("TYPE", "equalto", [0]) | list | length }}</td>
+                        <td>{{contract.INVS | selectattr("TYPE", "equalto", [1]) | list | length }}</td>
+                        <td>{{contract.INVS | selectattr("TYPE", "equalto", [2]) | list | length }}</td>
+                        <td>{{contract.INVS | selectattr("TYPE", "equalto", [3]) | list | length }}</td>
+                        <td>{{contract.INVS | selectattr("TYPE", "equalto", [4]) | list | length }}</td>
+                        <td>{{contract.INVS | selectattr("TYPE", "equalto", [5]) | list | length }}</td>
+
+                        <td>{{contract.INVS | selectattr("STATUS", "equalto", [0]) | list | length }}</td>
+                        <td>{{contract.INVS | selectattr("STATUS", "equalto", [1]) | list | length }}</td>
+                        <td>{{contract.INVS | selectattr("STATUS", "equalto", [2]) | list | length }}</td>
+
+                        <td>{{contract.INVS | selectattr("FINAL", "equalto", 1) | list | length }}</td>
+                        <td>{{contract.INVS | selectattr("FACTOR") | list | length }}</td>               
+       
+                        {% set func_amounts = contract.INVS
+                            | selectattr('FUNC_IMPURE','defined')
+                            | map(attribute='FUNC_IMPURE')
+                            | selectattr('0', 'defined')
+                            | map(attribute=0)
+                            | selectattr('amount', 'defined')
+                            | map(attribute='amount') %}
+                        
+                        <td>{{ func_amounts | sum | int | money}} ریال</td> 
+                        
+                        {% set sum_amounts = contract.INVS
+                            | selectattr('SUM_IMPURE', 'defined')
+                            | map(attribute='SUM_IMPURE')
+                            | selectattr('0', 'defined')
+                            | map(attribute=0)
+                            | selectattr('amount', 'defined')
+                            | map(attribute='amount') %}
+                                                
+                        <td>{{ sum_amounts | sum | int | money }} ریال</td> 
+                        
+                    </tr>
+                </tbody>
+
+            {%endfor%}
+
+        </table>
+    </body>
+</html>

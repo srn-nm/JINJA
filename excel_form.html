@@ -3,10 +3,6 @@
     <title>فرم صورت وضعیت هر قرارداد</title>
     <style>
         body {
-            direction: rtl;
-            padding: 40px;
-            background-color: white;
-            vertical-align: middle;
             font-family: 'Vazir FD';
         }
         table {
@@ -17,6 +13,10 @@
             background-color: #fdfdfd;
             margin-left: auto;
             margin-right: auto;
+            direction: rtl;
+            padding: 40px;
+            background-color: white;
+            vertical-align: middle;
         }
         td, th {
             padding: 14px;
@@ -30,14 +30,14 @@
         }
         th {
             text-align: center;
-            font-size: 20px;
+            font-size: 25px;
         }
         hr {
             height: 1px;
             border: 0;
             border-top: 1px solid #696666;
             width: 100%;
-            vertical-align: right;
+            vertical-align: middle;
         
         }
         .table-cell {
@@ -55,11 +55,11 @@
         }
         .top-left {
             top: 2px;
-            left: 2px;
+            left: 5px;
         }
         .top-right {
             top: 2px;
-            right: 2px;
+            right: 5px;
         }
         .bottom-left {
             bottom: 2px;
@@ -68,6 +68,9 @@
         .bottom-right {
             bottom: 2px;
             right: 2px;
+        }
+        .page-break-container {
+            page-break-before: always;
         }
         @page {
         size: A4 portrait;
@@ -123,15 +126,22 @@
 
     {%set invoiceIndex = (INVS | length) - 1%}
 
+    {%for contract in data%}
+
+    <div class="page-break-container"></div>
     <table>
         <thead>
             <tr>
                 <th colspan="4" style="background-color: white" class="table-cell">
+                    <br>
                     شرکت فناوری اطلاعات کیسون (کیتکو)
-                    <span class="corner-text top-left"></span> 
+                    <span class="corner-text top-left"><img src="http://172.16.0.183:90/root/kitpublic/-/raw/main/kitco.png?ref_type=heads&inline=false" width="70px"></span> 
                     <span class="corner-text top-right"></span>
                     <span class="corner-text bottom-left" style="font-size:10px">تاریخ گزارش: {{now() | jalali}}</span>
-                    <span class="corner-text bottom-right" style="font-size:10px">صورت وضعیت موقت شماره: {{data[0].INVS[invoiceIndex].NUM}} - به تاریخ {{data[0].INVS[invoiceIndex].UNTIL_FUNC_DATE | jalali}} </span>
+                    <span class="corner-text bottom-right" style="font-size:10px">صورت وضعیت موقت شماره {{contract.INVS[invoiceIndex].NUM}} - به تاریخ {{contract.INVS[invoiceIndex].UNTIL_FUNC_DATE | jalali}} </span>
+                    <br>
+                    <br>
+                  
                 </th>
 
             </tr>
@@ -140,17 +150,17 @@
         <tbody>
           
             <tr>
-                <td colspan="2">شماره قرارداد: {{data[0].NO_CONTR}}</td>
-                <td colspan="2">تاریخ شروع قرارداد: {{data[0].START_DATE | jalali}}</td>
+                <td colspan="2">شماره قرارداد: {{contract.NO_CONTR}}</td>
+                <td colspan="2">تاریخ شروع قرارداد: {{contract.START_DATE | jalali}}</td>
             </tr>
             <tr>
-                <td colspan="2">کارفرما: {{data[0].SIDE[0].PERSON_NAME}}</td>
-                <td colspan="2">مدت کل قرارداد(روز): {{data[0].TOTAL_DUR}}</td>
+                <td colspan="2">کارفرما: {{contract.SIDE[0].PERSON_NAME}}</td>
+                <td colspan="2">مدت کل قرارداد(روز): {{contract.TOTAL_DUR}}</td>
             </tr>
             <tr>
-                <td colspan="2">موضوع قرارداد: {{data[0].SUBJECT}}</td>
-                <td colspan="2">نوع قرارداد: {%if data[0].TYPE%}
-                                        {{ENUM_TYPE[data[0].TYPE[0]].label}}
+                <td colspan="2">موضوع قرارداد: {{contract.SUBJECT}}</td>
+                <td colspan="2">نوع قرارداد: {%if contract.TYPE%}
+                                        {{ENUM_TYPE[contract.TYPE[0]].label}}
                                   {%else %}
                                         {{NO_DATA}}
                                   {%endif%}
@@ -158,10 +168,10 @@
             </tr>
             
             <tr>
-                <td colspan="2">مبلغ اولیه قرارداد: {{data[0].FIRST_AMNT[0]['amount'] | int | money }} {{currency_handler(data[0].FIRST_AMNT[0]["currency"])}}</td>
+                <td colspan="2">مبلغ اولیه قرارداد: {{contract.FIRST_AMNT[0]['amount'] | int | money }} {{currency_handler(contract.FIRST_AMNT[0]["currency"])}}</td>
                 <td colspan="2">درصد پیشرفت ریالی(بااحتساب این صورت وضعیت): 
-                    {%if data[0] and data[0].PROG_FINANCE and data[0].PROG_FINANCE is not none%}
-                        {{data[0].PROG_FINANCE}} 
+                    {%if contract and contract.PROG_FINANCE and contract.PROG_FINANCE is not none%}
+                        {{contract.PROG_FINANCE}} 
                     {%else%}
                         0 
                     {%endif%}
@@ -169,15 +179,19 @@
             </tr>
             <tr>
                 <td colspan="2" style="background-color: white;">مبلغ ناخالص تایید نشده تا صورت وضعیت دوره قبل : </td>
-                <td colspan="2" style="line-height:2.5; border-right-style: hidden; background-color: white;">
-                    {{ data[0].INVS[:invoiceIndex] | selectattr('FUNC_IMPURE', 'none') | map(attribute='SUM_IMPURE') | map('int') | sum | money }} ریال
+                <td colspan="2" style="border-right-style: hidden; background-color: white;">
+                    {{ contract.INVS[:invoiceIndex] | selectattr('FUNC_IMPURE', 'none') | map(attribute='SUM_IMPURE') | map('int') | sum | money }} ریال
+                    <br>
+                    <span style="color: grey">{{ contract.INVS[:invoiceIndex] | selectattr('FUNC_IMPURE', 'none') | map(attribute='SUM_IMPURE') | map('int') | sum | digit2word }} ریال</span>
 
                 </td>
             </tr>
             <tr>
                 <td colspan="2" style="background-color: white;">مبلغ ناخالص تایید شده تا صورت وضعیت دوره قبل : </td>
-                <td colspan="2" style="line-height:2.5; border-right-style: hidden; background-color: white;">
-                    {{ data[0].INVS[:invoiceIndex] | map(attribute='FUNC_IMPURE') | map(attribute=0) | map(attribute='amount') | map('int') | sum | money }} ریال
+                <td colspan="2" style="border-right-style: hidden; background-color: white;">
+                    {{ contract.INVS[:invoiceIndex] | map(attribute='FUNC_IMPURE') | map(attribute=0) | map(attribute='amount') | map('int') | sum | money }} ریال
+                    <br>
+                    <span style="color: grey">{{ contract.INVS[:invoiceIndex] | map(attribute='FUNC_IMPURE') | map(attribute=0) | map(attribute='amount') | map('int') | sum | digit2word }} ریال</span>
 
                 </td>
             </tr>
@@ -186,25 +200,30 @@
                     مبلغ ناخالص صورت وضعیت این دوره : <br>
                     کسورات : <br>
                     مبلغ ناخالص نهایی صورت وضعیت این دوره :
+                    <br>
+                    <br>
                 </td>
 
                 <td colspan="2" style="line-height:2.5; border-right-style: hidden;">
-                    {{data[0].INVS[invoiceIndex].FUNC_IMPURE[0]['amount'] | int | money }} {{currency_handler(data[0].INVS[invoiceIndex].FUNC_IMPURE[0]["currency"])}}
+                    {{contract.INVS[invoiceIndex].FUNC_IMPURE[0]['amount'] | int | money }} {{currency_handler(contract.INVS[invoiceIndex].FUNC_IMPURE[0]["currency"])}}
                     <br>
                     <br>
                     <hr/>
     
-                    {%if data[0].INVS[invoiceIndex].FUNC_PURE and data[0].INVS[invoiceIndex].FUNC_PURE[0] %}
-                        {{data[0].INVS[invoiceIndex].FUNC_PURE[0]['amount'] | int | money}}
+                    {%if contract.INVS[invoiceIndex].FUNC_PURE and contract.INVS[invoiceIndex].FUNC_PURE[0] %}
+                        {{contract.INVS[invoiceIndex].FUNC_PURE[0]['amount'] | int | money}} <br><span style="color: grey">{{contract.INVS[invoiceIndex].FUNC_PURE[0]['amount'] | int | digit2word}} ریال</span>
                     {%else%}
-                        0
+                        0 <br><span style="color: grey">{{0 | int | digit2word}} ریال</span>
                     {%endif%}                    
                 </td>
             </tr>
             <tr>
                 <td colspan="2" style="background-color: white;">مبلغ ناخالص تجمعی صورت وضعیت‌های ارسال شده تاکنون :</td>
+
                 <td colspan="2" style="background-color: white;  border-right-style: hidden;">
-                   {{ ((data[0].INVS[:invoiceIndex] | selectattr('FUNC_IMPURE', 'none') | map(attribute='SUM_IMPURE') | map('int') | sum ) + (data[0].INVS[:invoiceIndex] | map(attribute='FUNC_IMPURE') | map(attribute=0) | map(attribute='amount') | map('int') | sum ) ) | money }} {{currency_handler(data[0].INVS[invoiceIndex].FUNC_IMPURE[0]["currency"])}}
+                   {{ ((contract.INVS[:invoiceIndex] | selectattr('FUNC_IMPURE', 'none') | map(attribute='SUM_IMPURE') | map('int') | sum ) + (contract.INVS[:invoiceIndex] | map(attribute='FUNC_IMPURE') | map(attribute=0) | map(attribute='amount') | map('int') | sum ) ) | money }} {{currency_handler(contract.INVS[invoiceIndex].FUNC_IMPURE[0]["currency"])}}
+                   <br> 
+                   <span style="color: grey"> {{ ((contract.INVS[:invoiceIndex] | selectattr('FUNC_IMPURE', 'none') | map(attribute='SUM_IMPURE') | map('int') | sum ) + (contract.INVS[:invoiceIndex] | map(attribute='FUNC_IMPURE') | map(attribute=0) | map(attribute='amount') | map('int') | sum ) ) | digit2word }} ریال </span>
                 </td>            
             </tr>
             <tr>
@@ -228,9 +247,9 @@
             </tr>
         </tbody>
     </table>
+    </div>
+
+    {%endfor%}
 
 </body>
 </html>
-
-
-{#digit2word#}

@@ -11,6 +11,12 @@
                 text-align: center;
                 font-size: 12px;
             }
+            @page {
+                size: A4 landscape;
+                margin: 2mm;
+            }
+
+            
         </style>
     </head>
     <body>
@@ -86,19 +92,23 @@
             }
         ]%}
 
+        <div class="page-break-container"></div>
         <table>
 
+            {%for contract in data%}
+
             <thead>
+
                 <tr>
-                    <th colspan="22" style = "background-color: #d6d2d2">صورت وضعیت های قرارداد</th>
+                    <th colspan="22" style = "background-color: #d6d2d2"> {{contract.NO_CONTR}} صورت وضعیت قرارداد</th>
                 </tr>
 
                 <tr style="background-color: #e9e6e6">
 
-                    <th>شناسه صورت وضعیت</th>
+                    <th>شماره صورت وضعیت</th>
+                    <th>تاریخ کارکرد تا</th>
                     <th>نوع صورت وضعیت</th>
                     <th>آیا قطعی است؟</th>
-                    <th>تاریخ کارکرد تا</th>
                     <th>تاریخ ارسال پیمانکار</th>
                     <th>تاریخ ارسال به کارفرما</th>
                     <th>تاریخ ارسال به مشاور</th>
@@ -122,14 +132,25 @@
 
             <tbody>
     
-                {%for contract in data%}
-                {%for invoice in contract.INVS%}
-                <tr>
+                
+                    {%if contract.INVS | length == 0%}
+                        <tr><td colspan="20">صورت وضعیتی برای قرارداد {{contract.NO_CONTR}} وجود ندارد.</td></tr>
+                    {%endif%}
 
-                    {%if invoice.id%}
+                {%for invoice in contract.INVS%}
+
+                <tr>
+            
+                    {%if invoice.NUM%}
                         <td>{{invoice.NUM}}</td>
                     {%else%}
                         <td>{{NO_DATA}}</td>
+                    {%endif%}
+
+                    {%if invoice.UNTIL_FUNC_DATE%}
+                        <td>{{invoice.UNTIL_FUNC_DATE | jalali}}</td>
+                    {%else%}
+                        {{NO_DATA}}
                     {%endif%}
 
                     {%if invoice.TYPE%}
@@ -146,13 +167,6 @@
                         {%endif%}
                     {%else%}
                         <td>{{NO_DATA}}</td>
-                    {%endif%}
-
-                    
-                    {%if invoice.UNTIL_FUNC_DATE%}
-                        <td>{{invoice.UNTIL_FUNC_DATE | jalali}}</td>
-                    {%else%}
-                        {{NO_DATA}}
                     {%endif%}
 
                     {%if invoice.DATE_SENT_CONTRACTOR%}
@@ -278,19 +292,16 @@
                     {%else%} 
                         <td>{{NO_DATA}}</td>
                     {%endif%}
-                      
                 </tr>
 
                 {%endfor%}
-                {%endfor%}
+                
 
                 <tr style = "background-color: #d6d2d2">
                     <td style="text-align: right"> مجموع:</td>
                     <td colspan="9"></td>
 
-                    {% set sum_amounts = data 
-                        | map(attribute="INVS")
-                        | sum(start=[])
+                    {% set sum_amounts = contract.INVS
                         | selectattr('FUNC_IMPURE', 'defined')
                         | map(attribute='FUNC_IMPURE')
                         | selectattr('0', 'defined')
@@ -301,9 +312,7 @@
                             {{sum_amounts | sum | int | money }} ریال
                         </td>
 
-                    {% set sum_amounts = data 
-                        | map(attribute="INVS")
-                        | sum(start=[])
+                    {% set sum_amounts = contract.INVS 
                         | selectattr('SUM_IMPURE', 'defined')
                         | map(attribute='SUM_IMPURE')
                         | selectattr('0', 'defined')
@@ -314,9 +323,7 @@
                             {{sum_amounts | sum | int | money }} ریال
                         </td>
 
-                    {% set sum_amounts = data 
-                        | map(attribute="INVS")
-                        | sum(start=[])
+                    {% set sum_amounts = contract.INVS 
                         | selectattr('AMNT_TAX', 'defined')
                         | map(attribute='AMNT_TAX')
                         | selectattr('0', 'defined')
@@ -327,9 +334,7 @@
                             {{sum_amounts | sum | int | money }} ریال
                         </td>
 
-                    {% set sum_amounts = data 
-                        | map(attribute="INVS")
-                        | sum(start=[])
+                    {% set sum_amounts = contract.INVS 
                         | selectattr('FUNC_PURE', 'defined')
                         | map(attribute='FUNC_PURE')
                         | selectattr('0', 'defined')
@@ -342,9 +347,7 @@
 
                     <td> -- </td>
 
-                    {% set sum_amounts = data 
-                        | map(attribute="INVS")
-                        | sum(start=[])
+                    {% set sum_amounts = contract.INVS 
                         | selectattr('PERFORM_DEDUC', 'defined')
                         | map(attribute='PERFORM_DEDUC')
                         | selectattr('0', 'defined')
@@ -355,9 +358,7 @@
                             {{sum_amounts | sum | int | money }} ریال
                         </td>
 
-                    {% set sum_amounts = data 
-                        | map(attribute="INVS")
-                        | sum(start=[])
+                    {% set sum_amounts = contract.INVS 
                         | selectattr('OTHER_DEDUC', 'defined')
                         | map(attribute='OTHER_DEDUC')
                         | selectattr('0', 'defined')
@@ -368,9 +369,7 @@
                             {{sum_amounts | sum | int | money }} ریال
                         </td>
 
-                    {% set sum_amounts = data 
-                        | map(attribute="INVS")
-                        | sum(start=[])
+                    {% set sum_amounts = contract.INVS 
                         | selectattr('PREPAY_DEPREC', 'defined')
                         | map(attribute='PREPAY_DEPREC')
                         | selectattr('0', 'defined')
@@ -381,9 +380,7 @@
                             {{sum_amounts | sum | int | money }} ریال
                         </td>
 
-                    {% set sum_amounts = data 
-                        | map(attribute="INVS")
-                        | sum(start=[])
+                    {% set sum_amounts = contract.INVS 
                         | selectattr('SUM_CNFRMED_MNG', 'defined')
                         | map(attribute='SUM_CNFRMED_MNG')
                         | selectattr('0', 'defined')
@@ -394,9 +391,7 @@
                             {{sum_amounts | sum | int | money }} ریال
                         </td>
 
-                    {% set sum_amounts = data 
-                        | map(attribute="INVS")
-                        | sum(start=[])
+                    {% set sum_amounts = contract.INVS 
                         | selectattr('SUM_CNFRMED_EMPLYR', 'defined')
                         | map(attribute='SUM_CNFRMED_EMPLYR')
                         | selectattr('0', 'defined')
@@ -407,9 +402,7 @@
                             {{sum_amounts | sum | int | money }} ریال
                         </td>
 
-                    {% set sum_amounts = data 
-                        | map(attribute="INVS")
-                        | sum(start=[])
+                    {% set sum_amounts = contract.INVS 
                         | selectattr('SUM_CNFRMED_CONSULT', 'defined')
                         | map(attribute='SUM_CNFRMED_CONSULT')
                         | selectattr('0', 'defined')
@@ -421,8 +414,12 @@
                         </td>
 
                 </tr>
+
+                {%endfor%}
+
             </tbody>
 
         </table>
+    </div>
     </body>
 </html>
