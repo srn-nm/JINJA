@@ -1,0 +1,196 @@
+<!-- ناقص -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
+            justify-content: center;
+        }
+
+        .mainContainer {
+            display: grid;
+            flex-direction: column;
+            gap: 10px; 
+            align-items: center; 
+            background-color: white;
+            font-family: sans-serif;
+        }
+        
+        .header {
+            display: flex;
+            flex-direction: column;
+            gap: 50px; 
+            align-items: center; 
+            border: 2px solid darkgrey;
+            padding:10px;
+            background-color: lightgray;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .charts-container {
+            display: flex;
+            flex-direction: row;
+            gap: 50px; 
+            align-items: center; 
+            border: 2px solid darkgrey;
+            padding: 40px;
+            background-color: lightgray;
+            border-radius: 10px;
+            box-shadow: 2px 2px 0px grey;
+        }
+
+        .pie-chart-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .pie-chart-nature {
+            display: flex;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background-image: conic-gradient(
+                midnightblue 0 90deg,
+                darkred 90deg 240deg,
+                grey 0
+            );
+            margin: 45px;
+        }
+
+        .pie-chart-status {
+            display: flex;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background-image: conic-gradient(
+                midnightblue 0 90deg,
+                darkred 90deg 240deg,
+                grey 0
+            );
+            margin: 45px;
+        }
+
+        .pie-chart-type {
+            display: flex;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background-image: conic-gradient(
+                midnightblue 0 90deg,
+                darkred 90deg 240deg,
+                grey 0
+            );
+            margin: 45px;
+        }
+
+        @page {
+            size: a4 landscape;
+            margin: 2mm
+        }
+        
+    </style>
+
+    {%set STATUS_ENUM = [
+        {
+          "value": 0,
+          "label": "خاتمه داده شده",
+          "sort": 1
+        },
+        {
+          "value": 1,
+          "label": "فسخ شده",
+          "sort": 2
+        },
+        {
+          "value": 2,
+          "label": "تکمیل شده",
+          "sort": 3
+        }
+    ]%}
+
+    {%set TYPE_ENUM = [
+        {
+          "value": 0,
+          "label": "تدارکات/تامین کالا",
+          "sort": 1
+        },
+        {
+          "value": 1,
+          "label": "مشاوره ای",
+          "sort": 2
+        },
+        {
+          "value": 2,
+          "label": "انفورماتیک (IT)",
+          "sort": 3
+        },
+        {
+          "value": 3,
+          "label": "خدمات",
+          "sort": 4
+        }
+    ]%}
+
+    {%set NATURE_ENUM = [
+        {
+          "value": 0,
+          "label": "درآمدی",
+          "sort": 1
+        },
+        {
+          "value": 1,
+          "label": "هزینه ای",
+          "sort": 2
+        }
+    ]%}
+
+</head>
+<body>
+    <div class="wrapper">
+        <div class="mainContainer">
+            <!-- <div class="header">
+                Data to be shown here...
+            </div> -->
+            <div class="charts-container">
+
+                <div class="pie-chart-container">
+                    <br>
+                    <div class="pie-chart-nature"></div>
+                    <ul>
+                        {%for nature in NATURE_ENUM%}
+                        <li>{{nature.label}}</li>
+                        {%endfor%}
+                    </ul>
+                </div>
+
+                <div class="pie-chart-container">
+                    <br>
+                    <div class="pie-chart-status"></div>
+                    <ul>
+                        {%for status in STATUS_ENUM%}
+                            <li>{{status.label}}</li>
+                        {%endfor%}
+                    </ul>
+                </div>
+
+                <div class="pie-chart-container">
+                    <br>
+                    <div class="pie-chart-type"></div>
+                    <ul>
+                        {%for type in TYPE_ENUM%}
+                            <li>{{type.label}}</li>
+                        {%endfor%}
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>
