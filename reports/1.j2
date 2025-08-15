@@ -1,0 +1,375 @@
+{#صفحه خلاصه قراردادهای جاری و شروع نشده#}
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+    <title>صفحه خلاصه قراردادهای جاری و شروع نشده</title>
+    <style>
+        body {
+            font-family: 'Vazir FD';
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 2px solid #444;
+            background-color: #fdfdfd;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 40px;
+            background-color: white;
+            vertical-align: middle;
+        }
+        td, th {
+            padding: 15px;
+            text-align: center;
+            font-size: 17px;
+            vertical-align: top;
+            background-color: #f0f0f0;
+            font-weight: bold;
+            border: 1px solid #444;
+        }
+        th {
+            text-align: center;
+            font-size: 25px;
+        }
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
+            justify-content: center;
+        }
+
+        .mainContainer {
+            display: flex;
+            flex-direction: column;
+            justify-content: stretch;
+            gap: 20px; 
+            align-items: center; 
+            background-color: white;
+            font-family: sans-serif;
+
+            box-shadow: 2px 2px 0px grey;
+            border: 2px solid darkgrey;
+        }
+
+        .headers-container {
+            display: flex;
+            flex-direction: row; 
+            justify-content: center;
+            align-items: stretch;
+            gap: 30px; 
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .headers {
+            display: flex;
+            flex-direction: row; 
+            justify-content: center;
+            align-items: stretch;
+            gap: 30px; 
+            padding: 20px;
+
+            border: 3px solid darkgrey;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .charts-container {
+            display: flex;
+            flex-direction: row; 
+            justify-content: center;
+            align-items: stretch;
+            gap: 30px; 
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .pie-chart-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+
+            border: 3px solid darkgrey;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .pie-chart-nature,
+        .pie-chart-status,
+        .pie-chart-type {
+         
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background-image: conic-gradient(
+                midnightblue 0 90deg,
+                darkred 90deg 240deg,
+                grey 240deg 360deg
+            );
+            margin-bottom: 15px;
+        }
+
+        .legend {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 5px;
+            font-size: 14px;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            direction: rtl;
+            
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .legend li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-color {
+            width: 14px;
+            height: 14px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+        td.rotated-text-cell {
+            position: relative;   
+            width: 50px;            
+            vertical-align: top;     
+        }
+        td.rotated-text-cell .rotated-text {
+            position: absolute;
+            bottom: 180px;   
+            transform: translateX(-35%) rotate(-90deg); 
+            white-space: nowrap;
+        }
+        .page-break-container {
+            page-break-before: always;
+        }
+
+        @page {
+        size: A4 portrait;
+        margin: 2mm;
+        }
+
+
+    </style>
+
+
+    {%set STATUS_ENUM = [
+        {
+          "value": 0,
+          "label": "خاتمه داده شده",
+          "sort": 1
+        },
+        {
+          "value": 1,
+          "label": "فسخ شده",
+          "sort": 2
+        },
+        {
+          "value": 2,
+          "label": "تکمیل شده",
+          "sort": 3
+        }
+    ]%}
+
+    {%set TYPE_ENUM = [
+        {
+          "value": 0,
+          "label": "تدارکات/تامین کالا",
+          "sort": 1
+        },
+        {
+          "value": 1,
+          "label": "مشاوره ای",
+          "sort": 2
+        },
+        {
+          "value": 2,
+          "label": "انفورماتیک (IT)",
+          "sort": 3
+        },
+        {
+          "value": 3,
+          "label": "خدمات",
+          "sort": 4
+        }
+    ]%}
+
+    {%set NATURE_ENUM = [
+        {
+          "value": 0,
+          "label": "درآمدی",
+          "sort": 1
+        },
+        {
+          "value": 1,
+          "label": "هزینه ای",
+          "sort": 2
+        }
+    ]%}
+
+</head>
+<body>
+
+    <div class="page-break-container"></div>
+    <table>
+
+        <tr >
+            <td colspan="4" style= "background-color: darkgrey;">خلاصه قراردادهای جاری کیسون</td>
+        </tr>
+
+        <tr>
+            
+            <td>به تفکیک ماهیت</td>
+            <td>به تفکیک وضعیت</td>
+            <td>به تفکیک نوع</td>
+            <td></td>
+            
+        </tr>
+        <tr>
+            
+            <td style= "background-color: white;" > 
+                <div class="pie-chart-nature"></div>
+                    <ul class="legend">
+                        {% for nature in NATURE_ENUM %}
+                            <li>
+                                <span class="legend-color" style="background-color: {% if loop.index == 1 %}midnightblue{% elif loop.index == 2 %}darkred{% else %}grey{% endif %}"></span>
+                                {{ nature.label }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+            </td>
+            <td style= "background-color: white;">
+                <div class="pie-chart-status"></div>
+                    <ul class="legend">
+                        {% for status in STATUS_ENUM %}
+                            <li>
+                                <span class="legend-color" style="background-color: {% if loop.index == 1 %}midnightblue{% elif loop.index == 2 %}darkred{% else %}grey{% endif %}"></span>
+                                {{ status.label }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+            </td>
+
+            <td style= "background-color: white;">
+                <div class="pie-chart-type"></div>
+
+                    <ul class="legend">
+                        {% for type in TYPE_ENUM %}
+                            <li>
+                                <span class="legend-color" style="background-color: {% if loop.index == 1 %}midnightblue{% elif loop.index == 2 %}darkred{% elif loop.index == 3 %}grey{% else %}darkgrey{% endif %}"></span>
+                                {{ type.label }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+            </td>
+            <td class="rotated-text-cell" style="padding:0px;" >
+                <div class="rotated-text">تعداد کل قراردادها</div>
+            </td>
+
+        </tr>
+        <tr>
+            
+            <td style= "background-color: white;">
+                <div class="pie-chart-nature"></div>
+                    <ul class="legend">
+                        {% for nature in NATURE_ENUM %}
+                            <li>
+                                <span class="legend-color" style="background-color: {% if loop.index == 1 %}midnightblue{% elif loop.index == 2 %}darkred{% else %}grey{% endif %}"></span>
+                                {{ nature.label }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+            </td>
+            <td style= "background-color: white;">    
+                <div class="pie-chart-status"></div>
+                    <ul class="legend">
+                        {% for status in STATUS_ENUM %}
+                            <li>
+                                <span class="legend-color" style="background-color: {% if loop.index == 1 %}midnightblue{% elif loop.index == 2 %}darkred{% else %}grey{% endif %}"></span>
+                                {{ status.label }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+            </td>
+            <td style= "background-color: white;">
+                <div class="pie-chart-type"></div>
+                    <ul class="legend">
+                        {% for type in TYPE_ENUM %}
+                            <li>
+                                <span class="legend-color" style="background-color: {% if loop.index == 1 %}midnightblue{% elif loop.index == 2 %}darkred{% elif loop.index == 3 %}grey{% else %}darkgrey{% endif %}"></span>
+                                {{ type.label }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+            </td>
+            <td class="rotated-text-cell" style="padding:0px">
+                <div class="rotated-text">مجموع کل مبالغ قراردادها</div>
+            </td>
+
+        </tr>
+
+        <tr >
+            <td colspan="4" style= "background-color: darkgrey;"></td>
+        </tr>
+
+    </table>
+
+    <br>
+    <br>
+
+    <table>
+        <colgroup>
+            <col style="width:50%">
+            <col style="width:50%">
+        </colgroup>
+        <tr >
+            <td colspan="2" style= "background-color: darkgrey;">صورت وضعیت ها</td>
+        </tr>
+        <tr >
+            <td style="text-align:right; border-right-style: hidden;">-</td>
+            <td style="text-align:right">تعداد کل صورت وضعیت های ارسالی:</td>
+        </tr>
+        <tr >
+            <td style="text-align:right; border-right-style: hidden;">-</td>
+            <td style="text-align:right">تعداد کل صورت وضعیت های تاییدی:</td>
+        </tr> 
+        <tr >
+            <td style="text-align:right; background-color:white" colspan="2">ایکس درصد تعداد صورت وضعیت های ارسالی، تایید شده اند</td>
+        </tr>
+
+        <tr >
+            <td colspan="2" style= "background-color: darkgrey;"></td>
+        </tr>
+
+        <tr >
+            <td style="text-align:right; border-right-style: hidden;">-</td>
+            <td style="text-align:right">مبلغ کل صورت وضعیت های ارسالی:</td>
+        </tr>
+        <tr >
+            <td style="text-align:right; border-right-style: hidden;">-</td>
+            <td style="text-align:right">مبلغ کل صورت وضعیت های تاییدی:</td>  
+        </tr>
+        <tr >
+            <td style="text-align:right; background-color:white" colspan="2">ایکس درصد مبلغ صورت وضعیت های ارسالی، تایید شده اند</td>
+        </tr>
+
+        <tr >
+            <td colspan="2" style= "background-color: darkgrey;"></td>
+        </tr>
+
+    </table>
+
+    
+        
+</body>
+</html>

@@ -1,0 +1,133 @@
+{#جدول وضعیت قراردادهای جاری به ترتیب درآمدی هزینه ای#}
+
+<html lang="fa">
+    <head>
+        <title>جدول وضعیت قراردادهای جاری به ترتیب درآمدی هزینه ای</title>
+        <style>
+            body {
+                font-family: 'Vazir FD';
+            }
+            table, td, th {
+                border: 1px solid;
+                border-collapse: collapse;
+                direction: rtl;
+            }
+            table {
+                margin-left: auto;
+                margin-right: auto;
+                border: 2px solid #444;
+            }
+            td, th {
+                padding: 10px;
+                text-align: center;
+                font-size: 15px;
+            }
+            .page-break-container {
+            page-break-before: always;
+            }
+
+            @page {
+            size: A4 portrait;
+            margin: 2mm;
+            }
+
+        </style>
+
+        {%set STATUS_ENUM = [
+        {
+          "value": 0,
+          "label": "خاتمه داده شده",
+          "sort": 1
+        },
+        {
+          "value": 1,
+          "label": "فسخ شده",
+          "sort": 2
+        },
+        {
+          "value": 2,
+          "label": "تکمیل شده",
+          "sort": 3
+        }
+        ]%}
+
+        {%set TYPE_ENUM = [
+            {
+            "value": 0,
+            "label": "تدارکات/تامین کالا",
+            "sort": 1
+            },
+            {
+            "value": 1,
+            "label": "مشاوره ای",
+            "sort": 2
+            },
+            {
+            "value": 2,
+            "label": "انفورماتیک (IT)",
+            "sort": 3
+            },
+            {
+            "value": 3,
+            "label": "خدمات",
+            "sort": 4
+            }
+        ]%}
+
+        {%set NATURE_ENUM = [
+            {
+            "value": 0,
+            "label": "درآمدی",
+            "sort": 1
+            },
+            {
+            "value": 1,
+            "label": "هزینه ای",
+            "sort": 2
+            }
+        ]%}
+
+    </head>
+    <body>
+
+        {% set NO_DATA = "<span style='font-size:12;color:gray;'>اطلاعات ناموجود</span>" %}
+
+        <div class="page-break-container"></div>
+        <table>
+
+            <thead>
+                <tr>
+                    <th colspan="9" style = "background-color: #d6d2d2">وضعیت قراردادهای جاری کیتکو</th>
+                </tr>
+
+                <tr style = "background-color: #e9e6e6">
+                    <th rowspan="2">نام قرارداد</th>
+                    <th rowspan="2">طرف قرارداد</th>
+                    <th rowspan="2">وضعیت</th>
+                    <th rowspan="2">تعداد صورت وضعیت ارسالی</th>
+                    <th rowspan="2">تعداد صورت وضعیت تاییدی</th>
+                    <th rowspan="2">صورت وضعیت قطعی</th>
+                    <th colspan="2">اختتام</th>
+                </tr>
+                <tr>
+                    <th style = "background-color: #e9e6e6">تحویل</th>
+                    <th style = "background-color: #e9e6e6">مفاصاحساب</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+
+        </table>
+    </body>
+</html>

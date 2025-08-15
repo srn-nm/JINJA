@@ -1,0 +1,216 @@
+{#صفحه خلاصه هر قرارداد#}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+    <title>صفحه خلاصه هر قرارداد</title>
+    <style>
+        body {
+            font-family: 'Vazir FD';
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 2px solid #444;
+            background-color: #fdfdfd;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 40px;
+            background-color: white;
+            vertical-align: middle;
+        }
+        td, th {
+            padding: 14px;
+            text-align: center;
+            font-size: 15px;
+            vertical-align: top;
+            background-color: #f0f0f0;
+            font-weight: bold;
+            border: 1px solid #444;
+        }
+        th {
+            text-align: center;
+            font-size: 25px;
+        }
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
+            justify-content: center;
+        }
+
+        .mainContainer {
+            display: flex;
+            flex-direction: column;
+            justify-content: stretch;
+            gap: 20px; 
+            align-items: center; 
+            background-color: white;
+            font-family: sans-serif;
+
+            box-shadow: 2px 2px 0px grey;
+            border: 2px solid darkgrey;
+        }
+
+        .headers-container {
+            display: flex;
+            flex-direction: row; 
+            justify-content: center;
+            align-items: stretch;
+            gap: 30px; 
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .headers {
+            display: flex;
+            flex-direction: row; 
+            justify-content: center;
+            align-items: stretch;
+            gap: 30px; 
+            padding: 20px;
+
+            border: 3px solid darkgrey;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .page-break-container {
+            page-break-before: always;
+        }
+
+        @page {
+        size: A4 portrait;
+        margin: 2mm;
+        }
+        
+    </style>
+
+    {%set STATUS_ENUM = [
+        {
+          "value": 0,
+          "label": "خاتمه داده شده",
+          "sort": 1
+        },
+        {
+          "value": 1,
+          "label": "فسخ شده",
+          "sort": 2
+        },
+        {
+          "value": 2,
+          "label": "تکمیل شده",
+          "sort": 3
+        }
+    ]%}
+
+    {%set TYPE_ENUM = [
+        {
+          "value": 0,
+          "label": "تدارکات/تامین کالا",
+          "sort": 1
+        },
+        {
+          "value": 1,
+          "label": "مشاوره ای",
+          "sort": 2
+        },
+        {
+          "value": 2,
+          "label": "انفورماتیک (IT)",
+          "sort": 3
+        },
+        {
+          "value": 3,
+          "label": "خدمات",
+          "sort": 4
+        }
+    ]%}
+
+    {%set NATURE_ENUM = [
+        {
+          "value": 0,
+          "label": "درآمدی",
+          "sort": 1
+        },
+        {
+          "value": 1,
+          "label": "هزینه ای",
+          "sort": 2
+        }
+    ]%}
+
+</head>
+<body>
+    <div class="page-break-container"></div>
+    <table>
+        <colgroup>
+            <col style="width:25%">
+            <col style="width:25%">
+            <col style="width:25%">
+            <col style="width:25%">
+        </colgroup>
+
+        <tr >
+            <td colspan="4" style= "background-color: darkgrey;">خلاصه قرارداد</tdd>
+        </tr>
+
+        <tr >
+            <td style="text-align:right; background-color:white">مبلغ کل قرارداد:</td>
+            <td style="text-align:right; background-color:white">طرف:</td>
+            <td style="text-align:right; background-color:white">وضعیت:</td>
+            <td style="text-align:right; background-color:white">نام:</td>
+        </tr>
+
+        <tr>
+            <td colspan="2" style="text-align:right; border-right-style: hidden;">-</td>
+            <td colspan="2" style="text-align:right">متوسط زمان بین ارسال تا تایید صورت وضعیت:</td>
+        </tr>
+
+        <tr>
+            <td colspan="2" style="text-align:right; border-right-style: hidden; background-color:white"">-</td>
+            <td colspan="2" style="text-align:right; background-color:white"">درصد مبلغ کل صورت وضعیت های تاییدی به مبلغ کل قرارداد:</td>        </tr>
+
+        <tr>
+            <td colspan="4" style= "background-color: darkgrey;">صورت وضعیت های قرارداد</td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align:right; border-right-style: hidden;">-</td>
+            <td colspan="2" style="text-align:right">تعداد کل صورت وضعیت های ارسالی:</td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align:right; border-right-style: hidden;">-</td>
+            <td colspan="2" style="text-align:right">تعداد کل صورت وضعیت های تاییدی:</td>
+        </tr> 
+        <tr>
+            <td colspan="4" style="text-align:right; background-color:white" colspan="2">ایکس درصد تعداد صورت وضعیت های ارسالی، تایید شده اند</td>
+        </tr>
+
+        <tr>
+            <td colspan="4" style= "background-color: darkgrey;"></td>
+        </tr>
+
+        <tr >
+            <td colspan="2" style="text-align:right; border-right-style: hidden;">-</td>
+            <td colspan="2" style="text-align:right">مبلغ کل صورت وضعیت های ارسالی:</td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align:right; border-right-style: hidden;">-</td>
+            <td colspan="2" style="text-align:right">مبلغ کل صورت وضعیت های تاییدی:</td>  
+        </tr>
+        <tr>
+            <td colspan="4" style="text-align:right; background-color:white" colspan="2">ایکس درصد مبلغ صورت وضعیت های ارسالی، تایید شده اند</td>
+        </tr>
+
+        <tr>
+            <td colspan="4" style= "background-color: darkgrey;"></td>
+        </tr>
+
+    </table>
+
+  
+        
+</body>
+</html>
