@@ -96,59 +96,11 @@
         
     </style>
 
-    {%set STATUS_ENUM = [
-        {
-          "value": 0,
-          "label": "خاتمه داده شده",
-          "sort": 1
-        },
-        {
-          "value": 1,
-          "label": "فسخ شده",
-          "sort": 2
-        },
-        {
-          "value": 2,
-          "label": "تکمیل شده",
-          "sort": 3
-        }
-    ]%}
+    
 
-    {%set TYPE_ENUM = [
-        {
-          "value": 0,
-          "label": "تدارکات/تامین کالا",
-          "sort": 1
-        },
-        {
-          "value": 1,
-          "label": "مشاوره ای",
-          "sort": 2
-        },
-        {
-          "value": 2,
-          "label": "انفورماتیک (IT)",
-          "sort": 3
-        },
-        {
-          "value": 3,
-          "label": "خدمات",
-          "sort": 4
-        }
-    ]%}
+    
 
-    {%set NATURE_ENUM = [
-        {
-          "value": 0,
-          "label": "درآمدی",
-          "sort": 1
-        },
-        {
-          "value": 1,
-          "label": "هزینه ای",
-          "sort": 2
-        }
-    ]%}
+    
 
 </head>
 <body>
@@ -163,9 +115,11 @@
                     <br>
                     <div class="pie-chart-nature"></div>
                     <ul>
-                        {%for nature in NATURE_ENUM%}
-                        <li>{{nature.label}}</li>
-                        {%endfor%}
+                        
+                        <li>درآمدی</li>
+                        
+                        <li>هزینه ای</li>
+                        
                     </ul>
                 </div>
 
@@ -173,9 +127,13 @@
                     <br>
                     <div class="pie-chart-status"></div>
                     <ul>
-                        {%for status in STATUS_ENUM%}
-                            <li>{{status.label}}</li>
-                        {%endfor%}
+                        
+                            <li>خاتمه داده شده</li>
+                        
+                            <li>فسخ شده</li>
+                        
+                            <li>تکمیل شده</li>
+                        
                     </ul>
                 </div>
 
@@ -183,9 +141,15 @@
                     <br>
                     <div class="pie-chart-type"></div>
                     <ul>
-                        {%for type in TYPE_ENUM%}
-                            <li>{{type.label}}</li>
-                        {%endfor%}
+                        
+                            <li>تدارکات/تامین کالا</li>
+                        
+                            <li>مشاوره ای</li>
+                        
+                            <li>انفورماتیک (IT)</li>
+                        
+                            <li>خدمات</li>
+                        
                     </ul>
                 </div>
 
