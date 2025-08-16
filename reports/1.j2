@@ -19,137 +19,47 @@
             padding: 40px;
             background-color: white;
             vertical-align: middle;
+            direction: rtl;
         }
         td, th {
             padding: 15px;
             text-align: center;
-            font-size: 17px;
+            font-size: 13px;
             vertical-align: top;
+            justify-content: center;
+            align-items: center;
             background-color: #f0f0f0;
             font-weight: bold;
             border: 1px solid #444;
+        }
+        td.chart {
+            vertical-align: top;
         }
         th {
             text-align: center;
             font-size: 25px;
         }
-        .wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center; 
-            justify-content: center;
+        
+        .pie-container {
+            width: 70px;
+            height: 70px;
         }
-
-        .mainContainer {
-            display: flex;
-            flex-direction: column;
-            justify-content: stretch;
-            gap: 20px; 
-            align-items: center; 
-            background-color: white;
-            font-family: sans-serif;
-
-            box-shadow: 2px 2px 0px grey;
-            border: 2px solid darkgrey;
-        }
-
-        .headers-container {
-            display: flex;
-            flex-direction: row; 
-            justify-content: center;
-            align-items: stretch;
-            gap: 30px; 
-            padding: 20px;
-            border-radius: 10px;
-        }
-
-        .headers {
-            display: flex;
-            flex-direction: row; 
-            justify-content: center;
-            align-items: stretch;
-            gap: 30px; 
-            padding: 20px;
-
-            border: 3px solid darkgrey;
-            padding: 20px;
-            border-radius: 10px;
-        }
-
-        .charts-container {
-            display: flex;
-            flex-direction: row; 
-            justify-content: center;
-            align-items: stretch;
-            gap: 30px; 
-            padding: 20px;
-            border-radius: 10px;
-        }
-
-        .pie-chart-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-
-            border: 3px solid darkgrey;
-            padding: 20px;
-            border-radius: 10px;
-        }
-
-        .pie-chart-nature,
-        .pie-chart-status,
-        .pie-chart-type {
-         
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            background-image: conic-gradient(
-                midnightblue 0 90deg,
-                darkred 90deg 240deg,
-                grey 240deg 360deg
-            );
-            margin-bottom: 15px;
-        }
-
         .legend {
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
             gap: 5px;
-            font-size: 14px;
-            padding: 0;
-            margin: 0;
-            list-style: none;
-            direction: rtl;
-            
-            padding: 10px;
-            border-radius: 10px;
+            font-family: sans-serif;
+            margin-top: 10px;
+            align-items: start;
+            font-family: 'Vazir FD';
         }
-
-        .legend li {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
         .legend-color {
-            width: 14px;
-            height: 14px;
-            border-radius: 3px;
-            flex-shrink: 0;
+            display: inline-block;
+            width: 7px;
+            height: 7px;
+            margin-right: 5px;
         }
-        td.rotated-text-cell {
-            position: relative;   
-            width: 50px;            
-            vertical-align: top;     
-        }
-        td.rotated-text-cell .rotated-text {
-            position: absolute;
-            bottom: 180px;   
-            transform: translateX(-35%) rotate(-90deg); 
-            white-space: nowrap;
-        }
+        
         .page-break-container {
             page-break-before: always;
         }
@@ -217,6 +127,7 @@
         }
     ]%}
 
+
 </head>
 <body>
 
@@ -224,98 +135,208 @@
     <table>
 
         <tr >
-            <td colspan="4" style= "background-color: darkgrey;">خلاصه قراردادهای جاری کیسون</td>
+            <td colspan="4" style= "background-color: darkgrey; ">خلاصه قراردادهای جاری کیسون</td>
         </tr>
 
         <tr>
-            
+
+            <td></td>
             <td>به تفکیک ماهیت</td>
             <td>به تفکیک وضعیت</td>
             <td>به تفکیک نوع</td>
-            <td></td>
+            
             
         </tr>
         <tr>
+
+            <td style="vertical-align: center;">
+                تعداد کل قراردادها
+            </td>
+
+            <td style="align-items: center; background-color:white;">
+                
+
+                    <svg width="70" height="70" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" style="margin:5px">
+
+                        <circle r="10" cx="10" cy="10" fill="lightgray" />
+                        <circle r="5" cx="10" cy="10"
+                            fill="transparent"
+                            stroke="midnightblue"
+                            stroke-width="10"
+                            stroke-dasharray="{{(data | selectattr("NATURE", "equalto", [0]) | list | length) / (data | length) * 0.314159}} 31.4159"
+                            transform="rotate(-90 10 10)" />
+
+                    </svg>
+
+                    <div class="legend">
+                        <div><span class="legend-color" style="background-color: midnightblue;"></span>درآمدی</div>
+                        <div><span class="legend-color" style="background-color: lightgray;"></span>هزینه ای</div>
+                        
+                    </div>
+          
+            </td>
+
+            <td style="align-items: center; background-color:white;">
+                
+
+                    <svg width="70" height="70" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" style="margin:5px">
+
+                        <circle r="10" cx="10" cy="10" fill="lightgray" />
+                        <circle r="5" cx="10" cy="10"
+                            fill="transparent"
+                            stroke="midnightblue"
+                            stroke-width="10"
+                            stroke-dasharray="11 31.4"
+                            transform="rotate(-90 10 10)" />
+                        <circle r="5" cx="10" cy="10"
+                            fill="transparent"
+                            stroke="blue"
+                            stroke-width="10"
+                            stroke-dasharray="15.7 31.4"
+                            transform="rotate(36 10 10)" />
+
+                    </svg>
+
+                    <div class="legend">
+                        <div><span class="legend-color" style="background-color: midnightblue;"></span>خاتمه داده شده</div>
+                        <div><span class="legend-color" style="background-color: blue;"></span>فسخ شده</div>
+                        <div><span class="legend-color" style="background-color: lightgray;"></span>تکمیل شده</div>
+                    </div>
+          
+            </td>
+
+             <td style="align-items: center; background-color:white;">
+
+                    <svg width="70" height="70" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" style="margin:5px">
+
+                        <circle r="10" cx="10" cy="10" fill="lightgray" />
+                        <circle r="5" cx="10" cy="10"
+                            fill="transparent"
+                            stroke="midnightblue"
+                            stroke-width="10"
+                            stroke-dasharray="11 31.4"
+                            transform="rotate(-90 10 10)" />
+                        <circle r="5" cx="10" cy="10"
+                            fill="transparent"
+                            stroke="lightblue"
+                            stroke-width="10"
+                            stroke-dasharray="15.7 31.4"
+                            transform="rotate(36 10 10)" />
+
+                        <circle r="5" cx="10" cy="10"
+                            fill="transparent"
+                            stroke="blue"
+                            stroke-width="10"
+                            stroke-dasharray="1.57 31.4"
+                            transform="rotate(216 10 10)" />
+
+                    </svg>
+
+                    <div class="legend">
+                        <div><span class="legend-color" style="background-color: midnightblue;"></span>تدارکات/تامین کالا</div>
+                        <div><span class="legend-color" style="background-color: lightblue;"></span>مشاوره ای</div>
+                        <div><span class="legend-color" style="background-color: blue;"></span>انفورماتیک</div>
+                        <div><span class="legend-color" style="background-color: lightgrey;"></span>خدمات</div>
+                    </div>
+          
+            </td>
             
-            <td style= "background-color: white;" > 
-                <div class="pie-chart-nature"></div>
-                    <ul class="legend">
-                        {% for nature in NATURE_ENUM %}
-                            <li>
-                                <span class="legend-color" style="background-color: {% if loop.index == 1 %}midnightblue{% elif loop.index == 2 %}darkred{% else %}grey{% endif %}"></span>
-                                {{ nature.label }}
-                            </li>
-                        {% endfor %}
-                    </ul>
-            </td>
-            <td style= "background-color: white;">
-                <div class="pie-chart-status"></div>
-                    <ul class="legend">
-                        {% for status in STATUS_ENUM %}
-                            <li>
-                                <span class="legend-color" style="background-color: {% if loop.index == 1 %}midnightblue{% elif loop.index == 2 %}darkred{% else %}grey{% endif %}"></span>
-                                {{ status.label }}
-                            </li>
-                        {% endfor %}
-                    </ul>
-            </td>
-
-            <td style= "background-color: white;">
-                <div class="pie-chart-type"></div>
-
-                    <ul class="legend">
-                        {% for type in TYPE_ENUM %}
-                            <li>
-                                <span class="legend-color" style="background-color: {% if loop.index == 1 %}midnightblue{% elif loop.index == 2 %}darkred{% elif loop.index == 3 %}grey{% else %}darkgrey{% endif %}"></span>
-                                {{ type.label }}
-                            </li>
-                        {% endfor %}
-                    </ul>
-            </td>
-            <td class="rotated-text-cell" style="padding:0px;" >
-                <div class="rotated-text">تعداد کل قراردادها</div>
-            </td>
 
         </tr>
         <tr>
+
             
-            <td style= "background-color: white;">
-                <div class="pie-chart-nature"></div>
-                    <ul class="legend">
-                        {% for nature in NATURE_ENUM %}
-                            <li>
-                                <span class="legend-color" style="background-color: {% if loop.index == 1 %}midnightblue{% elif loop.index == 2 %}darkred{% else %}grey{% endif %}"></span>
-                                {{ nature.label }}
-                            </li>
-                        {% endfor %}
-                    </ul>
-            </td>
-            <td style= "background-color: white;">    
-                <div class="pie-chart-status"></div>
-                    <ul class="legend">
-                        {% for status in STATUS_ENUM %}
-                            <li>
-                                <span class="legend-color" style="background-color: {% if loop.index == 1 %}midnightblue{% elif loop.index == 2 %}darkred{% else %}grey{% endif %}"></span>
-                                {{ status.label }}
-                            </li>
-                        {% endfor %}
-                    </ul>
-            </td>
-            <td style= "background-color: white;">
-                <div class="pie-chart-type"></div>
-                    <ul class="legend">
-                        {% for type in TYPE_ENUM %}
-                            <li>
-                                <span class="legend-color" style="background-color: {% if loop.index == 1 %}midnightblue{% elif loop.index == 2 %}darkred{% elif loop.index == 3 %}grey{% else %}darkgrey{% endif %}"></span>
-                                {{ type.label }}
-                            </li>
-                        {% endfor %}
-                    </ul>
-            </td>
-            <td class="rotated-text-cell" style="padding:0px">
-                <div class="rotated-text">مجموع کل مبالغ قراردادها</div>
+            <td style="vertical-align: center;">مجموع کل مبالغ قراردادها</td>
+            
+            
+            <td style="align-items: center; background-color:white;">
+                
+
+                    <svg width="70" height="70" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" style="margin:5px">
+
+                        <circle r="10" cx="10" cy="10" fill="lightgray" />
+                        <circle r="5" cx="10" cy="10"
+                            fill="transparent"
+                            stroke="midnightblue"
+                            stroke-width="10"
+                            stroke-dasharray="11 31.4"       {# "{{(data | selectattr("NATURE", "equalto", [0]) | map(attribute="FIRST_AMNT")| map(attribute="0") | map(attribute='amount') | list | sum) / (data | selectattr("FIRST_AMNT", "defined") | map(attribute="FIRST_AMNT")| | selectattr("0", "defined") | map(attribute="0") | selectattr("amount", "defined") | map(attribute='amount') | list | sum) * 0.314159}} 31.4159" #}
+                            transform="rotate(-90 10 10)" />
+
+                    </svg>
+
+                    <div class="legend">
+                        <div><span class="legend-color" style="background-color: midnightblue;"></span>درآمدی</div>
+                        <div><span class="legend-color" style="background-color: lightgray;"></span>هزینه ای</div>
+                        
+                    </div>
+          
             </td>
 
+            <td style="align-items: center; background-color:white;">
+                
+
+                    <svg width="70" height="70" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" style="margin:5px">
+
+                        <circle r="10" cx="10" cy="10" fill="lightgray" />
+                        <circle r="5" cx="10" cy="10"
+                            fill="transparent"
+                            stroke="midnightblue"
+                            stroke-width="10"
+                            stroke-dasharray="11 31.4"
+                            transform="rotate(-90 10 10)" />
+                        <circle r="5" cx="10" cy="10"
+                            fill="transparent"
+                            stroke="blue"
+                            stroke-width="10"
+                            stroke-dasharray="15.7 31.4"
+                            transform="rotate(36 10 10)" />
+
+                    </svg>
+
+                    <div class="legend">
+                        <div><span class="legend-color" style="background-color: midnightblue;"></span>خاتمه داده شده</div>
+                        <div><span class="legend-color" style="background-color: blue;"></span>فسخ شده</div>
+                        <div><span class="legend-color" style="background-color: lightgray;"></span>تکمیل شده</div>
+                    </div>
+          
+            </td>
+
+            <td style="align-items: center; background-color:white;">
+
+                    <svg width="70" height="70" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" style="margin:5px">
+
+                        <circle r="10" cx="10" cy="10" fill="lightgray" />
+                        <circle r="5" cx="10" cy="10"
+                            fill="transparent"
+                            stroke="midnightblue"
+                            stroke-width="10"
+                            stroke-dasharray="11 31.4"
+                            transform="rotate(-90 10 10)" />
+                        <circle r="5" cx="10" cy="10"
+                            fill="transparent"
+                            stroke="lightblue"
+                            stroke-width="10"
+                            stroke-dasharray="15.7 31.4"
+                            transform="rotate(36 10 10)" />
+
+                        <circle r="5" cx="10" cy="10"
+                            fill="transparent"
+                            stroke="blue"
+                            stroke-width="10"
+                            stroke-dasharray="1.57 31.4"
+                            transform="rotate(216 10 10)" />
+
+                    </svg>
+
+                    <div class="legend">
+                        <div><span class="legend-color" style="background-color: midnightblue;"></span>تدارکات/تامین کالا</div>
+                        <div><span class="legend-color" style="background-color: lightblue;"></span>مشاوره ای</div>
+                        <div><span class="legend-color" style="background-color: blue;"></span>انفورماتیک</div>
+                        <div><span class="legend-color" style="background-color: lightgrey;"></span>خدمات</div>
+                    </div>
+          
+            </td>
+           
         </tr>
 
         <tr >
@@ -335,41 +356,64 @@
         <tr >
             <td colspan="2" style= "background-color: darkgrey;">صورت وضعیت ها</td>
         </tr>
-        <tr >
-            <td style="text-align:right; border-right-style: hidden;">-</td>
+        {% set notConfirmedcount = 0 %}
+        {% for inv in data | map(attribute='INVS') | list %}
+            {% if inv.FUNC_IMPURE is not defined or inv.FUNC_IMPURE in [None, [], 0] %}
+                {% set notConfirmedcount = notConfirmedcount + 1 %}
+            {% endif %}
+        {% endfor %}
+        <tr>
             <td style="text-align:right">تعداد کل صورت وضعیت های ارسالی:</td>
+            <td style="text-align:right; border-right-style: hidden;">{{ data | map(attribute='INVS') | list | length }}</td>
         </tr>
-        <tr >
-            <td style="text-align:right; border-right-style: hidden;">-</td>
+        <tr>
             <td style="text-align:right">تعداد کل صورت وضعیت های تاییدی:</td>
+            <td style="text-align:right; border-right-style: hidden;">{{ data | map(attribute='INVS') | list | length - notConfirmedcount }}</td>
         </tr> 
-        <tr >
-            <td style="text-align:right; background-color:white" colspan="2">ایکس درصد تعداد صورت وضعیت های ارسالی، تایید شده اند</td>
+        <tr>
+            <td colspan="2" style="text-align:right; background-color:white" colspan="2">{{((data | map(attribute='INVS') | list | length - notConfirmedcount) / (data | map(attribute='INVS') | list | length) * 100) | int }}% تعداد صورت وضعیت های ارسالی، تایید شده اند.</td>
+        </tr>
+
+        <tr>
+            <td colspan="2" style= "background-color: #d6d2d2;"></td>
         </tr>
 
         <tr >
-            <td colspan="2" style= "background-color: darkgrey;"></td>
-        </tr>
-
-        <tr >
-            <td style="text-align:right; border-right-style: hidden;">-</td>
             <td style="text-align:right">مبلغ کل صورت وضعیت های ارسالی:</td>
-        </tr>
-        <tr >
-            <td style="text-align:right; border-right-style: hidden;">-</td>
-            <td style="text-align:right">مبلغ کل صورت وضعیت های تاییدی:</td>  
-        </tr>
-        <tr >
-            <td style="text-align:right; background-color:white" colspan="2">ایکس درصد مبلغ صورت وضعیت های ارسالی، تایید شده اند</td>
+            <td style="text-align:right; border-right-style: hidden;">{{ data 
+                                                                            | selectattr("TOTAL_AMNT_INV_SENT", "defined") 
+                                                                            | map(attribute="TOTAL_AMNT_INV_SENT") | list
+                                                                            | map("int") 
+                                                                            | sum 
+                                                                            | money 
+                                                                            }} ریال
+                                                                            </td>                                                   
         </tr>
 
-        <tr >
-            <td colspan="2" style= "background-color: darkgrey;"></td>
+        <tr>
+            <td style="text-align:right">مبلغ کل صورت وضعیت های تاییدی: </td>  
+            <td style="text-align:right; border-right-style: hidden;">   {{ data 
+                                                                            | selectattr("TOTAL_INV_CNFRMED", "defined") 
+                                                                            | map(attribute="TOTAL_INV_CNFRMED") | list
+                                                                            | map("int") 
+                                                                            | sum 
+                                                                            | money 
+                                                                            }} ریال
+                                                                            </td>
+                                                                                    
+        </tr>
+
+        <tr>
+            <td colspan="2" style="text-align:right; background-color:white" colspan="2">{{((data | selectattr("TOTAL_INV_CNFRMED", "defined") | map(attribute="TOTAL_INV_CNFRMED") | list| map("int") | sum ) / (data | selectattr("TOTAL_AMNT_INV_SENT", "defined") | map(attribute="TOTAL_AMNT_INV_SENT") | list| map("int") | sum ) * 100) | int }}% مبلغ صورت وضعیت های ارسالی، تایید شده اند.</td>
+        </tr>
+
+    
+
+        <tr>
+            <td colspan="2" style= "background-color: #d6d2d2;"></td>
         </tr>
 
     </table>
 
-    
-        
 </body>
 </html>

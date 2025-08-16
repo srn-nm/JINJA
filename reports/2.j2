@@ -13,6 +13,7 @@
                 direction: rtl;
             }
             table {
+                width: 100%;
                 margin-left: auto;
                 margin-right: auto;
                 border: 2px solid #444;
@@ -20,38 +21,48 @@
             td, th {
                 padding: 10px;
                 text-align: center;
-                font-size: 15px;
+                font-size: 13px;
             }
             .page-break-container {
             page-break-before: always;
             }
 
             @page {
-            size: A4 portrait;
+            size: A4 landscape;
             margin: 2mm;
             }
 
         </style>
 
-        {%set STATUS_ENUM = [
-        {
-          "value": 0,
-          "label": "خاتمه داده شده",
-          "sort": 1
-        },
-        {
-          "value": 1,
-          "label": "فسخ شده",
-          "sort": 2
-        },
-        {
-          "value": 2,
-          "label": "تکمیل شده",
-          "sort": 3
-        }
+        {%set ENUM_STATE = [
+            {
+            "value": 0,
+            "label": "شروع نشده",
+            "sort": 1
+            },
+            {
+            "value": 1,
+            "label": "جاری",
+            "sort": 2
+            },
+            {
+            "value": 2,
+            "label": "تکمیل شده",
+            "sort": 3
+            },
+            {
+            "value": 3,
+            "label": "خاتمه داده شده",
+            "sort": 4
+            },
+            {
+            "value": 4,
+            "label": "فسخ شده",
+            "sort": 5
+            }
         ]%}
 
-        {%set TYPE_ENUM = [
+        {%set ENUM_TYPE = [
             {
             "value": 0,
             "label": "تدارکات/تامین کالا",
@@ -92,13 +103,20 @@
 
         {% set NO_DATA = "<span style='font-size:12;color:gray;'>اطلاعات ناموجود</span>" %}
 
+     
         <div class="page-break-container"></div>
         <table>
 
+               
+
             <thead>
                 <tr>
-                    <th colspan="9" style = "background-color: #d6d2d2">وضعیت قراردادهای جاری کیتکو</th>
+                    <th colspan="9" style = "background-color: #d6d2d2">وضعیت قراردادهای درآمدی کیتکو</th>
                 </tr>
+
+                {%if data | selectattr('NATURE', 'equalto', [0]) | list | length == 0 %}
+                <tr><td colspan="8">قرارداد درآمدی ای برای نمایش وجود ندارد.</td></tr>
+                {%else%}
 
                 <tr style = "background-color: #e9e6e6">
                     <th rowspan="2">نام قرارداد</th>
@@ -116,18 +134,147 @@
             </thead>
 
             <tbody>
+                
+
+                {%for contract in data | selectattr('NATURE', 'equalto', [0]) | list%}
                 <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    {%if contract.TITLE%}
+                        <td>{{contract.TITLE}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+
+                    <td>{{contract.SIDE[0].PERSON_NAME}}</td>
+
+                    {%if contract.STATE%}
+                        <td>{{ENUM_STATE[contract.STATE[0]].label}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+
+
+                    {% set notConfirmedcount = 0 %}
+                    {% for inv in contract.INVS %}
+                        {% if inv.FUNC_IMPURE is not defined or inv.FUNC_IMPURE in [None, [], 0] %}
+                            {% set notConfirmedcount = notConfirmedcount + 1 %}
+                        {% endif %}
+                    {% endfor %}
+                    <td>{{ contract.INVS | length }}</td>
+                    <td>{{ contract.INVS | length - notConfirmedcount }}</td>
+                    
+                    {% set last_inv = contract.INVS[-1] if contract.INVS | length > 0 else None %}
+                    {% if last_inv is not none and 'FINAL' in last_inv and last_inv.FINAL %}
+                        <td>✓</td>
+                    {% else %}
+                        <td>×</td>
+                    {% endif %}
+
+                    {%if contract.DELIVERY is not none and contract.DELIVERY is defined and  contract.DELIVERY[0] is defined%}
+                        <td>✓</td>
+                    {% else %}
+                        <td>×</td>
+                    {% endif %}
+
+                    {%if contract.RECONCILIATION is not none and contract.RECONCILIATION is defined and  contract.RECONCILIATION[0] is defined%}
+                        <td>✓</td>
+                    {% else %}
+                        <td>×</td>
+                    {% endif %}
+            
                 </tr>
+                {%endfor%}
+                {%endif%}
             </tbody>
 
         </table>
+
+      
+
+        <br>
+
+        <table>
+
+        
+
+            <thead>
+                <tr>
+                    <th colspan="9" style = "background-color: #d6d2d2">وضعیت قراردادهای هزینه ای کیتکو</th>
+                </tr>
+
+                {%if data | selectattr('NATURE', 'equalto', [1]) | list | length == 0 %}
+                <tr><td colspan="8">قرارداد هزینه ای برای نمایش وجود ندارد.</td></tr>
+                {%else%}
+
+                <tr style = "background-color: #e9e6e6">
+                    <th rowspan="2">نام قرارداد</th>
+                    <th rowspan="2">طرف قرارداد</th>
+                    <th rowspan="2">وضعیت</th>
+                    <th rowspan="2">تعداد صورت وضعیت ارسالی</th>
+                    <th rowspan="2">تعداد صورت وضعیت تاییدی</th>
+                    <th rowspan="2">صورت وضعیت قطعی</th>
+                    <th colspan="2">اختتام</th>
+                </tr>
+                <tr>
+                    <th style = "background-color: #e9e6e6">تحویل</th>
+                    <th style = "background-color: #e9e6e6">مفاصاحساب</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+            
+
+                {%for contract in data | selectattr('NATURE', 'equalto', [1]) | list%}
+                <tr>
+                    {%if contract.TITLE%}
+                        <td>{{contract.TITLE}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+
+                    <td>{{contract.SIDE[0].PERSON_NAME}}</td>
+
+                    {%if contract.STATE%}
+                        <td>{{ENUM_STATE[contract.STATE[0]].label}}</td>
+                    {%else%}
+                        <td>{{NO_DATA}}</td>
+                    {%endif%}
+
+
+                    {% set notConfirmedcount = 0 %}
+                    {% for inv in contract.INVS %}
+                        {% if inv.FUNC_IMPURE is not defined or inv.FUNC_IMPURE in [None, [], 0] %}
+                            {% set notConfirmedcount = notConfirmedcount + 1 %}
+                        {% endif %}
+                    {% endfor %}
+                    <td>{{ contract.INVS | length }}</td>
+                    <td>{{ contract.INVS | length - notConfirmedcount }}</td>
+                    
+                    {% set last_inv = contract.INVS[-1] if contract.INVS | length > 0 else None %}
+                    {% if last_inv is not none and 'FINAL' in last_inv and last_inv.FINAL %}
+                        <td>✓</td>
+                    {% else %}
+                        <td>×</td>
+                    {% endif %}
+
+                    {%if contract.DELIVERY is not none and contract.DELIVERY is defined and  contract.DELIVERY[0] is defined%}
+                        <td>✓</td>
+                    {% else %}
+                        <td>×</td>
+                    {% endif %}
+
+                    {%if contract.RECONCILIATION is not none and contract.RECONCILIATION is defined and  contract.RECONCILIATION[0] is defined%}
+                        <td>✓</td>
+                    {% else %}
+                        <td>×</td>
+                    {% endif %}
+            
+                </tr>
+                {%endfor%}
+                {%endif%}
+            </tbody>
+
+        </table>
+ 
     </body>
 </html>
