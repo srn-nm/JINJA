@@ -176,10 +176,10 @@
             </tr>
             
             <tr>
-                <td colspan="2">مبلغ اولیه قرارداد: {{contract.FIRST_AMNT[0]['amount'] | int | money }} {{currency_handler(contract.FIRST_AMNT[0]["currency"])}}</td>
+                <td colspan="2">مبلغ اولیه قرارداد: {{contract.FIRST_AMNT[0]['amount'] | int | money }} ریال</td>
                 <td colspan="2">درصد پیشرفت ریالی(بااحتساب این صورت وضعیت): 
                     {%if contract and contract.PROG_FINANCE and contract.PROG_FINANCE is not none%}
-                        {{contract.PROG_FINANCE}} 
+                        {{(contract.PROG_FINANCE | round(0) | string).rstrip('.0')}} درصد
                     {%else%}
                         0 
                     {%endif%}
@@ -188,32 +188,36 @@
             <tr>
                 <td colspan="2" style="background-color: white;">مبلغ ناخالص تایید نشده تا صورت وضعیت دوره قبل : </td>
                 <td colspan="2" style="border-right-style: hidden; background-color: white;">
-                    {{ contract.INVS[:invoiceIndex] | selectattr('FUNC_IMPURE', 'none') | map(attribute='SUM_IMPURE') | map('int') | sum | money }} ریال
+                    {{ contract.INVS[:invoiceIndex] | selectattr('SUM_CNFRMED_EMPLYR', 'none') | map(attribute='SUM_IMPURE') | map('int') | sum | money }} ریال
                     <br>
-                    <span style="color: grey">{{ contract.INVS[:invoiceIndex] | selectattr('FUNC_IMPURE', 'none') | map(attribute='SUM_IMPURE') | map('int') | sum | digit2word }} ریال</span>
+                    <span style="color: grey">{{ contract.INVS[:invoiceIndex] | selectattr('SUM_CNFRMED_EMPLYR', 'none') | map(attribute='SUM_IMPURE') | map('int') | sum | digit2word }} ریال</span>
 
                 </td>
             </tr>
             <tr>
                 <td colspan="2" style="background-color: white;">مبلغ ناخالص تایید شده تا صورت وضعیت دوره قبل : </td>
                 <td colspan="2" style="border-right-style: hidden; background-color: white;">
-                    {{ contract.INVS[:invoiceIndex] | map(attribute='FUNC_IMPURE') | map(attribute=0) | map(attribute='amount') | map('int') | sum | money }} ریال
+                    {{ contract.INVS[:invoiceIndex] | map(attribute='SUM_CNFRMED_EMPLYR') | map(attribute=0) | map(attribute='amount') | map('int') | sum | money }} ریال
                     <br>
-                    <span style="color: grey">{{ contract.INVS[:invoiceIndex] | map(attribute='FUNC_IMPURE') | map(attribute=0) | map(attribute='amount') | map('int') | sum | digit2word }} ریال</span>
+                    <span style="color: grey">{{ contract.INVS[:invoiceIndex] | map(attribute='SUM_CNFRMED_EMPLYR') | map(attribute=0) | map(attribute='amount') | map('int') | sum | digit2word }} ریال</span>
 
                 </td>
             </tr>
-            <tr>
-                <td colspan="2" style="line-height:2.5;">
-                    مبلغ ناخالص صورت وضعیت این دوره : <br>
-                    کسورات : <br>
+            {#<tr>
+                <td colspan="2" style="line-height:2.5;" >
+                    مبلغ ناخالص صورت وضعیت این دوره : 
+                    <br>کسورات : <br>
                     مبلغ ناخالص نهایی صورت وضعیت این دوره :
-                    <br>
                     <br>
                 </td>
 
-                <td colspan="2" style="line-height:2.5; border-right-style: hidden;">
-                    {{contract.INVS[invoiceIndex].FUNC_IMPURE[0]['amount'] | int | money }} {{currency_handler(contract.INVS[invoiceIndex].FUNC_IMPURE[0]["currency"])}}
+                <td colspan="2" style= "line-height:2.5; border-right-style: hidden;">
+                    {%if contract.INVS[invoiceIndex].SUM_CNFRMED_EMPLYR  %}
+                        {{contract.INVS[invoiceIndex].SUM_CNFRMED_EMPLYR[0]['amount'] | int | money }} ریال</span>
+                    {%else%}
+                        {{0 | money }} ریال<br>
+                        <span style="color: grey">{{0 | digit2word }} ریال</span>
+                    {%endif%}
                     <br>
                     <br>
                     <hr/>
@@ -221,23 +225,36 @@
                     {%if contract.INVS[invoiceIndex].FUNC_PURE and contract.INVS[invoiceIndex].FUNC_PURE[0] %}
                         {{contract.INVS[invoiceIndex].FUNC_PURE[0]['amount'] | int | money}} <br><span style="color: grey">{{contract.INVS[invoiceIndex].FUNC_PURE[0]['amount'] | int | digit2word}} ریال</span>
                     {%else%}
-                        0 <br><span style="color: grey">{{0 | int | digit2word}} ریال</span>
-                    {%endif%}                    
+                        0  <span style="color: grey">&nbsp;&nbsp;&nbsp;&nbsp;{{0 | int | digit2word}} ریال</span>
+                    {%endif%}                   
                 </td>
             </tr>
+            #}
             <tr>
                 <td colspan="2" style="background-color: white;">مبلغ ناخالص تجمعی صورت وضعیت‌های ارسال شده تاکنون :</td>
 
                 <td colspan="2" style="background-color: white;  border-right-style: hidden;">
-                   {{ ((contract.INVS[:invoiceIndex] | selectattr('FUNC_IMPURE', 'none') | map(attribute='SUM_IMPURE') | map('int') | sum ) + (contract.INVS[:invoiceIndex] | map(attribute='FUNC_IMPURE') | map(attribute=0) | map(attribute='amount') | map('int') | sum ) ) | money }} {{currency_handler(contract.INVS[invoiceIndex].FUNC_IMPURE[0]["currency"])}}
+                   {{ contract.INVS[:(invoiceIndex+1)] | selectattr('SUM_IMPURE', 'defined' ) | map(attribute='SUM_IMPURE') | map(attribute='0') | map(attribute='amount') | map('int') | sum | money}} ریال
                    <br> 
-                   <span style="color: grey"> {{ ((contract.INVS[:invoiceIndex] | selectattr('FUNC_IMPURE', 'none') | map(attribute='SUM_IMPURE') | map('int') | sum ) + (contract.INVS[:invoiceIndex] | map(attribute='FUNC_IMPURE') | map(attribute=0) | map(attribute='amount') | map('int') | sum ) ) | digit2word }} ریال </span>
+                   <span style="color: grey"> {{ contract.INVS[:(invoiceIndex+1)] | selectattr('SUM_CNFRMED_EMPLYR', 'none') |  selectattr('SUM_IMPURE', 'defined' ) |  map(attribute='SUM_IMPURE') | map(attribute='0') | map(attribute='amount')  | map('int') | sum | digit2word }} ریال </span>
                 </td>            
             </tr>
             <tr>
-                <td colspan="4" style="line-height:2.5;">
-                    مبلغ ناخالص تایید شده صورت وضعیت این دوره (ریال): <br>
-                    مبلغ ناخالص تجمعی تایید شده صورت وضعیت‌های صادر شده تاکنون (ریال):
+                <td colspan="2" style="line-height:2.5;">
+                    مبلغ ناخالص تایید شده صورت وضعیت این دوره: <br><br>
+                    مبلغ ناخالص تجمعی تایید شده صورت وضعیت‌های صادر شده تاکنون:<br><br>
+                </td>
+                <td colspan="2" style="line-height:2.5;  border-right-style: hidden;">
+                    {%if data[0].INVS[invoiceIndex]['SUM_CNFRMED_EMPLYR'] %}
+                        {{ data[0].INVS[invoiceIndex]['SUM_CNFRMED_EMPLYR'][0]['amount'] | money }} ریال <br>
+                        <span style="color: grey">{{ data[0].INVS[invoiceIndex]['SUM_CNFRMED_EMPLYR'][0]['amount'] | digit2word }} ریال</span><br>
+                    {%else%}
+                        {{ 0 | money }} ریال <br>
+                        <span style="color: grey">{{ 0 | digit2word }} ریال</span><br>
+                    {%endif%}
+
+                    {{ data[0].INVS[:(invoiceIndex)] | map(attribute='SUM_CNFRMED_EMPLYR') | map(attribute=0) | map(attribute='amount') | map('int') | sum | money }} ریال <br>
+                    <span style="color: grey">{{ data[0].INVS[:(invoiceIndex)] | map(attribute='SUM_CNFRMED_EMPLYR') | map(attribute=0) | map(attribute='amount') | map('int') | sum | digit2word }} ریال</span>
                 </td>
             </tr>
 

@@ -1,0 +1,315 @@
+{
+    "name": "WARNING_HSE",
+    "properties": {
+        "ITEM": {
+            "title": {
+                "fa": "آیتم هشدار",
+                "en": null
+            },
+            "help": null,
+            "default": null,
+            "base_type": "array",
+            "editable": true,
+            "required": true,
+            "primary": true,
+            "calculated": false,
+            "searchable": true,
+            "sort": 1,
+            "ref": {
+                "ref_id": 166,
+                "deprecated": false,
+                "ref_display": null,
+                "ref_query": null
+            },
+            "group": "مشخصات هشدار",
+            "ui_type": "select",
+            "min": 1,
+            "max": 1,
+            "enum": null
+        },
+        "TYPE": {
+            "title": {
+                "fa": "نوع هشدار",
+                "en": null
+            },
+            "help": null,
+            "default": null,
+            "base_type": "array",
+            "editable": true,
+            "required": true,
+            "primary": true,
+            "calculated": false,
+            "searchable": true,
+            "sort": 3,
+            "ref": null,
+            "group": "مشخصات هشدار",
+            "ui_type": "select",
+            "min": 1,
+            "max": 2,
+            "enum": [
+                {
+                    "value": 0,
+                    "label": "اخطار کتبی",
+                    "sort": 1
+                },
+                {
+                    "value": 1,
+                    "label": "توقف کار",
+                    "sort": 2
+                }
+            ]
+        },
+        "CAUSE": {
+            "title": {
+                "fa": "علت هشدار",
+                "en": null
+            },
+            "help": null,
+            "default": null,
+            "base_type": "array",
+            "editable": true,
+            "required": true,
+            "primary": true,
+            "calculated": false,
+            "searchable": true,
+            "sort": 2,
+            "ref": null,
+            "group": "مشخصات هشدار",
+            "ui_type": "select",
+            "min": 1,
+            "max": 2,
+            "enum": [
+                {
+                    "value": 0,
+                    "label": "شرایط نامناسب",
+                    "sort": 1
+                },
+                {
+                    "value": 1,
+                    "label": "رفتار نامناسب",
+                    "sort": 2
+                }
+            ]
+        },
+        "DESCR": {
+            "title": {
+                "fa": "توضیحات هشدار",
+                "en": null
+            },
+            "help": null,
+            "default": null,
+            "base_type": "str",
+            "editable": true,
+            "required": true,
+            "primary": true,
+            "calculated": false,
+            "searchable": false,
+            "sort": 5,
+            "ref": null,
+            "group": "مشخصات هشدار",
+            "ui_type": "text",
+            "min": 1,
+            "max": 100,
+            "pattern": null
+        },
+        "IMAGE": {
+            "title": {
+                "fa": "تصویر هشدار",
+                "en": null
+            },
+            "help": null,
+            "default": null,
+            "base_type": "str",
+            "editable": true,
+            "required": true,
+            "primary": true,
+            "calculated": false,
+            "searchable": false,
+            "sort": 5,
+            "ref": null,
+            "group": "مشخصات هشدار",
+            "ui_type": "image",
+            "min": 1,
+            "max": 1,
+            "pattern": null
+        },
+        "LEVEL": {
+            "title": {
+                "fa": "درجه ریسک هشدار",
+                "en": null
+            },
+            "help": null,
+            "default": null,
+            "base_type": "number",
+            "editable": true,
+            "required": true,
+            "primary": true,
+            "calculated": false,
+            "searchable": true,
+            "sort": 6,
+            "ref": null,
+            "group": "مشخصات هشدار",
+            "ui_type": "rate",
+            "precision": 0,
+            "min": 1,
+            "max": 5
+        },
+        "OLD_ID": {
+            "title": {
+                "fa": "شناسه قدیمی",
+                "en": null
+            },
+            "help": null,
+            "default": null,
+            "base_type": "str",
+            "editable": false,
+            "required": false,
+            "primary": true,
+            "calculated": false,
+            "searchable": false,
+            "sort": 0,
+            "ref": null,
+            "group": "مشخصات هشدار",
+            "ui_type": "text",
+            "min": 1,
+            "max": 30,
+            "pattern": null
+        },
+        "PERSON": {
+            "title": {
+                "fa": "فرد خاطی",
+                "en": null
+            },
+            "help": null,
+            "default": null,
+            "base_type": "array",
+            "editable": true,
+            "required": true,
+            "primary": true,
+            "calculated": false,
+            "searchable": true,
+            "sort": 7,
+            "ref": {
+                "ref_id": 46,
+                "deprecated": false,
+                "ref_display": null,
+                "ref_query": null
+            },
+            "group": "مشخصات هشدار",
+            "ui_type": "select",
+            "min": 1,
+            "max": 1,
+            "enum": null
+        },
+        "PROJECT": {
+            "title": {
+                "fa": "پروژه مرتبط",
+                "en": null
+            },
+            "help": null,
+            "default": null,
+            "base_type": "array",
+            "editable": true,
+            "required": true,
+            "primary": true,
+            "calculated": false,
+            "searchable": true,
+            "sort": 8,
+            "ref": {
+                "ref_id": 42,
+                "deprecated": false,
+                "ref_display": null,
+                "ref_query": null
+            },
+            "group": "مشخصات هشدار",
+            "ui_type": "select",
+            "min": 1,
+            "max": 1,
+            "enum": null
+        },
+        "DATE_TIME": {
+            "title": {
+                "fa": "زمان هشدار",
+                "en": null
+            },
+            "help": null,
+            "default": null,
+            "base_type": "str",
+            "editable": true,
+            "required": true,
+            "primary": true,
+            "calculated": false,
+            "searchable": false,
+            "sort": 4,
+            "ref": null,
+            "group": "مشخصات هشدار",
+            "ui_type": "dateTime",
+            "min": 1,
+            "max": 1,
+            "pattern": null
+        },
+        "GEO_COORDINATE": {
+            "title": {
+                "fa": "موقعیت جغرافیایی",
+                "en": null
+            },
+            "help": null,
+            "default": null,
+            "base_type": "array",
+            "editable": true,
+            "required": false,
+            "primary": false,
+            "calculated": false,
+            "searchable": false,
+            "sort": 10,
+            "ref": null,
+            "group": "مشخصات هشدار",
+            "ui_type": "geometry",
+            "min": 2,
+            "max": 2,
+            "enum": null
+        },
+        "LOCAL_LOCATION": {
+            "title": {
+                "fa": "جزئیات محل هشدار",
+                "en": null
+            },
+            "help": null,
+            "default": null,
+            "base_type": "array",
+            "editable": true,
+            "required": true,
+            "primary": true,
+            "calculated": false,
+            "searchable": true,
+            "sort": 9,
+            "ref": null,
+            "group": "مشخصات هشدار",
+            "ui_type": "select",
+            "min": 1,
+            "max": 1,
+            "enum": [
+                {
+                    "value": 0,
+                    "label": "طبقات",
+                    "sort": 1
+                },
+                {
+                    "value": 1,
+                    "label": "همکف",
+                    "sort": 2
+                }
+            ]
+        }
+    },
+    "description": "هشدار",
+    "meta": {
+        "apps": [
+            "HSE"
+        ],
+        "isBase": false,
+        "displayField": "TYPE",
+        "recursive": false
+    },
+    "id": 163
+}

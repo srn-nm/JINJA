@@ -1,0 +1,418 @@
+{# جزئیات هشدار گروپ بای دسته بندی آیتم هشدار #}
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+    <title>جزئیات هشدار بر اساس دسته بندی آیتم هشدار</title>
+    <style>
+        body {
+            font-family: 'Vazir FD';
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 2px solid #444;
+            background-color: #fdfdfd;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 40px;
+            background-color: white;
+            vertical-align: middle;
+            direction: rtl;
+        }
+        td, th {
+            padding: 14px;
+            text-align: center;
+            font-size: 13px;
+            vertical-align: top;
+            background-color: #f0f0f0;
+            font-weight: bold;
+            border: 1px solid #444;
+        }
+        th {
+            text-align: center;
+            font-size: 25px;
+        }
+        .page-break-container {
+            page-break-before: always;
+        }
+
+
+        .chart {
+        display: flex;
+        align-items: flex-end;
+        gap: 10px;
+        height: 120px;
+        border-left: 2px solid #333;
+        border-bottom: 2px solid #333;
+        padding: 11px;
+        }
+    
+        .bar {
+        width: 40px;
+        background-color: #3c4eb1ff;
+        text-align: center;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        }
+        .bar span {
+        margin-top: 5px;
+        font-size: 10px;
+        color: black;
+        }
+        .bar-label {
+        margin-top: 5px;
+        font-size: 11px;
+        }
+        @page {
+        size: A4 portrait;
+        margin: 1cm;
+        }
+
+        .stars {
+        display: inline-block;
+        font-size: 20px;
+        color: #ccc; 
+        }
+        .stars .filled {
+        color: #f5c518; 
+        }
+        
+    </style>
+
+    {% set NO_DATA = "<span style='font-size:12;color:gray;'>اطلاعات ناموجود</span>" %}
+
+    {%set ENUM_TYPE = [
+                {
+                    "value": 0,
+                    "label": "اخطار کتبی",
+                    "sort": 1
+                },
+                {
+                    "value": 1,
+                    "label": "توقف کار",
+                    "sort": 2
+                }
+    ]%}
+
+    {%set ENUM_CAUSE = [
+                {
+                    "value": 0,
+                    "label": "شرایط نامناسب",
+                    "sort": 1
+                },
+                {
+                    "value": 1,
+                    "label": "رفتار نامناسب",
+                    "sort": 2
+                }
+    ]%}
+
+    {%set ENUM_HSE = [
+                {
+                    "value": 0,
+                    "label": "Health",
+                    "sort": 1
+                },
+                {
+                    "value": 1,
+                    "label": "Safety",
+                    "sort": 2
+                },
+                {
+                    "value": 2,
+                    "label": "Environment",
+                    "sort": 3
+                }
+    ]%}
+
+    {%set ENUM_CATEGORY = [
+                {
+                    "value": 0,
+                    "label": "آب آشامیدنی",
+                    "sort": 1
+                },
+                {
+                    "value": 1,
+                    "label": "آشپزخانه",
+                    "sort": 2
+                },
+                {
+                    "value": 2,
+                    "label": "سالن غذاخوری",
+                    "sort": 3
+                },
+                {
+                    "value": 3,
+                    "label": "انبار مواد غذایی",
+                    "sort": 4
+                },
+                {
+                    "value": 4,
+                    "label": "نظافت عمومی خوابگاه",
+                    "sort": 5
+                },
+                {
+                    "value": 5,
+                    "label": "سرویس بهداشتی",
+                    "sort": 6
+                },
+                {
+                    "value": 6,
+                    "label": "بهداری و سلامت شغلی",
+                    "sort": 7
+                },
+                {
+                    "value": 7,
+                    "label": "نكات عمومي",
+                    "sort": 8
+                },
+                {
+                    "value": 8,
+                    "label": "راه پله و نردبان",
+                    "sort": 9
+                },
+                {
+                    "value": 9,
+                    "label": "داربست/ موارد مشابه",
+                    "sort": 10
+                },
+                {
+                    "value": 10,
+                    "label": "پرتگاه ها/ گودبرداری",
+                    "sort": 11
+                },
+                {
+                    "value": 11,
+                    "label": "تخريب و ريزش",
+                    "sort": 12
+                },
+                {
+                    "value": 12,
+                    "label": "راهها",
+                    "sort": 13
+                },
+                {
+                    "value": 13,
+                    "label": "حمل و نقل",
+                    "sort": 14
+                },
+                {
+                    "value": 14,
+                    "label": "ماشين آلات",
+                    "sort": 15
+                },
+                {
+                    "value": 15,
+                    "label": "فضاي محدود",
+                    "sort": 16
+                },
+                {
+                    "value": 16,
+                    "label": "تهويه",
+                    "sort": 17
+                },
+                {
+                    "value": 17,
+                    "label": "تجهيزات حفاظت فردي",
+                    "sort": 18
+                },
+                {
+                    "value": 18,
+                    "label": "برق و تجهيزات الكتريكي",
+                    "sort": 19
+                },
+                {
+                    "value": 19,
+                    "label": "حريق و آتش سوزي",
+                    "sort": 20
+                },
+                {
+                    "value": 20,
+                    "label": "جوشكاري",
+                    "sort": 21
+                },
+                {
+                    "value": 21,
+                    "label": "مخازن تحت فشار",
+                    "sort": 22
+                },
+                {
+                    "value": 22,
+                    "label": "كار در ارتفاع",
+                    "sort": 23
+                },
+                {
+                    "value": 23,
+                    "label": "انبارش",
+                    "sort": 24
+                },
+                {
+                    "value": 24,
+                    "label": "واكنش در شرايط اضطراري",
+                    "sort": 25
+                },
+                {
+                    "value": 25,
+                    "label": "منابع سوخت",
+                    "sort": 26
+                },
+                {
+                    "value": 26,
+                    "label": "آب",
+                    "sort": 27
+                },
+                {
+                    "value": 27,
+                    "label": "هوا",
+                    "sort": 28
+                },
+                {
+                    "value": 28,
+                    "label": "خاك",
+                    "sort": 29
+                },
+                {
+                    "value": 29,
+                    "label": "فضاي سبز",
+                    "sort": 30
+                },
+                {
+                    "value": 31,
+                    "label": "فاضلاب",
+                    "sort": 31
+                },
+                {
+                    "value": 30,
+                    "label": "مواد زائد جامد",
+                    "sort": 32
+                }
+    ]%}
+
+    {% macro recursive_loop(counter, stars, limit) %}
+        {% if counter < limit %}
+            {%if counter < stars %}
+                <span class="filled">★</span>
+                {{ recursive_loop(counter + 1, stars, limit) }}
+            {%else%}
+                <span>★</span>
+                {{ recursive_loop(counter + 1, stars, limit) }}
+            {%endif%}
+        {% endif %}
+    {% endmacro %}
+
+</head>
+<body>
+    <table>
+
+        <colgroup>
+            <col style="width:25%">
+            <col style="width:25%">
+            <col style="width:25%">
+            <col style="width:25%">
+        </colgroup>
+        
+        <tr>
+            <td colspan="5">جزئیات هشدار بر اساس دسته بندی آیتم هشدار</td>
+        </tr>
+
+        <tr>
+            <td style="background-color: #e9e6e6;">دسته بندی</td>
+            <td style="background-color: #e9e6e6;">تعداد هشدارها</td>
+            <td style="background-color: #e9e6e6;">میانگین درجه ریسک</td>
+            <td style="background-color: #e9e6e6;">نوع هشدار</td> {# نمودار #}
+            <td style="background-color: #e9e6e6;">علت هشدار</td> {# نمودار #}
+            
+        </tr>
+
+        {%for category in ENUM_CATEGORY %}
+            
+
+                {# تعاریف متغیر های استفاده شده برای انجام محاسبات #}
+                {%set count = namespace(sum=0)%}
+                {%set level = namespace(sum=0)%}
+                {%set cause0 = namespace(sum=0)%}
+                {%set cause1 = namespace(sum=0)%}
+                {%set type0 = namespace(sum=0)%}
+                {%set type1 = namespace(sum=0)%}
+
+                {# در فور پایین محاسبات انجام میشود #}
+                {%for warning in data%}
+                    {%if warning.ITEM is not null%}
+                        {%if warning.ITEM[0].CATEGORY[0] == category.value%}  
+            
+                            {% set count.sum = count.sum + 1 %} {# شمارش تعداد هشدار ها #}
+                            {% set level.sum = level.sum + warning.LEVEL %} {# مجموع درجه ریسک ها که باید در نهایت تقسیم بر تعداد کل هشدار ها بشود تا میانگین درجه ریسک به دست آید #}
+                            
+                            {%if warning.TYPE[0] == 0 %} {# نوع هشدار اخطار کتبی #}
+                                {% set type0.sum = type0.sum + 1 %}
+                            {%elif warning.TYPE[0] == 1 %} {# نوع هشدار توقف کار #}
+                                {% set type1.sum = type1.sum + 1 %}
+                            {%endif%}
+
+                            {%if warning.CAUSE[0] == 0 %} {# علت هشدار شرایط نامناسب#}
+                                {% set cause0.sum = cause0.sum + 1 %}
+                            {%elif warning.CAUSE[0] == 1 %} {# علت هشدار رفتار نامناسب #}
+                                {% set cause1.sum = cause1.sum + 1 %}
+                            {%endif%} 
+
+                        {%endif%}
+                    {%endif%}
+                {%endfor%}
+
+            {%if count.sum != 0 %}
+            <tr>
+                <td style="background-color: #e9e6e6;">
+                    {{category.label}}
+                </td>
+
+                <td>{{count.sum}}</td>
+
+                {%if count.sum == 0%}
+                    <td>No DATA</td>
+                {%else%}
+                    <td >
+                        <div class="stars">
+                            {{recursive_loop(0, (level.sum / count.sum) | int , 5)}}
+                        </div>
+                    </td>
+                {%endif%}
+
+                <td>
+                    <div class="chart">
+                        <div class="bar" style="height: {{type0.sum / (type0.sum + type1.sum) * 100}}%;">
+                            <div style="color:black;">{{(type0.sum / (type0.sum + type1.sum) * 100) | int}}%</div>
+                            <span class="bar-label">اخطار کتبی</span>
+                        </div>
+                        <div class="bar" style="height: {{type1.sum / (type0.sum + type1.sum) * 100}}%;">
+                        <div style="color:black;">{{(type1.sum / (type0.sum + type1.sum) * 100) | int}}%</div>
+                        <span class="bar-label">توقف کار</span>
+                        </div>
+                    </div>
+                </td> {# نمودار #} {# todo #}
+
+                <td>
+                    <div class="chart">
+                        <div class="bar" style="height: {{cause0.sum / (cause0.sum + cause1.sum) * 100}}%;">
+                        <div style="color:black;">{{(cause0.sum / (cause0.sum + cause1.sum) * 100) | int}}%</div>
+                        <span class="bar-label">شرایط نامناسب</span>
+                        </div>
+                        <div class="bar" style="height: {{cause1.sum / (cause0.sum + cause1.sum) * 100}}%;">
+                        <div style="color:black;">{{(cause1.sum / (cause0.sum + cause1.sum) * 100) | int}}%</div>
+                        <span class="bar-label">رفتار نامناسب</span>
+                        </div>
+                    </div>
+                </td> {# نمودار #} {# todo #}
+
+            </tr>
+            {%endif%}
+        {%endfor%}
+
+    </table>
+ 
+</body>
+</html>

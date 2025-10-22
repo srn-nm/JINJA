@@ -1,10 +1,10 @@
-{#صفحه خلاصه قراردادهای جاری و شروع نشده#}
+{#صفحه خلاصه قراردادها#}
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
-    <title>صفحه خلاصه قراردادهای جاری و شروع نشده</title>
+    <title>صفحه خلاصه قراردادها</title>
     <style>
         body {
             font-family: 'Vazir FD';
@@ -20,6 +20,7 @@
             background-color: white;
             vertical-align: middle;
             direction: rtl;
+            padding
         }
         td, th {
             padding: 15px;
@@ -45,51 +46,66 @@
             height: 70px;
         }
         .legend {
+            text-align: center;
             display: flex;
             flex-direction: column;
-            gap: 5px;
-            font-family: sans-serif;
+            gap: 1px;
             margin-top: 10px;
             align-items: start;
             font-family: 'Vazir FD';
+            font: 8px;
+            vertical-align: bottom;
+            
         }
         .legend-color {
             display: inline-block;
             width: 7px;
             height: 7px;
             margin-right: 5px;
+            font-family: 'Vazir FD';
+            text-align: center;
         }
-        
+
         .page-break-container {
             page-break-before: always;
         }
 
         @page {
         size: A4 portrait;
-        margin: 2mm;
+        margin: 1cm;
         }
 
 
     </style>
 
 
-    {%set STATUS_ENUM = [
+    {%set STATE_ENUM = [
         {
           "value": 0,
-          "label": "خاتمه داده شده",
+          "label": "شروع نشده",
           "sort": 1
         },
         {
           "value": 1,
-          "label": "فسخ شده",
+          "label": "جاری",
           "sort": 2
         },
         {
           "value": 2,
           "label": "تکمیل شده",
           "sort": 3
+        },
+        {
+          "value": 3,
+          "label": "خاتمه داده شده",
+          "sort": 4
+        },
+        {
+          "value": 4,
+          "label": "فسخ شده",
+          "sort": 5
         }
-    ]%}
+      ]%}    
 
     {%set TYPE_ENUM = [
         {
@@ -134,281 +150,556 @@
     <div class="page-break-container"></div>
     <table>
 
-        <tr >
-            <td colspan="4" style= "background-color: darkgrey; ">خلاصه قراردادهای جاری کیسون</td>
+        <tr>
+            <td style= "background-color: #e9e6e6; padding-bottom:2px; padding-top:5px; border-left-style: hidden;"> <img src="http://172.16.0.183:90/root/kitpublic/-/raw/main/14008545415.png?ref_type=heads&inline=false" style=" width:22px; display:flex; flex-direction: row; justify-content: flex-end;"></td>
+            <td colspan="2" style= "background-color: #e9e6e6;">خلاصه قراردادهای کیتکو</td>
+            <td style= "background-color: #e9e6e6; border-right-style: hidden;" ></td>
         </tr>
 
         <tr>
-
             <td></td>
             <td>به تفکیک ماهیت</td>
             <td>به تفکیک وضعیت</td>
             <td>به تفکیک نوع</td>
-            
-            
         </tr>
         <tr>
 
-            <td style="vertical-align: center;">
+            <td style="vertical-align: middle; padding:2px">
                 تعداد کل قراردادها
+                <br><br>({{(data | length)}} قرارداد)
             </td>
 
-            <td style="align-items: center; background-color:white;">
-                
+            {#تعداد کل قراردادها به تفکیک ماهیت#}
+            <td style="align-items: center; background-color:white; font-size:10px;">
 
                     <svg width="70" height="70" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" style="margin:5px">
+                        <circle r="5" cx="10" cy="10" fill="lightgray" />
 
-                        <circle r="10" cx="10" cy="10" fill="lightgray" />
+                        {% set total = data | length %}
+                        {% set circumference = 31.4159 %}
+
+                        {% set count_0 = data | selectattr("NATURE", "equalto", [0]) | list | length %}
+                        
+                        {% set prop_0 = count_0 / total %}
+                       
+                        {% set dash_0 = prop_0 * circumference %}
+
+                        {% set angle_0 = -90 %}
+                        
                         <circle r="5" cx="10" cy="10"
                             fill="transparent"
                             stroke="midnightblue"
                             stroke-width="10"
-                            stroke-dasharray="{{(data | selectattr("NATURE", "equalto", [0]) | list | length) / (data | length) * 0.314159}} 31.4159"
-                            transform="rotate(-90 10 10)" />
-
+                            stroke-dasharray="{{ dash_0 }} {{ circumference }}"
+                            transform="rotate({{ angle_0 }} 10 10)" />   
                     </svg>
 
-                    <div class="legend">
-                        <div><span class="legend-color" style="background-color: midnightblue;"></span>درآمدی</div>
-                        <div><span class="legend-color" style="background-color: lightgray;"></span>هزینه ای</div>
+                    <div class="legend" style="">
+                        <div><span class="legend-color" style="background-color: midnightblue;"></span>  درآمدی</div>
+                        <div><span class="legend-color" style="background-color: lightgray;"></span>  هزینه ای</div>
                         
                     </div>
           
             </td>
 
-            <td style="align-items: center; background-color:white;">
-                
+            {#تعداد کل قراردادها به تفکیک وضعیت#}
+            <td style="align-items: center; background-color:white; font-size:10px;">
 
                     <svg width="70" height="70" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" style="margin:5px">
+                        <circle r="5" cx="10" cy="10" fill="blue" />
 
-                        <circle r="10" cx="10" cy="10" fill="lightgray" />
-                        <circle r="5" cx="10" cy="10"
-                            fill="transparent"
-                            stroke="midnightblue"
-                            stroke-width="10"
-                            stroke-dasharray="11 31.4"
-                            transform="rotate(-90 10 10)" />
-                        <circle r="5" cx="10" cy="10"
-                            fill="transparent"
-                            stroke="blue"
-                            stroke-width="10"
-                            stroke-dasharray="15.7 31.4"
-                            transform="rotate(36 10 10)" />
+                        {% set total = data | length %}
+                        {% set circumference = 31.4159 %}
 
-                    </svg>
+                        {% set count_0 = data | selectattr("STATE", "equalto", [0]) | list | length %}
+                        {% set count_1 = data | selectattr("STATE", "equalto", [1]) | list | length %}
+                        {% set count_2 = data | selectattr("STATE", "equalto", [2]) | list | length %}
+                        {% set count_3 = data | selectattr("STATE", "equalto", [3]) | list | length %}
 
-                    <div class="legend">
-                        <div><span class="legend-color" style="background-color: midnightblue;"></span>خاتمه داده شده</div>
-                        <div><span class="legend-color" style="background-color: blue;"></span>فسخ شده</div>
-                        <div><span class="legend-color" style="background-color: lightgray;"></span>تکمیل شده</div>
-                    </div>
-          
-            </td>
+                        {% set prop_0 = count_0 / total %}
+                        {% set prop_1 = count_1 / total %}
+                        {% set prop_2 = count_2 / total %}
+                        {% set prop_3 = count_3 / total %}
 
-             <td style="align-items: center; background-color:white;">
+                        {% set dash_0 = prop_0 * circumference %}
+                        {% set dash_1 = prop_1 * circumference %}
+                        {% set dash_2 = prop_2 * circumference %}
+                        {% set dash_3 = prop_3 * circumference %}
 
-                    <svg width="70" height="70" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" style="margin:5px">
+                        {% set angle_0 = -90 %}
+                        {% set angle_1 = angle_0 + (prop_0 * 360) %}
+                        {% set angle_2 = angle_1 + (prop_1 * 360) %}
+                        {% set angle_3 = angle_2 + (prop_2 * 360) %}
 
-                        <circle r="10" cx="10" cy="10" fill="lightgray" />
-                        <circle r="5" cx="10" cy="10"
-                            fill="transparent"
-                            stroke="midnightblue"
-                            stroke-width="10"
-                            stroke-dasharray="11 31.4"
-                            transform="rotate(-90 10 10)" />
                         <circle r="5" cx="10" cy="10"
                             fill="transparent"
                             stroke="lightblue"
                             stroke-width="10"
-                            stroke-dasharray="15.7 31.4"
-                            transform="rotate(36 10 10)" />
+                            stroke-dasharray="{{ dash_0 }} {{ circumference }}"
+                            transform="rotate({{ angle_0 }} 10 10)" />
+
+                        <circle r="5" cx="10" cy="10"
+                            fill="transparent"
+                            stroke="gray"
+                            stroke-width="10"
+                            stroke-dasharray="{{ dash_1 }} {{ circumference }}"
+                            transform="rotate({{ angle_1 }} 10 10)" />
+
+                        <circle r="5" cx="10" cy="10"
+                            fill="transparent"
+                            stroke="lightgray"
+                            stroke-width="10"
+                            stroke-dasharray="{{ dash_2 }} {{ circumference }}"
+                            transform="rotate({{ angle_2 }} 10 10)" />
+
+                       
+                        <circle r="5" cx="10" cy="10"
+                            fill="transparent"
+                            stroke="midnightblue"
+                            stroke-width="10"
+                            stroke-dasharray="{{ dash_3 }} {{ circumference }}"
+                            transform="rotate({{ angle_3 }} 10 10)" />
+                    </svg>
+
+
+                    <div class="legend">
+                        <div><span class="legend-color" style="background-color: lightblue;"></span>  شروع نشده</div>
+                        <div><span class="legend-color" style="background-color: gray;"></span>  جاری</div>
+                        <div><span class="legend-color" style="background-color: lightgray;"></span>  تکمیل شده</div>
+                        <div><span class="legend-color" style="background-color: midnightblue;"></span>  خاتمه داده شده</div>
+                        <div><span class="legend-color" style="background-color: blue;"></span>  فسخ شده</div>
+                    </div>
+          
+            </td>
+
+            {#تعداد کل قراردادها به تفکیک نوع#}
+             <td style="align-items: center; background-color:white; font-size:10px;">
+
+
+                    <svg width="70" height="70" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" style="margin:5px">
+                        <circle r="5" cx="10" cy="10" fill="lightgray" />
+
+                        {% set total = data | length %}
+                        {% set circumference = 31.4159 %}
+
+                        {% set count_0 = data | selectattr("TYPE", "equalto", [0]) | list | length %}
+                        {% set count_1 = data | selectattr("TYPE", "equalto", [1]) | list | length %}
+                        {% set count_2 = data | selectattr("TYPE", "equalto", [2]) | list | length %}
+
+                        {% set prop_0 = count_0 / total %}
+                        {% set prop_1 = count_1 / total %}
+                        {% set prop_2 = count_2 / total %}
+
+                        {% set dash_0 = prop_0 * circumference %}
+                        {% set dash_1 = prop_1 * circumference %}
+                        {% set dash_2 = prop_2 * circumference %}
+
+                        {% set angle_0 = -90 %}
+                        {% set angle_1 = angle_0 + (prop_0 * 360) %}
+                        {% set angle_2 = angle_1 + (prop_1 * 360) %}
+
+                        <circle r="5" cx="10" cy="10"
+                            fill="transparent"
+                            stroke="midnightblue"
+                            stroke-width="10"
+                            stroke-dasharray="{{ dash_0 }} {{ circumference }}"
+                            transform="rotate({{ angle_0 }} 10 10)" />
+
+                        <circle r="5" cx="10" cy="10"
+                            fill="transparent"
+                            stroke="lightblue"
+                            stroke-width="10"
+                            stroke-dasharray="{{ dash_1 }} {{ circumference }}"
+                            transform="rotate({{ angle_1 }} 10 10)" />
 
                         <circle r="5" cx="10" cy="10"
                             fill="transparent"
                             stroke="blue"
                             stroke-width="10"
-                            stroke-dasharray="1.57 31.4"
-                            transform="rotate(216 10 10)" />
+                            stroke-dasharray="{{ dash_2 }} {{ circumference }}"
+                            transform="rotate({{ angle_2 }} 10 10)" />
 
                     </svg>
 
                     <div class="legend">
-                        <div><span class="legend-color" style="background-color: midnightblue;"></span>تدارکات/تامین کالا</div>
-                        <div><span class="legend-color" style="background-color: lightblue;"></span>مشاوره ای</div>
-                        <div><span class="legend-color" style="background-color: blue;"></span>انفورماتیک</div>
-                        <div><span class="legend-color" style="background-color: lightgrey;"></span>خدمات</div>
+                        <div><span class="legend-color" style="background-color: midnightblue;"></span>  تدارکات/تامین کالا</div>
+                        <div><span class="legend-color" style="background-color: lightblue;"></span>  مشاوره ای</div>
+                        <div><span class="legend-color" style="background-color: blue;"></span>  انفورماتیک</div>
+                        <div><span class="legend-color" style="background-color: lightgrey;"></span>  خدمات</div>
                     </div>
-          
             </td>
-            
-
         </tr>
         <tr>
 
+            <td style="vertical-align: middle;  padding:2px">مجموع کل مبالغ قراردادها
+            <br><br>
+            ({{(data | selectattr("FIRST_AMNT","defined") | map(attribute="FIRST_AMNT")| selectattr("0","defined") | map(attribute="0") | selectattr("amount","defined") | map(attribute='amount') | list | sum | int | money)}} ریال)
+            </td>
             
-            <td style="vertical-align: center;">مجموع کل مبالغ قراردادها</td>
-            
-            
-            <td style="align-items: center; background-color:white;">
-                
+            {#مبلغ کل قراردادها به تفکیک ماهیت#}
+            <td style="align-items: center; background-color:white; font-size:10px;">
 
                     <svg width="70" height="70" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" style="margin:5px">
-
+                        <!-- Background circle -->
                         <circle r="10" cx="10" cy="10" fill="lightgray" />
+
+                        {% set total = (
+                            data
+                            | selectattr("FIRST_AMNT", "defined")
+                            | map(attribute="FIRST_AMNT")
+                            | selectattr("0", "defined")
+                            | map(attribute="0")
+                            | selectattr("amount", "defined")
+                            | map(attribute="amount")
+                            | list
+                            | sum
+                        ) %}
+
+                        {% set sum_0 = (
+                            data
+                            | selectattr("NATURE", "equalto", [0])
+                            | selectattr("FIRST_AMNT", "defined")
+                            | map(attribute="FIRST_AMNT")
+                            | selectattr("0", "defined")
+                            | map(attribute="0")
+                            | selectattr("amount", "defined")
+                            | map(attribute="amount")
+                            | list
+                            | sum
+                        ) %}
+
+
+                        {% set circ = 31.4159 %}
+                        {% set angle_0 = -90 %}
+
                         <circle r="5" cx="10" cy="10"
                             fill="transparent"
                             stroke="midnightblue"
                             stroke-width="10"
-                            stroke-dasharray="11 31.4"       {# "{{(data | selectattr("NATURE", "equalto", [0]) | map(attribute="FIRST_AMNT")| map(attribute="0") | map(attribute='amount') | list | sum) / (data | selectattr("FIRST_AMNT", "defined") | map(attribute="FIRST_AMNT")| | selectattr("0", "defined") | map(attribute="0") | selectattr("amount", "defined") | map(attribute='amount') | list | sum) * 0.314159}} 31.4159" #}
-                            transform="rotate(-90 10 10)" />
-
+                            stroke-dasharray="{{ (sum_0 / total * circ) }} {{ circ }}"
+                            transform="rotate({{ angle_0 }} 10 10)" />
                     </svg>
 
                     <div class="legend">
-                        <div><span class="legend-color" style="background-color: midnightblue;"></span>درآمدی</div>
-                        <div><span class="legend-color" style="background-color: lightgray;"></span>هزینه ای</div>
+                        <div><span class="legend-color" style="background-color: midnightblue;"></span>  درآمدی</div>
+                        <div><span class="legend-color" style="background-color: lightgray;"></span>  هزینه ای</div>
                         
                     </div>
           
             </td>
 
-            <td style="align-items: center; background-color:white;">
+            {#مبلغ کل قراردادها به تفکیک وضعیت#}
+            <td style="align-items: center; background-color:white; font-size:10px;">
                 
-
                     <svg width="70" height="70" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" style="margin:5px">
+                        <!-- Background circle -->
+                        <circle r="10" cx="10" cy="10" fill="blue" />
 
-                        <circle r="10" cx="10" cy="10" fill="lightgray" />
-                        <circle r="5" cx="10" cy="10"
-                            fill="transparent"
-                            stroke="midnightblue"
-                            stroke-width="10"
-                            stroke-dasharray="11 31.4"
-                            transform="rotate(-90 10 10)" />
-                        <circle r="5" cx="10" cy="10"
-                            fill="transparent"
-                            stroke="blue"
-                            stroke-width="10"
-                            stroke-dasharray="15.7 31.4"
-                            transform="rotate(36 10 10)" />
+                        {% set total = (
+                            data
+                            | selectattr("FIRST_AMNT", "defined")
+                            | map(attribute="FIRST_AMNT")
+                            | selectattr("0", "defined")
+                            | map(attribute="0")
+                            | selectattr("amount", "defined")
+                            | map(attribute="amount")
+                            | list
+                            | sum
+                        ) %}
 
-                    </svg>
+                        {% set sum_0 = (
+                            data
+                            | selectattr("STATE", "equalto", [0])
+                            | selectattr("FIRST_AMNT", "defined")
+                            | map(attribute="FIRST_AMNT")
+                            | selectattr("0", "defined")
+                            | map(attribute="0")
+                            | selectattr("amount", "defined")
+                            | map(attribute="amount")
+                            | list
+                            | sum
+                        ) %}
 
-                    <div class="legend">
-                        <div><span class="legend-color" style="background-color: midnightblue;"></span>خاتمه داده شده</div>
-                        <div><span class="legend-color" style="background-color: blue;"></span>فسخ شده</div>
-                        <div><span class="legend-color" style="background-color: lightgray;"></span>تکمیل شده</div>
-                    </div>
-          
-            </td>
+                        {% set sum_1 = (
+                            data
+                            | selectattr("STATE", "equalto", [1])
+                            | selectattr("FIRST_AMNT", "defined")
+                            | map(attribute="FIRST_AMNT")
+                            | selectattr("0", "defined")
+                            | map(attribute="0")
+                            | selectattr("amount", "defined")
+                            | map(attribute="amount")
+                            | list
+                            | sum
+                        ) %}
 
-            <td style="align-items: center; background-color:white;">
+                        {% set sum_2 = (
+                            data
+                            | selectattr("STATE", "equalto", [2])
+                            | selectattr("FIRST_AMNT", "defined")
+                            | map(attribute="FIRST_AMNT")
+                            | selectattr("0", "defined")
+                            | map(attribute="0")
+                            | selectattr("amount", "defined")
+                            | map(attribute="amount")
+                            | list
+                            | sum
+                        ) %}
 
-                    <svg width="70" height="70" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" style="margin:5px">
+                        {% set sum_3 = (
+                            data
+                            | selectattr("STATE", "equalto", [3])
+                            | selectattr("FIRST_AMNT", "defined")
+                            | map(attribute="FIRST_AMNT")
+                            | selectattr("0", "defined")
+                            | map(attribute="0")
+                            | selectattr("amount", "defined")
+                            | map(attribute="amount")
+                            | list
+                            | sum
+                        ) %}
 
-                        <circle r="10" cx="10" cy="10" fill="lightgray" />
-                        <circle r="5" cx="10" cy="10"
-                            fill="transparent"
-                            stroke="midnightblue"
-                            stroke-width="10"
-                            stroke-dasharray="11 31.4"
-                            transform="rotate(-90 10 10)" />
+                        {% set circ = 31.4159 %}
+                        {% set angle_0 = -90 %}
+                        {% set angle_1 = angle_0 + (sum_0 / total * 360) %}
+                        {% set angle_2 = angle_1 + (sum_1 / total * 360) %}
+                        {% set angle_3 = angle_2 + (sum_2 / total * 360) %}
+
                         <circle r="5" cx="10" cy="10"
                             fill="transparent"
                             stroke="lightblue"
                             stroke-width="10"
-                            stroke-dasharray="15.7 31.4"
-                            transform="rotate(36 10 10)" />
+                            stroke-dasharray="{{ (sum_0 / total * circ) }} {{ circ }}"
+                            transform="rotate({{ angle_0 }} 10 10)" />
+
+                        <circle r="5" cx="10" cy="10"
+                            fill="transparent"
+                            stroke="gray"
+                            stroke-width="10"
+                            stroke-dasharray="{{ (sum_1 / total * circ) }} {{ circ }}"
+                            transform="rotate({{ angle_1 }} 10 10)" />
+
+                        <circle r="5" cx="10" cy="10"
+                            fill="transparent"
+                            stroke="lightgray"
+                            stroke-width="10"
+                            stroke-dasharray="{{ (sum_2 / total * circ) }} {{ circ }}"
+                            transform="rotate({{ angle_2 }} 10 10)" />
+
+                        <circle r="5" cx="10" cy="10"
+                            fill="transparent"
+                            stroke="midnightblue"
+                            stroke-width="10"
+                            stroke-dasharray="{{ (sum_3 / total * circ) }} {{ circ }}"
+                            transform="rotate({{ angle_3 }} 10 10)" />
+                    </svg>
+
+                    <div class="legend">
+                        <div><span class="legend-color" style="background-color: lightblue;"></span>  شروع نشده</div>
+                        <div><span class="legend-color" style="background-color: gray;"></span>  جاری</div>
+                        <div><span class="legend-color" style="background-color: lightgray;"></span>  تکمیل شده</div>
+                        <div><span class="legend-color" style="background-color: midnightblue;"></span>  خاتمه داده شده</div>
+                        <div><span class="legend-color" style="background-color: blue;"></span>  فسخ شده</div>
+                    </div>
+          
+            </td>
+
+            {#مبلغ کل قراردادها به تفکیک نوع#}
+            <td style="align-items: center; background-color:white; font-size:10px;">
+
+                    
+
+                    <svg width="70" height="70" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" style="margin:5px">
+                        <!-- Background circle -->
+                        <circle r="10" cx="10" cy="10" fill="lightgray" />
+
+                        {% set total = (
+                            data
+                            | selectattr("FIRST_AMNT", "defined")
+                            | map(attribute="FIRST_AMNT")
+                            | selectattr("0", "defined")
+                            | map(attribute="0")
+                            | selectattr("amount", "defined")
+                            | map(attribute="amount")
+                            | list
+                            | sum
+                        ) %}
+
+                        {% set sum_0 = (
+                            data
+                            | selectattr("TYPE", "equalto", [0])
+                            | selectattr("FIRST_AMNT", "defined")
+                            | map(attribute="FIRST_AMNT")
+                            | selectattr("0", "defined")
+                            | map(attribute="0")
+                            | selectattr("amount", "defined")
+                            | map(attribute="amount")
+                            | list
+                            | sum
+                        ) %}
+
+                        {% set sum_1 = (
+                            data
+                            | selectattr("TYPE", "equalto", [1])
+                            | selectattr("FIRST_AMNT", "defined")
+                            | map(attribute="FIRST_AMNT")
+                            | selectattr("0", "defined")
+                            | map(attribute="0")
+                            | selectattr("amount", "defined")
+                            | map(attribute="amount")
+                            | list
+                            | sum
+                        ) %}
+
+                        {% set sum_2 = (
+                            data
+                            | selectattr("TYPE", "equalto", [2])
+                            | selectattr("FIRST_AMNT", "defined")
+                            | map(attribute="FIRST_AMNT")
+                            | selectattr("0", "defined")
+                            | map(attribute="0")
+                            | selectattr("amount", "defined")
+                            | map(attribute="amount")
+                            | list
+                            | sum
+                        ) %}
+
+                        {% set circ = 31.4159 %}
+                        {% set angle_0 = -90 %}
+                        {% set angle_1 = angle_0 + (sum_0 / total * 360) %}
+                        {% set angle_2 = angle_1 + (sum_1 / total * 360) %}
+
+                        <circle r="5" cx="10" cy="10"
+                            fill="transparent"
+                            stroke="midnightblue"
+                            stroke-width="10"
+                            stroke-dasharray="{{ (sum_0 / total * circ) }} {{ circ }}"
+                            transform="rotate({{ angle_0 }} 10 10)" />
+
+                        <circle r="5" cx="10" cy="10"
+                            fill="transparent"
+                            stroke="lightblue"
+                            stroke-width="10"
+                            stroke-dasharray="{{ (sum_1 / total * circ) }} {{ circ }}"
+                            transform="rotate({{ angle_1 }} 10 10)" />
 
                         <circle r="5" cx="10" cy="10"
                             fill="transparent"
                             stroke="blue"
                             stroke-width="10"
-                            stroke-dasharray="1.57 31.4"
-                            transform="rotate(216 10 10)" />
+                            stroke-dasharray="{{ (sum_2 / total * circ) }} {{ circ }}"
+                            transform="rotate({{ angle_2 }} 10 10)" />
 
                     </svg>
-
                     <div class="legend">
-                        <div><span class="legend-color" style="background-color: midnightblue;"></span>تدارکات/تامین کالا</div>
-                        <div><span class="legend-color" style="background-color: lightblue;"></span>مشاوره ای</div>
-                        <div><span class="legend-color" style="background-color: blue;"></span>انفورماتیک</div>
-                        <div><span class="legend-color" style="background-color: lightgrey;"></span>خدمات</div>
+                        <div><span class="legend-color" style="background-color: midnightblue;"></span>  تدارکات/تامین کالا</div>
+                        <div><span class="legend-color" style="background-color: lightblue;"></span>  مشاوره ای</div>
+                        <div><span class="legend-color" style="background-color: blue;"></span>  انفورماتیک</div>
+                        <div><span class="legend-color" style="background-color: lightgrey;"></span>  خدمات</div>
                     </div>
           
             </td>
            
         </tr>
 
-        <tr >
-            <td colspan="4" style= "background-color: darkgrey;"></td>
-        </tr>
-
     </table>
-
-    <br>
-    <br>
 
     <table>
         <colgroup>
             <col style="width:50%">
             <col style="width:50%">
         </colgroup>
-        <tr >
-            <td colspan="2" style= "background-color: darkgrey;">صورت وضعیت ها</td>
-        </tr>
-        {% set notConfirmedcount = 0 %}
-        {% for inv in data | map(attribute='INVS') | list %}
-            {% if inv.FUNC_IMPURE is not defined or inv.FUNC_IMPURE in [None, [], 0] %}
-                {% set notConfirmedcount = notConfirmedcount + 1 %}
-            {% endif %}
-        {% endfor %}
+        
+        {%set count = namespace(taiidNashode=0)%}
+        {%for contract in data%}
+            {% for inv in contract.INVS | list %}
+                {% if inv.SUM_CNFRMED_EMPLYR is not defined or inv.SUM_CNFRMED_EMPLYR in [None, [], 0] %}
+                    {% set count.taiidNashode = count.taiidNashode + 1 %}
+                {% endif %}
+            {% endfor %}
+        {%endfor%}
+
+        {#شمارش تعداد کل صورت وضعیت ها#}
+        {%set count2 = namespace(kol=0)%}
+        {%for contract in data%}
+            {% for inv in contract.INVS | list %}
+                    {% set count2.kol = count2.kol + 1 %}
+            {% endfor %}
+        {%endfor%}
         <tr>
             <td style="text-align:right">تعداد کل صورت وضعیت های ارسالی:</td>
-            <td style="text-align:right; border-right-style: hidden;">{{ data | map(attribute='INVS') | list | length }}</td>
+            <td style="text-align:right; border-right-style: hidden; "><span style="font-size:12; background-color: lightgray">{{count2.kol}}</span> عدد</td>
         </tr>
         <tr>
             <td style="text-align:right">تعداد کل صورت وضعیت های تاییدی:</td>
-            <td style="text-align:right; border-right-style: hidden;">{{ data | map(attribute='INVS') | list | length - notConfirmedcount }}</td>
+            <td style="text-align:right; border-right-style: hidden;"><span style="font-size:12; background-color: lightgray;">{{count2.kol - count.taiidNashode }}</span> عدد</td>
         </tr> 
         <tr>
-            <td colspan="2" style="text-align:right; background-color:white" colspan="2">{{((data | map(attribute='INVS') | list | length - notConfirmedcount) / (data | map(attribute='INVS') | list | length) * 100) | int }}% تعداد صورت وضعیت های ارسالی، تایید شده اند.</td>
+        {%if count2.kol %}
+            <td colspan="2" style="text-align:right; background-color:white" colspan="2"><u>{{((count2.kol - count.taiidNashode) / (count2.kol)* 100) | int }}%</u> تعداد صورت وضعیت های ارسالی، تایید شده اند.</td>
+        {%endif%}
         </tr>
 
-        <tr>
-            <td colspan="2" style= "background-color: #d6d2d2;"></td>
-        </tr>
+    </table>
+
+
+    <table>
+        <colgroup>
+            <col style="width:50%">
+            <col style="width:50%">
+        </colgroup>
+        
 
         <tr >
             <td style="text-align:right">مبلغ کل صورت وضعیت های ارسالی:</td>
-            <td style="text-align:right; border-right-style: hidden;">{{ data 
+            <td style="text-align:right; border-right-style: hidden;">      <span style=" font-size:12; background-color: lightgray;">{{ data 
                                                                             | selectattr("TOTAL_AMNT_INV_SENT", "defined") 
-                                                                            | map(attribute="TOTAL_AMNT_INV_SENT") | list
-                                                                            | map("int") 
-                                                                            | sum 
-                                                                            | money 
-                                                                            }} ریال
-                                                                            </td>                                                   
+                                                                            | map(attribute="TOTAL_AMNT_INV_SENT")
+                                                                            | selectattr("0","defined") 
+                                                                            | map(attribute="0") 
+                                                                            | selectattr("amount","defined") 
+                                                                            | map(attribute='amount') 
+                                                                            | list | sum | money }}</span> ریال
+                                                                            <br><span style="font-size: 10px; ">
+                                                                            {{ data 
+                                                                            | selectattr("TOTAL_AMNT_INV_SENT", "defined") 
+                                                                            | map(attribute="TOTAL_AMNT_INV_SENT")
+                                                                            | selectattr("0","defined") 
+                                                                            | map(attribute="0") 
+                                                                            | selectattr("amount","defined") 
+                                                                            | map(attribute='amount') 
+                                                                            | list | sum | digit2word }} ریال <span></td>                                             
         </tr>
 
         <tr>
             <td style="text-align:right">مبلغ کل صورت وضعیت های تاییدی: </td>  
-            <td style="text-align:right; border-right-style: hidden;">   {{ data 
+            <td style="text-align:right; border-right-style: hidden;">   <span style=" font-size:12; background-color: lightgray;"> {{ data 
                                                                             | selectattr("TOTAL_INV_CNFRMED", "defined") 
-                                                                            | map(attribute="TOTAL_INV_CNFRMED") | list
-                                                                            | map("int") 
-                                                                            | sum 
-                                                                            | money 
-                                                                            }} ریال
-                                                                            </td>
+                                                                            | map(attribute="TOTAL_INV_CNFRMED") 
+                                                                            | selectattr("0","defined") 
+                                                                            | map(attribute="0") 
+                                                                            | selectattr("amount","defined") 
+                                                                            | map(attribute='amount') 
+                                                                            | list | sum | money }}</span> ریال
+                                                                            <br><span style="font-size: 10px;">
+                                                                            {{ data 
+                                                                            | selectattr("TOTAL_INV_CNFRMED", "defined") 
+                                                                            | map(attribute="TOTAL_INV_CNFRMED") 
+                                                                            | selectattr("0","defined") 
+                                                                            | map(attribute="0") 
+                                                                            | selectattr("amount","defined") 
+                                                                            | map(attribute='amount') 
+                                                                            | list | sum | digit2word }} ریال <span></td>
                                                                                     
         </tr>
 
         <tr>
-            <td colspan="2" style="text-align:right; background-color:white" colspan="2">{{((data | selectattr("TOTAL_INV_CNFRMED", "defined") | map(attribute="TOTAL_INV_CNFRMED") | list| map("int") | sum ) / (data | selectattr("TOTAL_AMNT_INV_SENT", "defined") | map(attribute="TOTAL_AMNT_INV_SENT") | list| map("int") | sum ) * 100) | int }}% مبلغ صورت وضعیت های ارسالی، تایید شده اند.</td>
+        {%if data | selectattr("TOTAL_AMNT_INV_SENT", "defined") | map(attribute="TOTAL_AMNT_INV_SENT") | selectattr("0","defined") | map(attribute="0") | selectattr("amount","defined") | map(attribute='amount') | list | sum%}
+            <td colspan="2" style="text-align:right; background-color:white" colspan="2"><u>{{((data | selectattr("TOTAL_INV_CNFRMED", "defined") | map(attribute="TOTAL_INV_CNFRMED") | selectattr("0","defined") | map(attribute="0") | selectattr("amount","defined") | map(attribute='amount') | list | sum ) / (data | selectattr("TOTAL_AMNT_INV_SENT", "defined") | map(attribute="TOTAL_AMNT_INV_SENT") | selectattr("0","defined") | map(attribute="0") | selectattr("amount","defined") | map(attribute='amount') | list | sum) * 100) | int }}%</u> مبلغ صورت وضعیت های ارسالی، تایید شده اند.</td>
+        {%endif%}
         </tr>
 
     
-
         <tr>
             <td colspan="2" style= "background-color: #d6d2d2;"></td>
         </tr>

@@ -1,8 +1,8 @@
-{#جدول وضعیت قراردادهای جاری به ترتیب درآمدی هزینه ای#}
+{#جدول وضعیت قراردادها به ترتیب درآمدی هزینه ای#}
 
 <html lang="fa">
     <head>
-        <title>جدول وضعیت قراردادهای جاری به ترتیب درآمدی هزینه ای</title>
+        <title>جدول وضعیت قراردادها به ترتیب درآمدی هزینه ای</title>
         <style>
             body {
                 font-family: 'Vazir FD';
@@ -29,7 +29,7 @@
 
             @page {
             size: A4 landscape;
-            margin: 2mm;
+            margin: 1cm;
             }
 
         </style>
@@ -111,7 +111,9 @@
 
             <thead>
                 <tr>
-                    <th colspan="9" style = "background-color: #d6d2d2">وضعیت قراردادهای درآمدی کیتکو</th>
+                    <th colspan="2" style= "background-color: #d6d2d2; padding-bottom:2px; padding-top:5px; border-left-style: hidden;"> <img src="http://172.16.0.183:90/root/kitpublic/-/raw/main/14008545415.png?ref_type=heads&inline=false" style=" width:22px; display:flex; flex-direction: row; justify-content: flex-end;"></td>
+                    <th colspan="3" style = "background-color: #d6d2d2; border-left-style: hidden;">وضعیت قراردادهای درآمدی کیتکو</th>
+                    <th colspan="3" style = "background-color: #d6d2d2"></th>
                 </tr>
 
                 {%if data | selectattr('NATURE', 'equalto', [0]) | list | length == 0 %}
@@ -155,7 +157,7 @@
 
                     {% set notConfirmedcount = 0 %}
                     {% for inv in contract.INVS %}
-                        {% if inv.FUNC_IMPURE is not defined or inv.FUNC_IMPURE in [None, [], 0] %}
+                        {% if inv.SUM_CNFRMED_EMPLYR is not defined or inv.SUM_CNFRMED_EMPLYR in [None, [], 0] %}
                             {% set notConfirmedcount = notConfirmedcount + 1 %}
                         {% endif %}
                     {% endfor %}
@@ -198,7 +200,9 @@
 
             <thead>
                 <tr>
-                    <th colspan="9" style = "background-color: #d6d2d2">وضعیت قراردادهای هزینه ای کیتکو</th>
+                    <th colspan="2" style= "background-color: #d6d2d2; padding-bottom:2px; padding-top:5px; border-left-style: hidden;"> <img src="http://172.16.0.183:90/root/kitpublic/-/raw/main/14008545415.png?ref_type=heads&inline=false" style=" width:22px; display:flex; flex-direction: row; justify-content: flex-end;"></td>
+                    <th colspan="3" style = "background-color: #d6d2d2; border-left-style: hidden;">وضعیت قراردادهای هزینه ای کیتکو</th>
+                    <th colspan="3" style = "background-color: #d6d2d2"></th>
                 </tr>
 
                 {%if data | selectattr('NATURE', 'equalto', [1]) | list | length == 0 %}
@@ -243,7 +247,7 @@
 
                     {% set notConfirmedcount = 0 %}
                     {% for inv in contract.INVS %}
-                        {% if inv.FUNC_IMPURE is not defined or inv.FUNC_IMPURE in [None, [], 0] %}
+                        {% if inv.SUM_CNFRMED_EMPLYR is not defined or inv.SUM_CNFRMED_EMPLYR in [None, [], 0] %}
                             {% set notConfirmedcount = notConfirmedcount + 1 %}
                         {% endif %}
                     {% endfor %}

@@ -1,0 +1,235 @@
+{
+    "name": "INCIDENT_HSE",
+    "properties": {
+        "TYPE": {
+            "title": {
+                "fa": "نوع سانحه",
+                "en": null
+            },
+            "help": null,
+            "default": null,
+            "base_type": "array",
+            "editable": true,
+            "required": true,
+            "primary": true,
+            "calculated": false,
+            "searchable": true,
+            "sort": 3,
+            "ref": null,
+            "group": "مشخصات سانحه",
+            "ui_type": "select",
+            "min": 1,
+            "max": 1,
+            "enum": [
+                {
+                    "value": 0,
+                    "label": "حادثه انسانی",
+                    "sort": 1
+                },
+                {
+                    "value": 1,
+                    "label": "شبه حادثه",
+                    "sort": 2
+                },
+                {
+                    "value": 1,
+                    "label": "حادثه زیست محیطی",
+                    "sort": 2
+                }
+            ]
+        },
+        "CAUSE": {
+            "title": {
+                "fa": "دسته بندی سانحه",
+                "en": null
+            },
+            "help": null,
+            "default": null,
+            "base_type": "array",
+            "editable": true,
+            "required": true,
+            "primary": true,
+            "calculated": false,
+            "searchable": true,
+            "sort": 2,
+            "ref": {
+                "ref_id": 170,
+                "deprecated": false,
+                "ref_display": null,
+                "ref_query": null
+            },
+            "group": "مشخصات سانحه",
+            "ui_type": "select",
+            "min": 1,
+            "max": 1,
+            "enum": null
+        },
+        "DESCR": {
+            "title": {
+                "fa": "توضیحات سانحه",
+                "en": null
+            },
+            "help": null,
+            "default": null,
+            "base_type": "str",
+            "editable": true,
+            "required": true,
+            "primary": true,
+            "calculated": false,
+            "searchable": false,
+            "sort": 5,
+            "ref": null,
+            "group": "مشخصات سانحه",
+            "ui_type": "text",
+            "min": 1,
+            "max": 100,
+            "pattern": null
+        },
+        "IMAGE": {
+            "title": {
+                "fa": "تصویر سانحه",
+                "en": null
+            },
+            "help": null,
+            "default": null,
+            "base_type": "str",
+            "editable": true,
+            "required": true,
+            "primary": true,
+            "calculated": false,
+            "searchable": false,
+            "sort": 5,
+            "ref": null,
+            "group": "مشخصات سانحه",
+            "ui_type": "image",
+            "min": 1,
+            "max": 1,
+            "pattern": null
+        },
+        "LEVEL": {
+            "title": {
+                "fa": "درجه ریسک سانحه",
+                "en": null
+            },
+            "help": null,
+            "default": null,
+            "base_type": "number",
+            "editable": true,
+            "required": true,
+            "primary": true,
+            "calculated": false,
+            "searchable": true,
+            "sort": 6,
+            "ref": null,
+            "group": "مشخصات سانحه",
+            "ui_type": "rate",
+            "precision": 0,
+            "min": 1,
+            "max": 5
+        },
+        "PERSON": {
+            "title": {
+                "fa": "فرد خاطی",
+                "en": null
+            },
+            "help": null,
+            "default": null,
+            "base_type": "array",
+            "editable": true,
+            "required": true,
+            "primary": true,
+            "calculated": false,
+            "searchable": true,
+            "sort": 7,
+            "ref": {
+                "ref_id": 46,
+                "deprecated": false,
+                "ref_display": null,
+                "ref_query": null
+            },
+            "group": "مشخصات سانحه",
+            "ui_type": "select",
+            "min": 1,
+            "max": 1,
+            "enum": null
+        },
+        "PROJECT": {
+            "title": {
+                "fa": "پروژه مرتبط",
+                "en": null
+            },
+            "help": null,
+            "default": null,
+            "base_type": "array",
+            "editable": true,
+            "required": true,
+            "primary": true,
+            "calculated": false,
+            "searchable": true,
+            "sort": 8,
+            "ref": {
+                "ref_id": 42,
+                "deprecated": false,
+                "ref_display": null,
+                "ref_query": null
+            },
+            "group": "مشخصات سانحه",
+            "ui_type": "select",
+            "min": 1,
+            "max": 1,
+            "enum": null
+        },
+        "DATE_TIME": {
+            "title": {
+                "fa": "زمان سانحه",
+                "en": null
+            },
+            "help": null,
+            "default": null,
+            "base_type": "str",
+            "editable": true,
+            "required": true,
+            "primary": true,
+            "calculated": false,
+            "searchable": false,
+            "sort": 4,
+            "ref": null,
+            "group": "مشخصات سانحه",
+            "ui_type": "dateTime",
+            "min": 1,
+            "max": 1,
+            "pattern": null
+        },
+        "GEO_COORDINATE": {
+            "title": {
+                "fa": "موقعیت جغرافیایی",
+                "en": null
+            },
+            "help": null,
+            "default": null,
+            "base_type": "array",
+            "editable": true,
+            "required": false,
+            "primary": false,
+            "calculated": false,
+            "searchable": false,
+            "sort": 10,
+            "ref": null,
+            "group": "مشخصات سانحه",
+            "ui_type": "geometry",
+            "min": 2,
+            "max": 2,
+            "enum": null
+        }
+    },
+    "description": "سانحه",
+    "meta": {
+        "apps": [
+            "HSE"
+        ],
+        "isBase": false,
+        "displayField": "TYPE",
+        "recursive": false
+    },
+    "id": 168
+}

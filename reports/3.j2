@@ -39,30 +39,13 @@
 
         @page {
         size: A4 portrait;
-        margin: 1mm;
+        margin: 1cm;
         }
         
     </style>
 
     {% set NO_DATA = "<span style='font-size:12;color:gray;'>اطلاعات ناموجود</span>" %}
 
-    {% macro currency_handler(currency) %}
-            
-            {% if currency == "IRR " %}
-                ریال
-            {% elif currency == "IRR" %}
-                ریال
-            {% elif currency == "USD" %}
-                دلار
-            {% elif currency == "GBP" %}
-                پوند
-            {% elif currency == "EUR" %}
-                یورو
-            {% else %}
-                {{ NO_DATA }}
-            {% endif %}
-    
-    {% endmacro %}
 
     {%set ENUM_STATE = [
             {
@@ -129,11 +112,11 @@
     ]%}
 
 </head>
-<body>
+ <body>
     {%for contract in data%}
     <div class="page-break-container"></div>
     
-    <table>
+   <table>
         <colgroup>
             <col style="width:25%">
             <col style="width:25%">
@@ -141,12 +124,15 @@
             <col style="width:25%">
         </colgroup>
 
-        <tr >
-            <td colspan="4" style= "background-color: #d6d2d2;">خلاصه قرارداد شماره {{contract.NO_CONTR}}</tdd>
+        <tr>
+            <td style= "background-color: #d6d2d2; padding-bottom:2px; padding-top:5px; border-left-style: hidden;"> <img src="http://172.16.0.183:90/root/kitpublic/-/raw/main/14008545415.png?ref_type=heads&inline=false" style=" width:22px; display:flex; flex-direction: row; justify-content: flex-end;"></td>
+            <td colspan="2" style= "background-color: #d6d2d2;">خلاصه قرارداد شماره {{contract.NO_CONTR}}</td>
+            <td colspan="2" style= "background-color: #d6d2d2; border-right-style: hidden;"></td>
+
         </tr>
 
         <tr >
-            <td style="text-align:right; background-color:white">نام: {{contract.TITLE}}</td>
+            <td style="text-align:right; background-color:white">نام:   {{contract.TITLE}}</td>
             <td style="text-align:right; background-color:white">وضعیت: {%if contract.STATE%}
                                                                             {{ENUM_STATE[contract.STATE[0]].label}}
                                                                         {%else%}
@@ -154,19 +140,33 @@
                                                                         {%endif%}</td>
                                                                         
             <td style="text-align:right; background-color:white">طرف: {{contract.SIDE[0].PERSON_NAME}}</td>
-            <td style="text-align:right; background-color:white">مبلغ کل قرارداد: {{contract.FIRST_AMNT[0]['amount'] | int | money }} {{currency_handler(contract.FIRST_AMNT[0]["currency"])}}</td>
+            <td style="text-align:right; background-color:white">مبلغ کل قرارداد: {{contract["TOTAL_AMNT"] | int | money }} ریال</td>
           
         </tr>
 
         <tr>
-           <td colspan="2" style="text-align:right">متوسط زمان بین ارسال تا تایید صورت وضعیت:</td>
-            <td colspan="2" style="text-align:right; border-right-style: hidden;">-</td>
+            <td colspan="2" style="text-align:right">متوسط زمان بین ارسال تا تایید صورت وضعیت:</td>
+
+            {%set sum = namespace(total=0)%}
+            {% for invoice in contract.INVS %}                
+                {% set sum.total = sum.total + daydiff(invoice.DATE_SENT_CONTRACTOR, invoice.DATE_CNFRMED_EMPLYR) %}
+            {% endfor %}
+
+            
+            <td colspan="2" style="text-align:right; border-right-style: hidden;">
+            {%if (contract.INVS | length) | round(1)%}
+                {{ ((sum.total) / (contract.INVS | length)) | round(1) }} روز
+                
+            {%else%}
+                0 روز
+            {%endif%}
+            </td>
         </tr>
 
         <tr>
             <td colspan="2" style="text-align:right; background-color:white"">درصد مبلغ کل صورت وضعیت های تاییدی به مبلغ کل قرارداد:</td>      
-            <td colspan="2" style="text-align:right; border-right-style: hidden; background-color:white"">  {%if contract.TOTAL_INV_CNFRMED and contract.TOTAL_INV_CNFRMED is not none %}
-                                                                                                            {{((contract.TOTAL_INV_CNFRMED / contract.FIRST_AMNT[0]['amount'] | int) * 100) | int}}%
+            <td colspan="2" style="text-align:right; border-right-style: hidden; background-color:white"">  {%if contract.TOTAL_INV_CNFRMED and contract.TOTAL_INV_CNFRMED is not none and contract.TOTAL_INV_CNFRMED[0] and contract["TOTAL_AMNT"] and contract["TOTAL_AMNT"][0] and contract["TOTAL_AMNT"][0]["amount"] %}
+                                                                                                            {{((contract.TOTAL_INV_CNFRMED[0]["amount"] | int / contract["TOTAL_AMNT"][0]["amount"]) | int * 100) | int}}%
                                                                                                             {%else%}
                                                                                                             {{NO_DATA}}
                                                                                                             {%endif%}
@@ -177,20 +177,22 @@
         </tr>
         {% set notConfirmedcount = 0 %}
         {% for inv in contract.INVS %}
-            {% if inv.FUNC_IMPURE is not defined or inv.FUNC_IMPURE in [None, [], 0] %}
+            {% if inv.SUM_CNFRMED_EMPLYR is not defined or inv.SUM_CNFRMED_EMPLYR in [None, [], 0] %}
                 {% set notConfirmedcount = notConfirmedcount + 1 %}
             {% endif %}
         {% endfor %}
         <tr>
             <td colspan="2" style="text-align:right">تعداد کل صورت وضعیت های ارسالی:</td>
-            <td colspan="2" style="text-align:right; border-right-style: hidden;">{{ contract.INVS | length }}</td>
+            <td colspan="2" style="text-align:right; border-right-style: hidden;"><span style="font-size:12; background-color: lightgray;">{{ contract.INVS | length }}</span> صورت وضعیت</td>
         </tr>
         <tr>
             <td colspan="2" style="text-align:right">تعداد کل صورت وضعیت های تاییدی:</td>
-            <td colspan="2" style="text-align:right; border-right-style: hidden;">{{ contract.INVS | length - notConfirmedcount }}</td>
+            <td colspan="2" style="text-align:right; border-right-style: hidden;"><span style="font-size:12; background-color: lightgray;">{{ contract.INVS | length - notConfirmedcount }}</span> صورت وضعیت</td>
         </tr> 
         <tr>
-            <td colspan="4" style="text-align:right; background-color:white" colspan="2">{{((contract.INVS | length - notConfirmedcount) / (contract.INVS | length) * 100) | int }}% تعداد صورت وضعیت های ارسالی، تایید شده اند.</td>
+        {%if (contract.INVS | length)%}
+            <td colspan="4" style="text-align:right; background-color:white" colspan="2"><u>{{((contract.INVS | length - notConfirmedcount) / (contract.INVS | length) * 100) | int }}%</u> تعداد صورت وضعیت های ارسالی، تایید شده اند.</td>
+        {%endif%}
         </tr>
 
         <tr>
@@ -199,8 +201,9 @@
 
         <tr >
             <td colspan="2" style="text-align:right">مبلغ کل صورت وضعیت های ارسالی:</td>
-            <td colspan="2" style="text-align:right; border-right-style: hidden;"> {%if contract.TOTAL_AMNT_INV_SENT and contract.TOTAL_AMNT_INV_SENT is not none %}
-                                                                                   {{contract.TOTAL_AMNT_INV_SENT | money }} ریال
+            <td colspan="2" style="text-align:right; border-right-style: hidden;"> <span style="font-size:12; background-color: lightgray;">
+                                                                                   {%if contract.TOTAL_AMNT_INV_SENT and contract.TOTAL_AMNT_INV_SENT is not none %}
+                                                                                   {{contract.TOTAL_AMNT_INV_SENT[0]["amount"] | money }}</span> ریال
                                                                                    {%else%}
                                                                                    {{NO_DATA}}
                                                                                    {%endif%}
@@ -208,16 +211,17 @@
         </tr>
         <tr>
             <td colspan="2" style="text-align:right">مبلغ کل صورت وضعیت های تاییدی: </td>  
-            <td colspan="2" style="text-align:right; border-right-style: hidden;"> {%if contract.TOTAL_INV_CNFRMED and contract.TOTAL_INV_CNFRMED is not none %}
-                                                                                   {{contract.TOTAL_INV_CNFRMED | money}} ریال
+            <td colspan="2" style="text-align:right; border-right-style: hidden;"> <span style="font-size:12; background-color: lightgray;">
+                                                                                   {%if contract.TOTAL_INV_CNFRMED and contract.TOTAL_INV_CNFRMED[0] is not none %}
+                                                                                   {{contract.TOTAL_INV_CNFRMED[0]["amount"] | money}}</span> ریال
                                                                                    {%else%}
                                                                                    {{NO_DATA}}
                                                                                    {%endif%}
                                                                                     </td>
         </tr>
-        {%if contract.TOTAL_AMNT_INV_SENT and contract.TOTAL_AMNT_INV_SENT is not none and contract.TOTAL_INV_CNFRMED and contract.TOTAL_INV_CNFRMED is not none%}
+        {%if contract.TOTAL_AMNT_INV_SENT and contract.TOTAL_AMNT_INV_SENT is not none%}
         <tr>
-            <td colspan="4" style="text-align:right; background-color:white" colspan="2">{{((contract.TOTAL_INV_CNFRMED) / (contract.TOTAL_AMNT_INV_SENT ) * 100) | int }}% درصد مبلغ صورت وضعیت های ارسالی، تایید شده اند.</td>
+            <td colspan="4" style="text-align:right; background-color:white" colspan="2"><u>{{((contract.TOTAL_INV_CNFRMED[0]["amount"]) / (contract.TOTAL_AMNT_INV_SENT[0]["amount"] ) * 100) | int }}%</u> درصد مبلغ صورت وضعیت های ارسالی، تایید شده اند.</td>
         </tr>
         {%endif%}
 
@@ -231,4 +235,6 @@
   
         
 </body>
+
+
 </html>

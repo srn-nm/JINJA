@@ -1,0 +1,255 @@
+{
+    "name": "ITEM_HSE",
+    "properties": {
+        "HSE": {
+            "title": {
+                "fa": "HSE",
+                "en": null
+            },
+            "help": null,
+            "default": null,
+            "base_type": "array",
+            "editable": true,
+            "required": false,
+            "primary": false,
+            "calculated": false,
+            "searchable": false,
+            "sort": 1,
+            "ref": null,
+            "group": "آیتم هشدار",
+            "ui_type": "select",
+            "min": 1,
+            "max": 1,
+            "enum": [
+                {
+                    "value": 0,
+                    "label": "Health",
+                    "sort": 1
+                },
+                {
+                    "value": 1,
+                    "label": "Safety",
+                    "sort": 2
+                },
+                {
+                    "value": 2,
+                    "label": "Environment",
+                    "sort": 3
+                }
+            ]
+        },
+        "SUBJECT": {
+            "title": {
+                "fa": "موضوع هشدار",
+                "en": null
+            },
+            "help": null,
+            "default": null,
+            "base_type": "str",
+            "editable": true,
+            "required": true,
+            "primary": true,
+            "calculated": false,
+            "searchable": true,
+            "sort": 3,
+            "ref": null,
+            "group": "آیتم هشدار",
+            "ui_type": "textarea",
+            "min": 1,
+            "max": 200,
+            "pattern": null
+        },
+        "CATEGORY": {
+            "title": {
+                "fa": "دسته بندی",
+                "en": null
+            },
+            "help": null,
+            "default": null,
+            "base_type": "array",
+            "editable": true,
+            "required": false,
+            "primary": true,
+            "calculated": false,
+            "searchable": false,
+            "sort": 2,
+            "ref": null,
+            "group": "آیتم هشدار",
+            "ui_type": "select",
+            "min": 1,
+            "max": 1,
+            "enum": [
+                {
+                    "value": 0,
+                    "label": "آب آشامیدنی",
+                    "sort": 1
+                },
+                {
+                    "value": 1,
+                    "label": "آشپزخانه",
+                    "sort": 2
+                },
+                {
+                    "value": 2,
+                    "label": "سالن غذاخوری",
+                    "sort": 3
+                },
+                {
+                    "value": 3,
+                    "label": "انبار مواد غذایی",
+                    "sort": 4
+                },
+                {
+                    "value": 4,
+                    "label": "نظافت عمومی خوابگاه",
+                    "sort": 5
+                },
+                {
+                    "value": 5,
+                    "label": "سرویس بهداشتی",
+                    "sort": 6
+                },
+                {
+                    "value": 6,
+                    "label": "بهداری و سلامت شغلی",
+                    "sort": 7
+                },
+                {
+                    "value": 7,
+                    "label": "نكات عمومي",
+                    "sort": 8
+                },
+                {
+                    "value": 8,
+                    "label": "راه پله و نردبان",
+                    "sort": 9
+                },
+                {
+                    "value": 9,
+                    "label": "داربست/ موارد مشابه",
+                    "sort": 10
+                },
+                {
+                    "value": 10,
+                    "label": "پرتگاه ها/ گودبرداری",
+                    "sort": 11
+                },
+                {
+                    "value": 11,
+                    "label": "تخريب و ريزش",
+                    "sort": 12
+                },
+                {
+                    "value": 12,
+                    "label": "راهها",
+                    "sort": 13
+                },
+                {
+                    "value": 13,
+                    "label": "حمل و نقل",
+                    "sort": 14
+                },
+                {
+                    "value": 14,
+                    "label": "ماشين آلات",
+                    "sort": 15
+                },
+                {
+                    "value": 15,
+                    "label": "فضاي محدود",
+                    "sort": 16
+                },
+                {
+                    "value": 16,
+                    "label": "تهويه",
+                    "sort": 17
+                },
+                {
+                    "value": 17,
+                    "label": "تجهيزات حفاظت فردي",
+                    "sort": 18
+                },
+                {
+                    "value": 18,
+                    "label": "برق و تجهيزات الكتريكي",
+                    "sort": 19
+                },
+                {
+                    "value": 19,
+                    "label": "حريق و آتش سوزي",
+                    "sort": 20
+                },
+                {
+                    "value": 20,
+                    "label": "جوشكاري",
+                    "sort": 21
+                },
+                {
+                    "value": 21,
+                    "label": "مخازن تحت فشار",
+                    "sort": 22
+                },
+                {
+                    "value": 22,
+                    "label": "كار در ارتفاع",
+                    "sort": 23
+                },
+                {
+                    "value": 23,
+                    "label": "انبارش",
+                    "sort": 24
+                },
+                {
+                    "value": 24,
+                    "label": "واكنش در شرايط اضطراري",
+                    "sort": 25
+                },
+                {
+                    "value": 25,
+                    "label": "منابع سوخت",
+                    "sort": 26
+                },
+                {
+                    "value": 26,
+                    "label": "آب",
+                    "sort": 27
+                },
+                {
+                    "value": 27,
+                    "label": "هوا",
+                    "sort": 28
+                },
+                {
+                    "value": 28,
+                    "label": "خاك",
+                    "sort": 29
+                },
+                {
+                    "value": 29,
+                    "label": "فضاي سبز",
+                    "sort": 30
+                },
+                {
+                    "value": 31,
+                    "label": "فاضلاب",
+                    "sort": 31
+                },
+                {
+                    "value": 30,
+                    "label": "مواد زائد جامد",
+                    "sort": 32
+                }
+            ]
+        }
+    },
+    "description": "HSE آیتم ",
+    "meta": {
+        "apps": [
+            "HSE"
+        ],
+        "isBase": true,
+        "displayField": "SUBJECT",
+        "recursive": false
+    },
+    "id": 166
+}
