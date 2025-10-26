@@ -89,46 +89,23 @@
     {%set ENUM_TYPE = [
                 {
                     "value": 0,
-                    "label": "اخطار کتبی",
+                    "label": "حادثه انسانی",
                     "sort": 1
                 },
                 {
                     "value": 1,
-                    "label": "توقف کار",
+                    "label": "شبه حادثه",
+                    "sort": 2
+                },
+                {
+                    "value": 1,
+                    "label": "حادثه زیست محیطی",
                     "sort": 2
                 }
-    ]%}
+            ]%}
 
-    {%set ENUM_CAUSE = [
-                {
-                    "value": 0,
-                    "label": "شرایط نامناسب",
-                    "sort": 1
-                },
-                {
-                    "value": 1,
-                    "label": "رفتار نامناسب",
-                    "sort": 2
-                }
-    ]%}
-
-    {%set ENUM_HSE = [
-                {
-                    "value": 0,
-                    "label": "Health",
-                    "sort": 1
-                },
-                {
-                    "value": 1,
-                    "label": "Safety",
-                    "sort": 2
-                },
-                {
-                    "value": 2,
-                    "label": "Environment",
-                    "sort": 3
-                }
-    ]%}
+    {# اینجا Cause برای دسته بندی سانحه استفاده شده است. #}
+    {# و درواقع در جدول نمایش داده شده علت نخواهیم داشت. #}
 
     {%set ENUM_CATEGORY = [
                 {
@@ -317,48 +294,41 @@
         </colgroup>
         
         <tr>
-            <td colspan="5">جزئیات هشدار بر اساس دسته بندی آیتم هشدار</td>
+            <td colspan="5">جزئیات سانحه ها بر اساس دسته بندی آیتم سانحه</td>
         </tr>
 
         <tr>
             <td style="background-color: #e9e6e6;">دسته بندی</td>
-            <td style="background-color: #e9e6e6;">تعداد هشدارها</td>
+            <td style="background-color: #e9e6e6;">تعداد سانحه ها</td>
             <td style="background-color: #e9e6e6;">میانگین درجه ریسک</td>
-            <td style="background-color: #e9e6e6;">نوع هشدار</td> {# نمودار #}
-            <td style="background-color: #e9e6e6;">علت هشدار</td> {# نمودار #}
+            <td style="background-color: #e9e6e6;">نوع سانحه</td> {# نمودار #}
             
         </tr>
 
         {%for category in ENUM_CATEGORY %}
             
-
                 {# تعاریف متغیر های استفاده شده برای انجام محاسبات #}
                 {%set count = namespace(sum=0)%}
                 {%set level = namespace(sum=0)%}
-                {%set cause0 = namespace(sum=0)%}
-                {%set cause1 = namespace(sum=0)%}
                 {%set type0 = namespace(sum=0)%}
                 {%set type1 = namespace(sum=0)%}
+                {%set type2 = namespace(sum=0)%}
 
                 {# در فور پایین محاسبات انجام میشود #}
-                {%for warning in data%}
-                    {%if warning.ITEM is not null%}
-                        {%if warning.ITEM[0].CATEGORY[0] == category.value%}  
+                {%for incident in data%}
+                    {%if incident.ITEM is not null%}
+                        {%if incident.ITEM[0].CATEGORY[0] == category.value%}  
             
-                            {% set count.sum = count.sum + 1 %} {# شمارش تعداد هشدار ها #}
-                            {% set level.sum = level.sum + warning.LEVEL %} {# مجموع درجه ریسک ها که باید در نهایت تقسیم بر تعداد کل هشدار ها بشود تا میانگین درجه ریسک به دست آید #}
+                            {% set count.sum = count.sum + 1 %} {# شمارش تعداد سانحه ها #}
+                            {% set level.sum = level.sum + incident.LEVEL %} {# مجموع درجه ریسک ها که باید در نهایت تقسیم بر تعداد کل هشدار ها بشود تا میانگین درجه ریسک به دست آید #}
                             
-                            {%if warning.TYPE[0] == 0 %} {# نوع هشدار اخطار کتبی #}
+                            {%if incident.TYPE[0] == 0 %} {# نوع سانحه حادثه انسانی #}
                                 {% set type0.sum = type0.sum + 1 %}
-                            {%elif warning.TYPE[0] == 1 %} {# نوع هشدار توقف کار #}
+                            {%elif incident.TYPE[0] == 1 %} {# نوع سانحه شبه حادثه #}
                                 {% set type1.sum = type1.sum + 1 %}
+                            {%elif incident.TYPE[0] == 2%} {# نوع سانحه حادثه زیست محیطی #}
+                                {% set type2.sum = type2.sum + 1 %}
                             {%endif%}
-
-                            {%if warning.CAUSE[0] == 0 %} {# علت هشدار شرایط نامناسب#}
-                                {% set cause0.sum = cause0.sum + 1 %}
-                            {%elif warning.CAUSE[0] == 1 %} {# علت هشدار رفتار نامناسب #}
-                                {% set cause1.sum = cause1.sum + 1 %}
-                            {%endif%} 
 
                         {%endif%}
                     {%endif%}
@@ -384,29 +354,22 @@
 
                 <td>
                     <div class="chart">
-                        <div class="bar" style="height: {{type0.sum / (type0.sum + type1.sum) * 100}}%;">
-                            <div style="color:black;">{{(type0.sum / (type0.sum + type1.sum) * 100) | int}}%</div>
-                            <span class="bar-label">اخطار کتبی</span>
+                        <div class="bar" style="height: {{type0.sum / (type0.sum + type1.sum + type2.sum) * 100}}%;">
+                            <div style="color:black;">{{(type0.sum / (type0.sum + type1.sum + type2.sum) * 100) | int}}%</div>
+                            <span class="bar-label">حادثه انسانی</span>
                         </div>
-                        <div class="bar" style="height: {{type1.sum / (type0.sum + type1.sum) * 100}}%;">
-                            <div style="color:black;">{{(type1.sum / (type0.sum + type1.sum) * 100) | int}}%</div>
-                            <span class="bar-label">توقف کار</span>
+                        <div class="bar" style="height: {{type1.sum / (type0.sum + type1.sum + type2.sum) * 100}}%;">
+                            <div style="color:black;">{{(type1.sum / (type0.sum + type1.sum + type2.sum) * 100) | int}}%</div>
+                            <span class="bar-label">شبه حادثه</span>
+                        </div>
+                        <div class="bar" style="height: {{type2.sum / (type0.sum + type1.sum + type2.sum) * 100}}%;">
+                            <div style="color:black;">{{(type2.sum / (type0.sum + type1.sum + type2.sum) * 100) | int}}%</div>
+                            <span class="bar-label">حادثه زیست محیطی</span>
                         </div>
                     </div>
-                </td> {# نمودار #} {# todo #}
+                </td> {# نمودار #
 
-                <td>
-                    <div class="chart">
-                        <div class="bar" style="height: {{cause0.sum / (cause0.sum + cause1.sum) * 100}}%;">
-                        <div style="color:black;">{{(cause0.sum / (cause0.sum + cause1.sum) * 100) | int}}%</div>
-                        <span class="bar-label">شرایط نامناسب</span>
-                        </div>
-                        <div class="bar" style="height: {{cause1.sum / (cause0.sum + cause1.sum) * 100}}%;">
-                        <div style="color:black;">{{(cause1.sum / (cause0.sum + cause1.sum) * 100) | int}}%</div>
-                        <span class="bar-label">رفتار نامناسب</span>
-                        </div>
-                    </div>
-                </td> {# نمودار #} {# todo #}
+                
 
             </tr>
             {%endif%}

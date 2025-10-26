@@ -1,0 +1,143 @@
+{# جزئیات هشدار گروپ بای دسته بندی آیتم هشدار #}
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+    <title>جزئیات هشدار بر اساس دسته بندی آیتم هشدار</title>
+    <style>
+        body {
+            font-family: 'Vazir FD';
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 2px solid #444;
+            background-color: #fdfdfd;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 40px;
+            background-color: white;
+            vertical-align: middle;
+            direction: rtl;
+        }
+        td, th {
+            padding: 14px;
+            text-align: center;
+            font-size: 13px;
+            vertical-align: top;
+            background-color: #f0f0f0;
+            font-weight: bold;
+            border: 1px solid #444;
+        }
+        th {
+            text-align: center;
+            font-size: 25px;
+        }
+        .page-break-container {
+            page-break-before: always;
+        }
+
+        @page {
+        size: A4 portrait;
+        margin: 1cm;
+        }
+
+        .stars {
+        display: inline-block;
+        font-size: 20px;
+        color: #ccc; 
+        }
+        .stars .filled {
+        color: #f5c518; 
+        }
+        
+    </style>
+
+    {% set NO_DATA = "<span style='font-size:12;color:gray;'>اطلاعات ناموجود</span>" %}
+
+    {%set ENUM_TYPE = [
+                {
+                    "value": 0,
+                    "label": "حادثه انسانی",
+                    "sort": 1
+                },
+                {
+                    "value": 1,
+                    "label": "شبه حادثه",
+                    "sort": 2
+                },
+                {
+                    "value": 1,
+                    "label": "حادثه زیست محیطی",
+                    "sort": 2
+                }
+            ]%}
+
+    {% macro recursive_loop(counter, stars, limit) %}
+        {% if counter < limit %}
+            {%if counter < stars %}
+                <span class="filled">★</span>
+                {{ recursive_loop(counter + 1, stars, limit) }}
+            {%else%}
+                <span>★</span>
+                {{ recursive_loop(counter + 1, stars, limit) }}
+            {%endif%}
+        {% endif %}
+    {% endmacro %}
+
+</head>
+<body>
+    <table>
+
+       
+        
+        <tr>
+            <td colspan="5">جزئیات سانحه </td>
+        </tr>
+
+        <tr>
+            <td style="background-color: #e9e6e6;">دسته بندی</td>
+            <td style="background-color: #e9e6e6;">نوع سانحه</td> 
+            <td style="background-color: #e9e6e6;">درجه ریسک</td>
+            
+        </tr>
+
+
+        {%for incident in data%}
+            <tr>
+                <td>
+                {% if incident.CAUSE%}
+                    {{incident.CAUSE[0].LABEL}}
+                {%else%}
+                    {{NO_DATA}}
+                {%endif%}
+                </td>
+
+                <td>
+                {%if incident.TYPE%}
+                    {{ENUM_TYPE[incident.TYPE[0]].label}}
+                {%else%}
+                    {{NO_DATA}}
+                {%endif%}
+                </td>
+
+                <td>
+                {%if incident.LEVEL%}
+                    <div class="stars">
+                        {{recursive_loop(0, incident.LEVEL, 5)}}
+                    </div>
+                {%else%}
+                    {{NO_DATA}}
+                {%endif%}
+                </td>
+              
+
+            </tr>
+        {%endfor%}
+
+    </table>
+ 
+</body>
+</html>
