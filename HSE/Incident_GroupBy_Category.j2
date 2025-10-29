@@ -1,4 +1,4 @@
-{# جزئیات هشدار گروپ بای دسته بندی آیتم هشدار #}
+{# جزئیات سانحه براساس دسته بندی دسته بندی #}
 
 <!DOCTYPE html>
 <html>
@@ -86,7 +86,7 @@
 
     {% set NO_DATA = "<span style='font-size:12;color:gray;'>اطلاعات ناموجود</span>" %}
 
-    {%set ENUM_TYPE = [
+    {% set ENUM_TYPE = [
                 {
                     "value": 0,
                     "label": "حادثه انسانی",
@@ -103,172 +103,6 @@
                     "sort": 2
                 }
             ]%}
-
-    {# اینجا Cause برای دسته بندی سانحه استفاده شده است. #}
-    {# و درواقع در جدول نمایش داده شده علت نخواهیم داشت. #}
-
-    {%set ENUM_CATEGORY = [
-                {
-                    "value": 0,
-                    "label": "آب آشامیدنی",
-                    "sort": 1
-                },
-                {
-                    "value": 1,
-                    "label": "آشپزخانه",
-                    "sort": 2
-                },
-                {
-                    "value": 2,
-                    "label": "سالن غذاخوری",
-                    "sort": 3
-                },
-                {
-                    "value": 3,
-                    "label": "انبار مواد غذایی",
-                    "sort": 4
-                },
-                {
-                    "value": 4,
-                    "label": "نظافت عمومی خوابگاه",
-                    "sort": 5
-                },
-                {
-                    "value": 5,
-                    "label": "سرویس بهداشتی",
-                    "sort": 6
-                },
-                {
-                    "value": 6,
-                    "label": "بهداری و سلامت شغلی",
-                    "sort": 7
-                },
-                {
-                    "value": 7,
-                    "label": "نكات عمومي",
-                    "sort": 8
-                },
-                {
-                    "value": 8,
-                    "label": "راه پله و نردبان",
-                    "sort": 9
-                },
-                {
-                    "value": 9,
-                    "label": "داربست/ موارد مشابه",
-                    "sort": 10
-                },
-                {
-                    "value": 10,
-                    "label": "پرتگاه ها/ گودبرداری",
-                    "sort": 11
-                },
-                {
-                    "value": 11,
-                    "label": "تخريب و ريزش",
-                    "sort": 12
-                },
-                {
-                    "value": 12,
-                    "label": "راهها",
-                    "sort": 13
-                },
-                {
-                    "value": 13,
-                    "label": "حمل و نقل",
-                    "sort": 14
-                },
-                {
-                    "value": 14,
-                    "label": "ماشين آلات",
-                    "sort": 15
-                },
-                {
-                    "value": 15,
-                    "label": "فضاي محدود",
-                    "sort": 16
-                },
-                {
-                    "value": 16,
-                    "label": "تهويه",
-                    "sort": 17
-                },
-                {
-                    "value": 17,
-                    "label": "تجهيزات حفاظت فردي",
-                    "sort": 18
-                },
-                {
-                    "value": 18,
-                    "label": "برق و تجهيزات الكتريكي",
-                    "sort": 19
-                },
-                {
-                    "value": 19,
-                    "label": "حريق و آتش سوزي",
-                    "sort": 20
-                },
-                {
-                    "value": 20,
-                    "label": "جوشكاري",
-                    "sort": 21
-                },
-                {
-                    "value": 21,
-                    "label": "مخازن تحت فشار",
-                    "sort": 22
-                },
-                {
-                    "value": 22,
-                    "label": "كار در ارتفاع",
-                    "sort": 23
-                },
-                {
-                    "value": 23,
-                    "label": "انبارش",
-                    "sort": 24
-                },
-                {
-                    "value": 24,
-                    "label": "واكنش در شرايط اضطراري",
-                    "sort": 25
-                },
-                {
-                    "value": 25,
-                    "label": "منابع سوخت",
-                    "sort": 26
-                },
-                {
-                    "value": 26,
-                    "label": "آب",
-                    "sort": 27
-                },
-                {
-                    "value": 27,
-                    "label": "هوا",
-                    "sort": 28
-                },
-                {
-                    "value": 28,
-                    "label": "خاك",
-                    "sort": 29
-                },
-                {
-                    "value": 29,
-                    "label": "فضاي سبز",
-                    "sort": 30
-                },
-                {
-                    "value": 31,
-                    "label": "فاضلاب",
-                    "sort": 31
-                },
-                {
-                    "value": 30,
-                    "label": "مواد زائد جامد",
-                    "sort": 32
-                }
-    ]%}
 
     {% macro recursive_loop(counter, stars, limit) %}
         {% if counter < limit %}
@@ -305,7 +139,7 @@
             
         </tr>
 
-        {%for category in ENUM_CATEGORY %}
+        {%for category in data | selectattr("CAUSE", "defined") | map(attribute="CAUSE") | map(attribute="0") | map(attribute="LABEL") | unique | list %}
             
                 {# تعاریف متغیر های استفاده شده برای انجام محاسبات #}
                 {%set count = namespace(sum=0)%}
@@ -316,12 +150,15 @@
 
                 {# در فور پایین محاسبات انجام میشود #}
                 {%for incident in data%}
-                    {%if incident.ITEM is not null%}
-                        {%if incident.ITEM[0].CATEGORY[0] == category.value%}  
+                    {%if incident.CAUSE%}
+                        {%if incident.CAUSE[0].LABEL == category%}  
             
                             {% set count.sum = count.sum + 1 %} {# شمارش تعداد سانحه ها #}
-                            {% set level.sum = level.sum + incident.LEVEL %} {# مجموع درجه ریسک ها که باید در نهایت تقسیم بر تعداد کل هشدار ها بشود تا میانگین درجه ریسک به دست آید #}
-                            
+                        
+                            {%if incident.LEVEL%}
+                                {% set level.sum = level.sum + incident.LEVEL %} {# مجموع درجه ریسک ها که باید در نهایت تقسیم بر تعداد کل هشدار ها بشود تا میانگین درجه ریسک به دست آید #}
+                            {%endif%}
+
                             {%if incident.TYPE[0] == 0 %} {# نوع سانحه حادثه انسانی #}
                                 {% set type0.sum = type0.sum + 1 %}
                             {%elif incident.TYPE[0] == 1 %} {# نوع سانحه شبه حادثه #}
@@ -337,7 +174,7 @@
             {%if count.sum != 0 %}
             <tr>
                 <td style="background-color: #e9e6e6;">
-                    {{category.label}}
+                    {{category}}
                 </td>
 
                 <td>{{count.sum}}</td>
@@ -367,9 +204,7 @@
                             <span class="bar-label">حادثه زیست محیطی</span>
                         </div>
                     </div>
-                </td> {# نمودار #
-
-                
+                </td> {# نمودار #}
 
             </tr>
             {%endif%}
@@ -379,3 +214,4 @@
  
 </body>
 </html>
+

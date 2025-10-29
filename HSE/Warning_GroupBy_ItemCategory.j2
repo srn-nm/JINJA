@@ -1,5 +1,6 @@
 {# جزئیات هشدار گروپ بای دسته بندی آیتم هشدار #}
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -342,19 +343,22 @@
 
                 {# در فور پایین محاسبات انجام میشود #}
                 {%for warning in data%}
-                    {%if warning.ITEM is not null%}
+                    {%if warning.ITEM %}
                         {%if warning.ITEM[0].CATEGORY[0] == category.value%}  
             
                             {% set count.sum = count.sum + 1 %} {# شمارش تعداد هشدار ها #}
-                            {% set level.sum = level.sum + warning.LEVEL %} {# مجموع درجه ریسک ها که باید در نهایت تقسیم بر تعداد کل هشدار ها بشود تا میانگین درجه ریسک به دست آید #}
-                            
+
+                            {%if warning.LEVEL%}
+                                {% set level.sum = level.sum + warning.LEVEL %} {# مجموع درجه ریسک ها که باید در نهایت تقسیم بر تعداد کل هشدار ها بشود تا میانگین درجه ریسک به دست آید #}
+                            {%endif%}
+
                             {%if warning.TYPE[0] == 0 %} {# نوع هشدار اخطار کتبی #}
                                 {% set type0.sum = type0.sum + 1 %}
                             {%elif warning.TYPE[0] == 1 %} {# نوع هشدار توقف کار #}
                                 {% set type1.sum = type1.sum + 1 %}
                             {%endif%}
 
-                            {%if warning.CAUSE[0] == 0 %} {# علت هشدار شرایط نامناسب#}
+                            {%if warning.CAUSE[0] == 0 %} {# علت هشدار شرایط نامناسب #}
                                 {% set cause0.sum = cause0.sum + 1 %}
                             {%elif warning.CAUSE[0] == 1 %} {# علت هشدار رفتار نامناسب #}
                                 {% set cause1.sum = cause1.sum + 1 %}
