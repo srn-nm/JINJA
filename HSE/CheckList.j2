@@ -1,0 +1,170 @@
+{# گزارش چک لیست بازرسی آشپزخانه #}
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+    <title>گزارش چک لیست بازرسی آشپزخانه</title>
+    <style>
+        body {
+            font-family: 'Vazir FD';
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 2px solid #444;
+            background-color: #fdfdfd;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 40px;
+            background-color: white;
+            vertical-align: middle;
+            direction: rtl;
+        }
+        td, th {
+            padding: 14px;
+            text-align: center;
+            font-size: 13px;
+            vertical-align: top;
+            background-color: #f0f0f0;
+            font-weight: bold;
+            border: 1px solid #444;
+        }
+        th {
+            text-align: center;
+            font-size: 25px;
+        }
+        .page-break-container {
+            page-break-before: always;
+        }
+
+
+        .chart {
+        display: flex;
+        align-items: flex-end;
+        gap: 10px;
+        height: 120px;
+        border-left: 2px solid #333;
+        border-bottom: 2px solid #333;
+        padding: 11px;
+        }
+    
+        .bar {
+        width: 40px;
+        background-color: #3c4eb1ff;
+        text-align: center;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        }
+        .bar span {
+        margin-top: 5px;
+        font-size: 10px;
+        color: black;
+        }
+        .bar-label {
+        margin-top: 5px;
+        font-size: 11px;
+        }
+        @page {
+        size: A4 portrait;
+        margin: 1cm;
+        }
+        
+    </style>
+
+    {% set NO_DATA = "<span style='font-size:12;color:gray;'>اطلاعات ناموجود</span>" %}
+
+</head>
+<body>
+    <table>
+        
+        <tr>
+            {# colspan should be dynamic #}
+            <td colspan="5">گزارش چک لیست بازرسی آشپزخانه</td>
+        </tr>
+
+        <tr>
+            {# the next line should be edited based on the checklist data structure #}
+            {% for category in data | selectattr("CAUSE", "defined") | map(attribute="CAUSE") | map(attribute="0") | map(attribute="LABEL") | unique | list %} 
+                <td style="background-color: #e9e6e6;">{{category}}</td>
+            {% endfor %}
+            <td style="background-color : "e9e6e6;">جمع</td>
+        </tr>
+
+        {# تعاریف متغیرهای استفاده شده برای انجام محاسبات #}
+        {% set ok = namespace(sum=0) %}
+        {% set nc = namespace(sum=0) %}
+        {% set na = namespace(sum=0) %}
+        {% set count = namespace(sum=0) %}
+        {% set mode = namespace(value=0) %}
+
+        {# در فور پایین محاسبات انجام میشود #}
+        {% for checkKey in data.CHECKLIST | keys %}
+            {% set count.sum = count.sum + 1 %} {# شمارش تعداد #}
+        
+            {% if data.CHECKLIST.checkKey == "0" %} {# OK #}
+                {% set ok.sum = ok.sum + 1 %}
+            {% elif data.CHECKLIST.checkKey == "1" %} {# NC #}
+                {% set nc.sum = nc.sum + 1 %}
+            {% elif data.CHECKLIST.checkKey == "2" %} {# NA #}
+                {% set na.sum = na.sum + 1 %}
+            {% endif %}
+        {%endfor%}
+
+        {# ست کردن مقدار برای mode.value #}
+        {# این مقدار را در زیر پای چارت ساخته شده نمایش می دهیم #}
+        {% if ok.sum > nc.sum and ok.sum > na.sum %}
+            {% set mode.value = ok.sum %}
+        {% elif nc.sum > ok.sum and nc.sum > na.sum %}
+            {% set mode.value = nc.sum %}
+        {% elif  na.sum > ok.sum and na.sum > nc.sum %}
+            {% set mode.value = na.sum %}
+        {% endif %}
+
+        ------------------- {# from here its just test and wont realy work #}
+
+        <tr>
+            <td>دیتای OK</td>
+            <td>{{ok.sum}}</td>
+        </tr>
+        <tr>
+            <td>دیتای NC</td>
+            <td>{{nc.sum}}</td>
+        </tr>
+        <tr>
+            <td>دیتایNA</td>
+            <td>{{na.sum}}</td>
+        </tr>
+
+        <td>
+            {% for group in groupslist %}
+                <div class="chart">
+
+                    <div class="bar" style="height: {{ok.sum / (nc.sum + na.sum + ok.sum) * 100}}%;">
+                        <div style="color:black;">{{(ok.sum / (nc.sum + na.sum + ok.sum) * 100) | int}}%</div>
+                        <span class="bar-label">OK</span>
+                    </div>
+                    <div class="bar" style="height: {{nc.sum / (nc.sum + na.sum + ok.sum) * 100}}%;">
+                        <div style="color:black;">{{(nc.sum / (nc.sum + na.sum + ok.sum) * 100) | int}}%</div>
+                        <span class="bar-label">NC</span>
+                    </div>
+                    <div class="bar" style="height: {{na.sum / (nc.sum + na.sum + ok.sum) * 100}}%;">
+                        <div style="color:black;">{{(na.sum / (nc.sum + na.sum + ok.sum) * 100) | int}}%</div>
+                        <span class="bar-label">NA</span>
+                    </div>
+                </div>
+            {% endfor %} {# نمودار #}
+        </td> 
+
+    </table>
+</body>
+</html>
+
+{#
+ما قراره یه پای چارت داشته باشیم برای هر گروه که قراره به صورت دیستینکت از هر گزارش پیدا بشه. بعدش هم یدونه پای چارت کلی داشته باشیم بدون در نظر گرفتن گروه.
+بعد هر کدوم از این ولیو ها هم قراره وزن داشته باشن و وزنشون هم باید حساب بشه
+و زیر هرکدوم از پای چارت ها هم باید مد رو بگیم کدوم دسته بوده: او کی یا ان سی یا ان ای
+#}
