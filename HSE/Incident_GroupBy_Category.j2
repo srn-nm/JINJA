@@ -85,23 +85,7 @@
 
     {% set NO_DATA = "<span style='font-size:12;color:gray;'>اطلاعات ناموجود</span>" %}
 
-    {% set ENUM_TYPE = [
-                {
-                    "value": 0,
-                    "label": "حادثه انسانی",
-                    "sort": 1
-                },
-                {
-                    "value": 1,
-                    "label": "شبه حادثه",
-                    "sort": 2
-                },
-                {
-                    "value": 1,
-                    "label": "حادثه زیست محیطی",
-                    "sort": 2
-                }
-            ]%}
+    
 
     {% macro recursive_loop(counter, stars, limit) %}
         {% if counter < limit %}
@@ -212,3 +196,189 @@
 </body>
 </html>
 
+
+
+
+{# جزئیات سوانح براساس دسته بندی #}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>جزئیات سوانح براساس دسته بندی آیتم هشدار</title>
+<style>
+    body {
+        font-family: 'Vazir FD';
+        margin: 20px;
+        direction: rtl;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 2px solid #444;
+        background-color: white;
+        margin: auto;
+    }
+    td, th {
+        padding: 14px;
+        text-align: center;
+        font-size: 13px;
+        vertical-align: top;
+        background-color: #f0f0f0;
+        font-weight: bold;
+        border: 1px solid #444;
+    }
+    th {
+        font-size: 25px;
+    }
+    .chart {
+        display: inline-block;
+        border-left: 2px solid #333;
+        border-bottom: 2px solid #333;
+        padding: 10px;
+        height: 120px;
+        text-align: center;
+        vertical-align: bottom;
+    }
+    .bar {
+        display: inline-block;
+        width: 40px;
+        margin: 0 5px;
+        background-color: #3c4eb1ff;
+        color: black;
+        font-size: 10px;
+        vertical-align: bottom;
+    }
+    .bar-label {
+        display: inline-block;
+        width: 40px;
+        text-align: center;
+        font-size: 11px;
+        margin-top: 4px;
+    }
+    .stars {
+        display: inline-block;
+        font-size: 20px;
+        color: #ccc;
+    }
+    .stars .filled {
+        color: #f5c518;
+    }
+    @page {
+        size: A4 portrait;
+        margin: 1cm;
+    }
+</style>
+
+{% set NO_DATA = "<span style='font-size:12;color:gray;'>اطلاعات ناموجود</span>" %}
+
+{% set ENUM_TYPE = [
+                {
+                    "value": 0,
+                    "label": "حادثه انسانی",
+                    "sort": 1
+                },
+                {
+                    "value": 1,
+                    "label": "شبه حادثه",
+                    "sort": 2
+                },
+                {
+                    "value": 1,
+                    "label": "حادثه زیست محیطی",
+                    "sort": 2
+                }
+            ]%}
+
+{% macro recursive_loop(counter, stars, limit) %}
+    {% if counter < limit %}
+        {% if counter < stars %}
+            <span class="filled">★</span>
+            {{ recursive_loop(counter + 1, stars, limit) }}
+        {% else %}
+            <span>★</span>
+            {{ recursive_loop(counter + 1, stars, limit) }}
+        {% endif %}
+    {% endif %}
+{% endmacro %}
+</head>
+
+<body>
+<table>
+    <colgroup>
+        <col style="width:25%">
+        <col style="width:25%">
+        <col style="width:25%">
+        <col style="width:25%">
+    </colgroup>
+
+    <tr>
+        <td colspan="5">جزئیات سوانح براساس دسته بندی</td>
+    </tr>
+
+    <tr>
+        <td style="background-color: #e9e6e6;">دسته بندی</td>
+        <td style="background-color: #e9e6e6;">تعداد سوانح</td>
+        <td style="background-color: #e9e6e6;">میانگین درجه ریسک</td>
+        <td style="background-color: #e9e6e6;">نوع سانحه</td>
+    </tr>
+
+    {% for category in data | selectattr("CAUSE", "defined") | map(attribute="CAUSE") | map(attribute="0") | map(attribute="LABEL") | unique | list %}
+        {% set count = namespace(sum=0) %}
+        {% set level = namespace(sum=0) %}
+        {% set type0 = namespace(sum=0) %}
+        {% set type1 = namespace(sum=0) %}
+        {% set type2 = namespace(sum=0) %}
+
+        {% for incident in data %}
+            {% if incident.CAUSE and incident.CAUSE[0].LABEL == category %}
+                {% set count.sum = count.sum + 1 %}
+                {% if incident.LEVEL %}
+                    {% set level.sum = level.sum + incident.LEVEL %}
+                {% endif %}
+                {% if incident.TYPE[0] == 0 %}
+                    {% set type0.sum = type0.sum + 1 %}
+                {% elif incident.TYPE[0] == 1 %}
+                    {% set type1.sum = type1.sum + 1 %}
+                {% elif incident.TYPE[0] == 2 %}
+                    {% set type2.sum = type2.sum + 1 %}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+
+        {% if count.sum != 0 %}
+            {% set total = type0.sum + type1.sum + type2.sum %}
+            {% if total > 0 %}
+                {% set max_height = 100 %}
+                {% set h0 = (type0.sum / total * max_height) | round(0, 'floor') %}
+                {% set h1 = (type1.sum / total * max_height) | round(0, 'floor') %}
+                {% set h2 = (type2.sum / total * max_height) | round(0, 'floor') %}
+            {% else %}
+                {% set h0 = h1 = h2 = 0 %}
+            {% endif %}
+
+            <tr>
+                <td style="background-color: #e9e6e6;">{{ category }}</td>
+                <td>{{ count.sum }}</td>
+                <td>
+                    <div class="stars">
+                        {{ recursive_loop(0, (level.sum / count.sum) | int , 5) }}
+                    </div>
+                </td>
+                <td>
+                    <div class="chart">
+                        <div class="bar" style="height: {{ h0 }}px;">{{ (type0.sum / total * 100) | int }}%</div>
+                        <div class="bar" style="height: {{ h1 }}px;">{{ (type1.sum / total * 100) | int }}%</div>
+                        <div class="bar" style="height: {{ h2 }}px;">{{ (type2.sum / total * 100) | int }}%</div>
+                    </div>
+                    <div>
+                        <div class="bar-label">حادثه انسانی</div>
+                        <div class="bar-label">شبه حادثه</div>
+                        <div class="bar-label">حادثه زیست محیطی</div>
+                    </div>
+                </td>
+            </tr>
+        {% endif %}
+    {% endfor %}
+</table>
+</body>
+</html>
